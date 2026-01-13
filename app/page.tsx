@@ -1,22 +1,11 @@
-import { Metadata } from 'next';
+'use client';
+
 import Link from 'next/link';
 import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 import { CalculatorCard } from '@/components/CalculatorCard';
 import { StatsCard } from '@/components/StatsCard';
 import { CALCULATORS } from '@/data/calculators';
 // import { EmployeeCalculator } from '@/components/calculators/EmployeeCalculator';
-
-export const metadata: Metadata = {
-  title: 'NairaTax - Free Nigerian Tax Calculator 2025 | Employee PAYE, Business, Freelancer',
-  description: 'Calculate your Nigerian employee tax (PAYE), freelancer tax, business tax, and more. Free calculators for all taxpayers under Nigeria Tax Act 2025. New ₦800,000 tax-free threshold.',
-  keywords: 'Nigerian tax calculator, PAYE calculator Nigeria, employee tax Nigeria, Nigeria tax 2025, freelancer tax, business tax calculator, Nigeria Tax Act 2025',
-  openGraph: {
-    title: 'NairaTax - Free Nigerian Tax Calculator 2025',
-    description: 'Calculate your Nigerian taxes accurately. Free PAYE calculator and more under Nigeria Tax Act 2025.',
-    url: 'https://www.nairatax.ng',
-    type: 'website',
-  },
-};
 
 export default function HomePage() {
   const scrollToTop = (e: React.MouseEvent) => {
