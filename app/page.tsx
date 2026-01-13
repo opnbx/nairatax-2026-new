@@ -5,7 +5,7 @@ import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 import { CalculatorCard } from '@/components/CalculatorCard';
 import { StatsCard } from '@/components/StatsCard';
 import { CALCULATORS } from '@/data/calculators';
-// import { EmployeeCalculator } from '@/components/calculators/EmployeeCalculator';
+import { EmployeeCalculator } from '@/components/calculators/EmployeeCalculator';
 
 export default function HomePage() {
   const scrollToTop = (e: React.MouseEvent) => {
@@ -94,26 +94,9 @@ export default function HomePage() {
           {/* Employee Calculator Component */}
           <div className="bg-white border-2 border-blue-200 rounded-lg p-6 md:p-8 shadow-lg mb-8">
             <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">Calculate Your Employee Tax (PAYE)</h3>
-            
+
             <CalculatorErrorBoundary calculatorName="Employee Tax Calculator">
-              {/* <EmployeeCalculator /> */}
-              <div className="bg-gradient-to-br from-blue-50 to-indigo-50 rounded-lg p-8 text-center border-2 border-blue-200">
-                <div className="text-6xl mb-4" aria-hidden="true">🧮</div>
-                <p className="text-gray-700 text-lg mb-4">
-                  <strong>Your Employee Tax Calculator Will Go Here</strong>
-                </p>
-                <p className="text-gray-600 mb-6">
-                  Add your calculator component to see live tax calculations with all deductions, 
-                  progressive rates, and comparison to old tax system.
-                </p>
-                <Link 
-                  href="/calculators/employee" 
-                  className="inline-flex items-center justify-center min-h-[44px] bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition"
-                  aria-label="View full employee tax calculator page"
-                >
-                  View Full Calculator Page →
-                </Link>
-              </div>
+              <EmployeeCalculator />
             </CalculatorErrorBoundary>
           </div>
 
