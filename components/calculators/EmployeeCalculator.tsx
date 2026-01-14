@@ -35,8 +35,8 @@ interface CalculationResult {
 }
 
 export function EmployeeCalculator() {
-  const [grossSalary, setGrossSalary] = useState('');
-  const [frequency, setFrequency] = useState<'monthly' | 'annual'>('monthly');
+  const [grossSalary, setGrossSalary] = useState('800000');
+  const [frequency, setFrequency] = useState<'monthly' | 'annual'>('annual');
   const [annualRent, setAnnualRent] = useState('');
   const [lifeInsurance, setLifeInsurance] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);

@@ -308,7 +308,7 @@ export default function HomePage() {
         <section className="max-w-4xl mx-auto px-4 py-16" aria-labelledby="faq-heading">
           <div className="text-center mb-12">
             <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
-              Frequently Asked Questions
+              ❓ Frequently Asked Questions
             </h2>
             <p className="text-gray-600">
               Common questions about Nigerian taxes and our calculators
@@ -319,63 +319,109 @@ export default function HomePage() {
             {/* FAQ 1 */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                How accurate are these calculations?
+                What is the tax-free threshold under the new law?
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                Our calculators follow the Nigeria Tax Act 2025 exactly. However, individual circumstances vary.
-                For complex situations, consult a tax professional.
+                The first ₦800,000 of annual income is completely tax-free. If you earn ₦800,000 or less,
+                you pay zero income tax. This takes effect January 1, 2026.
               </p>
             </div>
 
             {/* FAQ 2 */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                When does the new tax law take effect?
+                What are the new tax rates?
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                The Nigeria Tax Act 2025 becomes effective January 1, 2026. Current tax year (2025) still uses old rates.
+                Progressive rates effective January 2026: 0% (first ₦800K), 15% (₦800K-₦3M),
+                18% (₦3M-₦12M), 21% (₦12M-₦25M), 23% (₦25M-₦50M), 25% (above ₦50M).
               </p>
             </div>
 
             {/* FAQ 3 */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Can I save my calculations?
+                What is the small company exemption?
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                Currently, calculations are not saved. We recommend taking a screenshot or noting down your results.
-                A save feature is coming soon!
+                Companies with revenue ≤₦50 million pay 0% company tax. Exception: Professional services
+                (legal, accounting, medical, consulting) don't qualify.
               </p>
             </div>
 
             {/* FAQ 4 */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Is my data private?
+                How does rent relief work?
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                Yes! All calculations happen in your browser. We don't store or transmit your financial information.
+                You can deduct 20% of annual rent paid, up to maximum ₦500,000. This is a NEW benefit
+                under the 2026 law - it did not exist before.
               </p>
             </div>
 
             {/* FAQ 5 */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                What is the ₦800,000 tax-free threshold?
+                What can employees deduct?
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                The first ₦800,000 of your annual income is completely tax-free. You only pay tax on income
-                above this amount.
+                Pension (8%), NHF (2.5%), NHIS, life insurance, mortgage interest on primary home,
+                and rent relief (20% up to ₦500K - NEW in 2026).
               </p>
             </div>
 
             {/* FAQ 6 */}
             <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
-                Do I need to register to use the calculator?
+                How does freelancer WHT work?
               </h3>
               <p className="text-gray-700 leading-relaxed">
-                No registration required! All our calculators are free to use without creating an account.
+                Clients deduct 5% withholding tax from payments. This WHT credits against your final
+                tax - you pay less or get refund if WHT exceeds tax due.
+              </p>
+            </div>
+
+            {/* FAQ 7 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                What benefits do pensioners get?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Pensioners get extra ₦200,000 tax-free allowance beyond the standard ₦800,000 threshold -
+                effectively ₦1,000,000 tax-free.
+              </p>
+            </div>
+
+            {/* FAQ 8 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                What's the tax on investments?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Dividends and interest: 10% WHT (usually final tax). Capital gains: 10% on profits from asset sales.
+              </p>
+            </div>
+
+            {/* FAQ 9 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                How do I get a TIN?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Register at any NRS (Nigeria Revenue Service) office or online at jtb.gov.ng.
+                You need NIN, BVN, and valid government ID.
+              </p>
+            </div>
+
+            {/* FAQ 10 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                When does this take effect?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                The Nigeria Tax Act 2025 was signed into law, but the Nigeria Revenue Service launches
+                January 1, 2026. That's when the new rates become effective.
               </p>
             </div>
           </div>
