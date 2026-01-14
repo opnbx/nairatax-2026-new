@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${baseUrl}/calculators/${route}`,
       lastModified: currentDate,
       changeFrequency: 'monthly' as const,
-      priority: route === 'employee' ? 1.0 : 0.9,
+      priority: 0.9,
     })),
   ];
 }
