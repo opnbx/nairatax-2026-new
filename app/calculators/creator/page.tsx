@@ -1,66 +1,38 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Content Creator Tax Calculator - NairaTax',
-  description: 'Calculate your tax as a content creator, influencer, or digital entrepreneur under Nigeria Tax Act 2025.',
-};
+import Link from 'next/link';
+import { useEffect } from 'react';
+import { CreatorCalculator } from '@/components/calculators/CreatorCalculator';
+import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 
 export default function CreatorCalculatorPage() {
+  useEffect(() => {
+    document.title = 'Content Creator Tax Calculator - NairaTax';
+  }, []);
+
   return (
     <main className="min-h-screen bg-white">
       <div className="max-w-4xl mx-auto px-4 py-16">
         <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Content Creator Tax Calculator
+          📱 Content Creator Tax Calculator
         </h1>
         <p className="text-lg text-gray-600 mb-8">
           Calculate your tax as a content creator, influencer, or digital entrepreneur under Nigeria Tax Act 2025
         </p>
 
-        <div className="bg-purple-50 border-2 border-purple-200 rounded-lg p-8 md:p-12 text-center">
-          <div className="text-6xl md:text-7xl mb-6" aria-hidden="true">🚧</div>
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">Coming Soon</h2>
-          <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            This calculator is currently under development. We're working hard to bring you accurate
-            tax calculations for content creators, YouTubers, influencers, and digital entrepreneurs,
-            including multiple revenue streams and platform-specific guidance.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/"
-              className="inline-block bg-purple-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-purple-700 transition"
-            >
-              ← Back to Homepage
-            </Link>
-            <Link
-              href="/#calculators"
-              className="inline-block bg-white border-2 border-purple-600 text-purple-600 px-8 py-3 rounded-lg font-semibold hover:bg-purple-50 transition"
-            >
-              View Other Calculators
-            </Link>
-          </div>
+        <div className="bg-white border-2 border-pink-200 rounded-lg p-6 md:p-8 shadow-lg">
+          <CalculatorErrorBoundary calculatorName="Content Creator Tax Calculator">
+            <CreatorCalculator />
+          </CalculatorErrorBoundary>
         </div>
 
-        <div className="mt-12 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">What to Expect</h3>
-          <ul className="space-y-3 text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600 text-xl flex-shrink-0">✓</span>
-              <span>Multi-platform income tracking (YouTube, Instagram, TikTok, etc.)</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600 text-xl flex-shrink-0">✓</span>
-              <span>Brand deal and sponsorship tax calculation</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600 text-xl flex-shrink-0">✓</span>
-              <span>Equipment and content production expense deductions</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-purple-600 text-xl flex-shrink-0">✓</span>
-              <span>International income tax considerations</span>
-            </li>
-          </ul>
+        <div className="mt-8 text-center">
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-medium"
+          >
+            ← Back to Homepage
+          </Link>
         </div>
       </div>
     </main>
