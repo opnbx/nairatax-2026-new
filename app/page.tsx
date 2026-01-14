@@ -44,16 +44,13 @@ export default function HomePage() {
       <div id="main-content">
         {/* Featured: Employee Calculator Section */}
         <section className="max-w-6xl mx-auto px-4 py-16" aria-labelledby="employee-calculator-heading">
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-4">
-              <span className="text-4xl" aria-hidden="true">👔</span>
-              <div>
-                <h2 id="employee-calculator-heading" className="text-2xl md:text-3xl font-bold text-gray-900">
-                  Employee Tax Calculator (PAYE)
-                </h2>
-                <p className="text-gray-600">Most popular - Calculate your take-home pay</p>
-              </div>
-            </div>
+          {/* Employee Calculator Component */}
+          <div className="bg-white border-2 border-blue-200 rounded-lg p-6 md:p-8 shadow-lg mb-8">
+            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">Calculate Your Employee Tax (PAYE)</h3>
+
+            <CalculatorErrorBoundary calculatorName="Employee Tax Calculator">
+              <EmployeeCalculator />
+            </CalculatorErrorBoundary>
           </div>
 
           {/* Key Benefits for Employees */}
@@ -89,15 +86,6 @@ export default function HomePage() {
                 </div>
               </li>
             </ul>
-          </div>
-
-          {/* Employee Calculator Component */}
-          <div className="bg-white border-2 border-blue-200 rounded-lg p-6 md:p-8 shadow-lg mb-8">
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">Calculate Your Employee Tax (PAYE)</h3>
-
-            <CalculatorErrorBoundary calculatorName="Employee Tax Calculator">
-              <EmployeeCalculator />
-            </CalculatorErrorBoundary>
           </div>
 
           {/* Disclaimer */}
