@@ -8,15 +8,15 @@ interface TaxBracket {
   base: number;
 }
 
-// Nigeria Tax Act 2025 - Progressive Tax Brackets
+// Nigeria Tax Act 2025 - Progressive Tax Brackets (Effective Jan 1, 2026)
+// Source: https://taxclearancecertificate.com/new-paye-computation-under-the-nigeria-tax-act-nta-2025-everything-you-need-to-know/
 const TAX_BRACKETS: TaxBracket[] = [
-  { limit: 800000, rate: 0.00, base: 0 },
-  { limit: 1600000, rate: 0.07, base: 800000 },
-  { limit: 3000000, rate: 0.11, base: 1600000 },
-  { limit: 7000000, rate: 0.15, base: 3000000 },
-  { limit: 15000000, rate: 0.19, base: 7000000 },
-  { limit: 25000000, rate: 0.21, base: 15000000 },
-  { limit: Infinity, rate: 0.25, base: 25000000 },
+  { limit: 800000, rate: 0.00, base: 0 },           // 0% on first ₦800K
+  { limit: 3000000, rate: 0.15, base: 800000 },     // 15% on ₦800K - ₦3M
+  { limit: 12000000, rate: 0.18, base: 3000000 },   // 18% on ₦3M - ₦12M
+  { limit: 25000000, rate: 0.21, base: 12000000 },  // 21% on ₦12M - ₦25M
+  { limit: 50000000, rate: 0.23, base: 25000000 },  // 23% on ₦25M - ₦50M
+  { limit: Infinity, rate: 0.25, base: 50000000 },  // 25% above ₦50M
 ];
 
 interface CalculationResult {
@@ -347,7 +347,7 @@ export function EmployeeCalculator() {
               <div>
                 <h5 className="font-semibold text-green-900 mb-1">Tax Savings with New Act</h5>
                 <p className="text-sm text-green-800">
-                  You benefit from the ₦800,000 tax-free threshold and lower progressive rates (0-25%)
+                  You benefit from the ₦800,000 tax-free threshold and progressive rates (0%, 15%, 18%, 21%, 23%, 25%)
                   under the Nigeria Tax Act 2025, effective January 2026.
                   {result.taxableIncome <= 800000 && ' You pay ZERO tax!'}
                 </p>
