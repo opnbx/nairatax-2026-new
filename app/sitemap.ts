@@ -3,7 +3,7 @@ import { MetadataRoute } from 'next';
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.nairatax.ng';
   const currentDate = new Date().toISOString();
-  const routes = ['freelancer', 'business', 'creator', 'investment', 'pensioner', 'partnership'];
+  const routes = ['freelancer', 'business', 'creator', 'investment'];
 
   return [
     { url: baseUrl, lastModified: currentDate, changeFrequency: 'weekly', priority: 1.0 },

@@ -189,8 +189,8 @@ export default function HomePage() {
               Other Tax Calculators
             </h2>
             <p className="text-base md:text-lg text-gray-600 max-w-2xl mx-auto">
-              Not an employee? We have specialized calculators for freelancers, business owners, 
-              content creators, investors, pensioners, and partnerships.
+              Not an employee? We have specialized calculators for freelancers, business owners,
+              content creators, and investors.
             </p>
           </div>
 
@@ -468,7 +468,7 @@ export default function HomePage() {
             "@context": "https://schema.org",
             "@type": "WebApplication",
             "name": "NairaTax - Nigerian Tax Calculator",
-            "description": "Free Nigerian tax calculators for employees (PAYE), freelancers, business owners, content creators, investors, pensioners, and partnerships",
+            "description": "Free Nigerian tax calculators for employees (PAYE), freelancers, business owners, content creators, and investors",
             "url": "https://www.nairatax.ng",
             "applicationCategory": "FinanceApplication",
             "operatingSystem": "Any",
@@ -482,9 +482,7 @@ export default function HomePage() {
               "Freelancer tax calculator",
               "Business CIT calculator",
               "Content creator tax",
-              "Investment income tax",
-              "Pensioner tax calculator",
-              "Partnership tax calculator"
+              "Investment income tax"
             ]
           })
         }}

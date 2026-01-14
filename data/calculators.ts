@@ -16,37 +16,23 @@ export const CALCULATORS: CalculatorCardProps[] = [
   },
   {
     title: 'Business Tax Calculator',
-    description: 'Company Income Tax (CIT) 30% + 4% levy. Small companies ≤₦50M pay 0% (non-professional services).',
+    description: 'Company Income Tax (CIT) 30% + 2% Education Tax. Small companies ≤₦50M pay 0% (non-professional services).',
     href: '/calculators/business',
     icon: '🏢',
-    features: ['CIT 30%', 'Development levy 4%', 'Small company 0%']
+    features: ['CIT 30%', 'Education Tax 2%', 'Small company 0%']
   },
   {
     title: 'Content Creator Tax',
     description: 'Tax calculator for YouTube, Instagram, TikTok income. Platform-specific deductions included.',
     href: '/calculators/creator',
     icon: '📱',
-    features: ['Social media income', 'Equipment costs', 'Foreign currency']
+    features: ['Social media income', 'Equipment costs', 'Production expenses']
   },
   {
     title: 'Investment Income Tax',
-    description: 'Calculate tax on dividends, interest, capital gains. Includes 10% WHT credit tracking.',
+    description: 'Calculate tax on dividends, interest, capital gains. All income types covered with WHT calculations.',
     href: '/calculators/investment',
     icon: '📊',
-    features: ['Dividend tax', 'Interest income', 'Capital gains 10%']
-  },
-  {
-    title: 'Pensioner Tax Calculator',
-    description: 'Retirement income tax with special ₦200,000 pensioner benefit. Gratuity exemption included.',
-    href: '/calculators/pensioner',
-    icon: '👴',
-    features: ['₦200K benefit', 'Gratuity exempt', 'Pension income']
-  },
-  {
-    title: 'Partnership Tax Calculator',
-    description: 'Business partnership tax with profit allocation. Pass-through taxation for partners.',
-    href: '/calculators/partnership',
-    icon: '🤝',
-    features: ['Profit allocation', 'Pass-through tax', 'Partner shares']
+    features: ['Dividend WHT 10%', 'Interest WHT 10%', 'Capital gains 10%']
   }
 ];
