@@ -27,7 +27,7 @@ export default function HomePage() {
       <section className="bg-gradient-to-b from-blue-50 to-white py-12 px-4" aria-labelledby="hero-heading">
         <div className="max-w-6xl mx-auto text-center">
           <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            🇳🇬 Nigerian Tax Calculator 2025
+            Nigerian Tax Calculator 2025
           </h1>
           <p className="text-lg md:text-xl text-gray-700 mb-6 max-w-3xl mx-auto">
             Calculate your tax under the new Nigeria Tax Act 2025. Free, accurate, and compliant.
@@ -98,6 +98,23 @@ export default function HomePage() {
             <CalculatorErrorBoundary calculatorName="Employee Tax Calculator">
               <EmployeeCalculator />
             </CalculatorErrorBoundary>
+          </div>
+
+          {/* Disclaimer */}
+          <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 my-8">
+            <div className="flex items-start">
+              <span className="text-2xl mr-3 flex-shrink-0" aria-hidden="true">⚠️</span>
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-2">Important Disclaimer</h3>
+                <p className="text-gray-700 text-sm leading-relaxed">
+                  This calculator provides estimates based on the Nigeria Tax Act 2025. Actual tax liability
+                  may vary based on individual circumstances, additional income sources, and specific deductions.
+                  For personalized tax advice, please consult a qualified tax professional or contact the
+                  Federal Inland Revenue Service (FIRS). NairaTax is not responsible for any decisions made
+                  based on these calculations.
+                </p>
+              </div>
+            </div>
           </div>
 
           {/* Quick Stats */}
@@ -286,6 +303,83 @@ export default function HomePage() {
             </div>
           </div>
         </section>
+
+        {/* FAQ Section */}
+        <section className="max-w-4xl mx-auto px-4 py-16" aria-labelledby="faq-heading">
+          <div className="text-center mb-12">
+            <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
+              Frequently Asked Questions
+            </h2>
+            <p className="text-gray-600">
+              Common questions about Nigerian taxes and our calculators
+            </p>
+          </div>
+
+          <div className="space-y-6">
+            {/* FAQ 1 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                How accurate are these calculations?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Our calculators follow the Nigeria Tax Act 2025 exactly. However, individual circumstances vary.
+                For complex situations, consult a tax professional.
+              </p>
+            </div>
+
+            {/* FAQ 2 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                When does the new tax law take effect?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                The Nigeria Tax Act 2025 becomes effective January 1, 2026. Current tax year (2025) still uses old rates.
+              </p>
+            </div>
+
+            {/* FAQ 3 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                Can I save my calculations?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Currently, calculations are not saved. We recommend taking a screenshot or noting down your results.
+                A save feature is coming soon!
+              </p>
+            </div>
+
+            {/* FAQ 4 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                Is my data private?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                Yes! All calculations happen in your browser. We don't store or transmit your financial information.
+              </p>
+            </div>
+
+            {/* FAQ 5 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                What is the ₦800,000 tax-free threshold?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                The first ₦800,000 of your annual income is completely tax-free. You only pay tax on income
+                above this amount.
+              </p>
+            </div>
+
+            {/* FAQ 6 */}
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+              <h3 className="text-lg font-semibold text-gray-900 mb-3">
+                Do I need to register to use the calculator?
+              </h3>
+              <p className="text-gray-700 leading-relaxed">
+                No registration required! All our calculators are free to use without creating an account.
+              </p>
+            </div>
+          </div>
+        </section>
       </div>
 
       {/* Schema Markup */}
@@ -317,6 +411,84 @@ export default function HomePage() {
           })
         }}
       />
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-3 gap-8 mb-8">
+            {/* About */}
+            <div>
+              <h3 className="text-xl font-bold mb-4">NairaTax</h3>
+              <p className="text-gray-400 text-sm leading-relaxed">
+                Free Nigerian tax calculators for employees, freelancers, businesses, and more.
+                Calculate your tax accurately under Nigeria Tax Act 2025.
+              </p>
+            </div>
+
+            {/* Quick Links */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
+              <ul className="space-y-2 text-sm">
+                <li>
+                  <Link href="/" className="text-gray-400 hover:text-white transition">
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/#calculators" className="text-gray-400 hover:text-white transition">
+                    All Calculators
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/#faq" className="text-gray-400 hover:text-white transition">
+                    FAQ
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/contact" className="text-gray-400 hover:text-white transition">
+                    Contact Us
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Contact */}
+            <div>
+              <h3 className="text-lg font-semibold mb-4">Contact</h3>
+              <div className="space-y-3 text-sm">
+                <div className="flex items-start gap-2">
+                  <span className="text-xl" aria-hidden="true">📧</span>
+                  <a
+                    href="mailto:webchief@nairatax.ng"
+                    className="text-gray-400 hover:text-white transition"
+                  >
+                    webchief@nairatax.ng
+                  </a>
+                </div>
+                <p className="text-gray-500 text-xs leading-relaxed mt-4">
+                  For official tax guidance, visit{' '}
+                  <a
+                    href="https://www.firs.gov.ng"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-blue-400 hover:text-blue-300 underline"
+                  >
+                    FIRS
+                  </a>
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Bar */}
+          <div className="border-t border-gray-800 pt-8 text-center text-sm text-gray-500">
+            <p className="mb-2">
+              <strong>Disclaimer:</strong> This calculator provides estimates only. Not professional tax advice.
+            </p>
+            <p>© 2025-2026 NairaTax.ng. All rights reserved.</p>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
