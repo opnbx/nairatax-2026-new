@@ -3,13 +3,23 @@ import { usePathname, useSearchParams } from 'next/navigation';
 import { useEffect } from 'react';
 import Script from 'next/script';
 
+/**
+ * WARNING: This component is NOT currently used in the app.
+ * Google Analytics is initialized in app/layout.tsx instead.
+ * DO NOT import this component without removing the GA initialization from layout.tsx
+ * to prevent double-initialization and duplicate event tracking.
+ *
+ * This file is kept for potential future use with client-side navigation tracking.
+ */
 export default function GoogleAnalytics({ gaId }: { gaId: string }) {
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
   useEffect(() => {
     if (pathname && window.gtag) {
-      window.gtag('config', gaId, { page_path: pathname + searchParams.toString() });
+      const search = searchParams.toString();
+      const page_path = search ? `${pathname}?${search}` : pathname;
+      window.gtag('config', gaId, { page_path });
     }
   }, [pathname, searchParams, gaId]);
 

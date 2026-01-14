@@ -56,7 +56,7 @@ export function trackCalculatorError(params: {
     window.gtag('event', 'calculator_error', {
       event_category: 'error',
       event_label: params.calculatorType,
-      value: params.errorMessage,
+      error_message: params.errorMessage,
     });
   }
 }

@@ -134,7 +134,7 @@ export default function HomePage() {
         </div>
 
         {/* Other Calculators Section */}
-        <section className="max-w-6xl mx-auto px-4 pb-16" aria-labelledby="other-calculators-heading">
+        <section id="calculators" className="max-w-6xl mx-auto px-4 pb-16" aria-labelledby="other-calculators-heading">
           <div className="text-center mb-12">
             <h2 id="other-calculators-heading" className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               Other Tax Calculators
@@ -230,32 +230,27 @@ export default function HomePage() {
                   <td className="px-4 md:px-6 py-4">₦0</td>
                 </tr>
                 <tr>
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦800,001 - ₦1,600,000</td>
-                  <td className="px-4 md:px-6 py-4 font-semibold">7%</td>
-                  <td className="px-4 md:px-6 py-4">Max ₦56,000</td>
-                </tr>
-                <tr className="bg-gray-50">
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦1,600,001 - ₦3,000,000</td>
-                  <td className="px-4 md:px-6 py-4 font-semibold">11%</td>
-                  <td className="px-4 md:px-6 py-4">Max ₦154,000</td>
-                </tr>
-                <tr>
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦3,000,001 - ₦7,000,000</td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦800,001 - ₦3,000,000</td>
                   <td className="px-4 md:px-6 py-4 font-semibold">15%</td>
-                  <td className="px-4 md:px-6 py-4">Max ₦600,000</td>
+                  <td className="px-4 md:px-6 py-4">Max ₦330,000</td>
                 </tr>
                 <tr className="bg-gray-50">
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦7,000,001 - ₦15,000,000</td>
-                  <td className="px-4 md:px-6 py-4 font-semibold">19%</td>
-                  <td className="px-4 md:px-6 py-4">Max ₦1,520,000</td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦3,000,001 - ₦12,000,000</td>
+                  <td className="px-4 md:px-6 py-4 font-semibold">18%</td>
+                  <td className="px-4 md:px-6 py-4">Max ₦1,620,000</td>
                 </tr>
                 <tr>
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦15,000,001 - ₦25,000,000</td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦12,000,001 - ₦25,000,000</td>
                   <td className="px-4 md:px-6 py-4 font-semibold">21%</td>
-                  <td className="px-4 md:px-6 py-4">Max ₦2,100,000</td>
+                  <td className="px-4 md:px-6 py-4">Max ₦2,730,000</td>
                 </tr>
                 <tr className="bg-gray-50">
-                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">Above ₦25,000,000</td>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">₦25,000,001 - ₦50,000,000</td>
+                  <td className="px-4 md:px-6 py-4 font-semibold">23%</td>
+                  <td className="px-4 md:px-6 py-4">Max ₦5,750,000</td>
+                </tr>
+                <tr>
+                  <td className="px-4 md:px-6 py-4 whitespace-nowrap">Above ₦50,000,000</td>
                   <td className="px-4 md:px-6 py-4 font-semibold">25%</td>
                   <td className="px-4 md:px-6 py-4">25% of excess</td>
                 </tr>
@@ -293,7 +288,7 @@ export default function HomePage() {
         </section>
 
         {/* FAQ Section */}
-        <section className="max-w-4xl mx-auto px-4 py-16" aria-labelledby="faq-heading">
+        <section id="faq" className="max-w-4xl mx-auto px-4 py-16" aria-labelledby="faq-heading">
           <div className="text-center mb-12">
             <h2 id="faq-heading" className="text-2xl md:text-3xl font-bold text-gray-900 mb-4">
               ❓ Frequently Asked Questions
