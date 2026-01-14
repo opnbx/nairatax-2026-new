@@ -1,13 +1,17 @@
 'use client';
 
 import Link from 'next/link';
+import { useState } from 'react';
 import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 import { CalculatorCard } from '@/components/CalculatorCard';
 import { StatsCard } from '@/components/StatsCard';
 import { CALCULATORS } from '@/data/calculators';
 import { EmployeeCalculator } from '@/components/calculators/EmployeeCalculator';
+import { USDIncomeCalculator } from '@/components/calculators/USDIncomeCalculator';
 
 export default function HomePage() {
+  const [activeTab, setActiveTab] = useState<'employee' | 'usd'>('employee');
+
   const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
     window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -42,15 +46,60 @@ export default function HomePage() {
 
       {/* Main Content */}
       <div id="main-content">
-        {/* Featured: Employee Calculator Section */}
-        <section className="max-w-6xl mx-auto px-4 py-16" aria-labelledby="employee-calculator-heading">
-          {/* Employee Calculator Component */}
+        {/* Featured: Calculator Section with Tabs */}
+        <section className="max-w-6xl mx-auto px-4 py-16" aria-labelledby="calculator-heading">
+          {/* Calculator Tabs */}
           <div className="bg-white border-2 border-blue-200 rounded-lg p-6 md:p-8 shadow-lg mb-8">
-            <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">Calculate Your Employee Tax (PAYE)</h3>
+            {/* Tab Navigation */}
+            <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-4">
+              <button
+                onClick={() => setActiveTab('employee')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+                  activeTab === 'employee'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span>💼</span>
+                <span className="hidden sm:inline">Employee</span>
+              </button>
+              <button
+                onClick={() => setActiveTab('usd')}
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+                  activeTab === 'usd'
+                    ? 'bg-blue-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                }`}
+              >
+                <span>💵</span>
+                <span className="hidden sm:inline">USD Income</span>
+              </button>
+            </div>
 
-            <CalculatorErrorBoundary calculatorName="Employee Tax Calculator">
-              <EmployeeCalculator />
-            </CalculatorErrorBoundary>
+            {/* Tab Content */}
+            <div className="mt-6">
+              {activeTab === 'employee' && (
+                <>
+                  <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+                    💼 Employee Tax Calculator
+                  </h3>
+                  <CalculatorErrorBoundary calculatorName="Employee Tax Calculator">
+                    <EmployeeCalculator />
+                  </CalculatorErrorBoundary>
+                </>
+              )}
+
+              {activeTab === 'usd' && (
+                <>
+                  <h3 className="text-xl md:text-2xl font-semibold text-gray-900 mb-6">
+                    💵 USD Income Calculator
+                  </h3>
+                  <CalculatorErrorBoundary calculatorName="USD Income Calculator">
+                    <USDIncomeCalculator />
+                  </CalculatorErrorBoundary>
+                </>
+              )}
+            </div>
           </div>
 
           {/* Key Benefits for Employees */}
