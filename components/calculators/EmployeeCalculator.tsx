@@ -3,19 +3,20 @@
 import { useState, useEffect } from 'react';
 
 interface TaxBracket {
-  min: number;
-  max: number | null;
+  limit: number;
   rate: number;
+  base: number;
 }
 
+// Nigeria Tax Act 2025 - Progressive Tax Brackets
 const TAX_BRACKETS: TaxBracket[] = [
-  { min: 0, max: 800000, rate: 0 },
-  { min: 800000, max: 1600000, rate: 0.07 },
-  { min: 1600000, max: 3000000, rate: 0.11 },
-  { min: 3000000, max: 7000000, rate: 0.15 },
-  { min: 7000000, max: 15000000, rate: 0.19 },
-  { min: 15000000, max: 25000000, rate: 0.21 },
-  { min: 25000000, max: null, rate: 0.25 },
+  { limit: 800000, rate: 0.00, base: 0 },
+  { limit: 1600000, rate: 0.07, base: 800000 },
+  { limit: 3000000, rate: 0.11, base: 1600000 },
+  { limit: 7000000, rate: 0.15, base: 3000000 },
+  { limit: 15000000, rate: 0.19, base: 7000000 },
+  { limit: 25000000, rate: 0.21, base: 15000000 },
+  { limit: Infinity, rate: 0.25, base: 25000000 },
 ];
 
 interface CalculationResult {
@@ -41,25 +42,30 @@ export function EmployeeCalculator() {
   const [lifeInsurance, setLifeInsurance] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const calculateTax = (taxableIncome: number): number => {
-    let tax = 0;
-    let remainingIncome = taxableIncome;
+  /**
+   * Calculate progressive tax using marginal rates
+   * CRITICAL: This uses marginal/progressive taxation, NOT flat rate
+   */
+  const calculateProgressiveTax = (taxableIncome: number): number => {
+    if (taxableIncome <= 0) return 0;
 
-    for (const bracket of TAX_BRACKETS) {
-      if (remainingIncome <= 0) break;
+    let totalTax = 0;
 
-      const bracketMin = bracket.min;
-      const bracketMax = bracket.max ?? Infinity;
-      const bracketRange = bracketMax - bracketMin;
+    for (let i = 0; i < TAX_BRACKETS.length; i++) {
+      const bracket = TAX_BRACKETS[i];
 
-      if (taxableIncome > bracketMin) {
-        const taxableInBracket = Math.min(remainingIncome, bracketRange);
-        tax += taxableInBracket * bracket.rate;
-        remainingIncome -= taxableInBracket;
+      // If income exceeds this bracket's base, calculate tax for this bracket
+      if (taxableIncome > bracket.base) {
+        const taxableInBracket = Math.min(
+          taxableIncome - bracket.base,
+          bracket.limit - bracket.base
+        );
+        const taxForBracket = taxableInBracket * bracket.rate;
+        totalTax += taxForBracket;
       }
     }
 
-    return Math.round(tax);
+    return Math.round(totalTax);
   };
 
   const calculate = () => {
@@ -73,22 +79,34 @@ export function EmployeeCalculator() {
     const grossAnnual = frequency === 'monthly' ? gross * 12 : gross;
     const grossMonthly = frequency === 'monthly' ? gross : gross / 12;
 
-    // Calculate deductions
-    const pension = Math.round(grossAnnual * 0.08);
-    const nhf = Math.round(grossAnnual * 0.025);
-    const nhis = Math.min(Math.round(grossAnnual * 0.05), 25000);
-    const lifeInsuranceAmount = Math.round(parseFloat(lifeInsurance) || 0);
+    // Calculate mandatory deductions
+    const pension = Math.round(grossAnnual * 0.08); // 8% pension
+    const nhf = Math.round(grossAnnual * 0.025); // 2.5% NHF
+    const nhis = Math.min(Math.round(grossAnnual * 0.05), 25000); // 5% NHIS, capped at ₦25K
 
-    // Rent relief: 20% of rent, max ₦500,000
+    // Calculate optional deductions
     const rent = parseFloat(annualRent) || 0;
-    const rentRelief = Math.min(Math.round(rent * 0.2), 500000);
+    const rentRelief = Math.min(Math.round(rent * 0.2), 500000); // 20% rent relief, max ₦500K
 
-    const totalDeductions = pension + nhf + nhis + lifeInsuranceAmount + rentRelief;
+    const lifeInsuranceInput = parseFloat(lifeInsurance) || 0;
+    const lifeInsuranceCap = Math.round(grossAnnual * 0.2); // Max 20% of gross income
+    const lifeInsuranceAmount = Math.min(lifeInsuranceInput, lifeInsuranceCap);
+
+    // Total deductions (used to reduce taxable income)
+    const totalDeductions = pension + nhf + nhis + rentRelief + lifeInsuranceAmount;
+
+    // Taxable income = gross - all deductions
     const taxableIncome = Math.max(0, grossAnnual - totalDeductions);
 
-    const totalTax = calculateTax(taxableIncome);
+    // Calculate progressive tax on taxable income
+    const totalTax = calculateProgressiveTax(taxableIncome);
+
+    // Net income = gross - mandatory deductions - tax
+    // Note: Rent relief and life insurance reduce taxable income but aren't "taken out" of paycheck
     const netAnnual = grossAnnual - pension - nhf - nhis - totalTax;
     const netMonthly = Math.round(netAnnual / 12);
+
+    // Effective tax rate
     const effectiveRate = grossAnnual > 0 ? (totalTax / grossAnnual) * 100 : 0;
 
     setResult({
@@ -113,7 +131,12 @@ export function EmployeeCalculator() {
   }, [grossSalary, frequency, annualRent, lifeInsurance]);
 
   const formatCurrency = (amount: number) => {
-    return `₦${amount.toLocaleString('en-NG')}`;
+    return new Intl.NumberFormat('en-NG', {
+      style: 'currency',
+      currency: 'NGN',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    }).format(amount);
   };
 
   return (
@@ -172,7 +195,16 @@ export function EmployeeCalculator() {
                 step="10000"
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">20% relief, max ₦500K</p>
+            <p className="text-xs text-gray-500 mt-1">
+              {annualRent && parseFloat(annualRent) > 0 ? (
+                <>
+                  20% relief = {formatCurrency(Math.min(parseFloat(annualRent) * 0.2, 500000))}
+                  {parseFloat(annualRent) * 0.2 > 500000 && ' (capped at ₦500K)'}
+                </>
+              ) : (
+                '20% relief, max ₦500K'
+              )}
+            </p>
           </div>
 
           <div>
@@ -192,7 +224,7 @@ export function EmployeeCalculator() {
                 step="1000"
               />
             </div>
-            <p className="text-xs text-gray-500 mt-1">Annual premium</p>
+            <p className="text-xs text-gray-500 mt-1">Annual premium (max 20% of gross)</p>
           </div>
         </div>
       </div>
@@ -228,7 +260,7 @@ export function EmployeeCalculator() {
                 {formatCurrency(result.totalDeductions)}
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                Annual relief
+                Tax relief
               </div>
             </div>
           </div>
@@ -265,14 +297,14 @@ export function EmployeeCalculator() {
 
                 {result.rentRelief > 0 && (
                   <div className="flex justify-between pl-4 text-sm">
-                    <span className="text-gray-600">Rent Relief (20%, max ₦500K)</span>
+                    <span className="text-gray-600">Rent Relief (20%, max ₦500K) - NEW 2026</span>
                     <span className="text-gray-700">-{formatCurrency(result.rentRelief)}</span>
                   </div>
                 )}
 
                 {result.lifeInsurance > 0 && (
                   <div className="flex justify-between pl-4 text-sm">
-                    <span className="text-gray-600">Life Insurance</span>
+                    <span className="text-gray-600">Life Insurance (max 20% of gross)</span>
                     <span className="text-gray-700">-{formatCurrency(result.lifeInsurance)}</span>
                   </div>
                 )}
@@ -284,14 +316,14 @@ export function EmployeeCalculator() {
               </div>
 
               {/* Taxable Income */}
-              <div className="flex justify-between py-2 border-y border-gray-300">
+              <div className="flex justify-between py-2 border-y border-gray-300 bg-yellow-50 -mx-6 px-6">
                 <span className="font-medium text-gray-700">Taxable Income</span>
                 <span className="font-semibold text-gray-900">{formatCurrency(result.taxableIncome)}</span>
               </div>
 
               {/* Tax Calculation */}
               <div className="flex justify-between py-2">
-                <span className="font-medium text-gray-700">PAYE Tax</span>
+                <span className="font-medium text-gray-700">PAYE Tax (Progressive Rates)</span>
                 <span className="font-semibold text-red-600">-{formatCurrency(result.totalTax)}</span>
               </div>
 
@@ -317,6 +349,7 @@ export function EmployeeCalculator() {
                 <p className="text-sm text-green-800">
                   You benefit from the ₦800,000 tax-free threshold and lower progressive rates (0-25%)
                   under the Nigeria Tax Act 2025, effective January 2026.
+                  {result.taxableIncome <= 800000 && ' You pay ZERO tax!'}
                 </p>
               </div>
             </div>
