@@ -238,7 +238,7 @@ export default function HomePage() {
                   </li>
                   <li className="flex items-start">
                     <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
-                    <span><strong>Standard rate</strong> - 30% CIT + 4% development levy for larger companies</span>
+                    <span><strong>Standard rate</strong> - 30% CIT + 2% Education Tax for larger companies</span>
                   </li>
                   <li className="flex items-start">
                     <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
@@ -459,34 +459,6 @@ export default function HomePage() {
           </div>
         </section>
       </div>
-
-      {/* Schema Markup */}
-      <script
-        type="application/ld+json"
-        dangerouslySetInnerHTML={{
-          __html: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "WebApplication",
-            "name": "NairaTax - Nigerian Tax Calculator",
-            "description": "Free Nigerian tax calculators for employees (PAYE), freelancers, business owners, content creators, and investors",
-            "url": "https://www.nairatax.ng",
-            "applicationCategory": "FinanceApplication",
-            "operatingSystem": "Any",
-            "offers": {
-              "@type": "Offer",
-              "price": "0",
-              "priceCurrency": "NGN"
-            },
-            "featureList": [
-              "Employee PAYE calculator",
-              "Freelancer tax calculator",
-              "Business CIT calculator",
-              "Content creator tax",
-              "Investment income tax"
-            ]
-          })
-        }}
-      />
 
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12 px-4">

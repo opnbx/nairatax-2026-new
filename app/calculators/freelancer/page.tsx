@@ -1,14 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { FreelancerCalculator } from '@/components/calculators/FreelancerCalculator';
 import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 
+export const metadata: Metadata = {
+  title: 'Freelancer Tax Calculator - NairaTax',
+  description: 'Calculate your tax as a freelancer or self-employed professional under Nigeria Tax Act 2025. Progressive PAYE rates with business expense deductions.',
+};
+
 export default function FreelancerCalculatorPage() {
-  useEffect(() => {
-    document.title = 'Freelancer Tax Calculator - NairaTax';
-  }, []);
 
   return (
     <main className="min-h-screen bg-white">

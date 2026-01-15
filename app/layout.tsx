@@ -39,6 +39,34 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
+        {/* JSON-LD Structured Data for SEO */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebApplication",
+              "name": "NairaTax - Nigerian Tax Calculator",
+              "description": "Free Nigerian tax calculators for employees (PAYE), freelancers, business owners, content creators, and investors",
+              "url": "https://www.nairatax.ng",
+              "applicationCategory": "FinanceApplication",
+              "operatingSystem": "Any",
+              "offers": {
+                "@type": "Offer",
+                "price": "0",
+                "priceCurrency": "NGN"
+              },
+              "featureList": [
+                "Employee PAYE calculator",
+                "Freelancer tax calculator",
+                "Business CIT calculator",
+                "Content creator tax",
+                "Investment income tax"
+              ]
+            })
+          }}
+        />
+
         {/* Google Analytics */}
         {gaId && (
           <>

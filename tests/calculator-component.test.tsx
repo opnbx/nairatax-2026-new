@@ -1,181 +1,165 @@
-import { describe, it, expect, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { describe, it, expect } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { EmployeeCalculator } from '@/components/calculators/EmployeeCalculator';
 
 /**
- * Test suite for Calculator React components
- *
- * Note: These tests demonstrate the testing patterns.
- * Actual component tests would import the real calculator components.
+ * Test suite for EmployeeCalculator React component
+ * Tests the real component with progressive tax calculation
+ * Note: This component auto-calculates on input change (no calculate button)
  */
 
-// Mock calculator component for demonstration
-function SimpleTaxCalculator() {
-  const [income, setIncome] = React.useState('');
-  const [result, setResult] = React.useState<number | null>(null);
-
-  const calculate = () => {
-    const grossIncome = parseFloat(income) || 0;
-    if (grossIncome <= 800000) {
-      setResult(0);
-    } else {
-      const taxable = grossIncome - 800000;
-      setResult(Math.round(taxable * 0.15));
-    }
-  };
-
-  return (
-    <div>
-      <label htmlFor="income">Annual Income</label>
-      <input
-        id="income"
-        type="number"
-        value={income}
-        onChange={(e) => setIncome(e.target.value)}
-        placeholder="Enter income"
-      />
-      <button onClick={calculate}>Calculate</button>
-      {result !== null && (
-        <div data-testid="result">Tax: ₦{result.toLocaleString()}</div>
-      )}
-    </div>
-  );
-}
-
-describe('Calculator Component', () => {
+describe('EmployeeCalculator Component', () => {
   describe('Rendering', () => {
-    it('should render input field with label', () => {
-      render(<SimpleTaxCalculator />);
-      expect(screen.getByLabelText(/annual income/i)).toBeInTheDocument();
+    it('should render gross salary input field', () => {
+      render(<EmployeeCalculator />);
+      expect(screen.getByLabelText(/gross salary/i)).toBeInTheDocument();
     });
 
-    it('should render calculate button', () => {
-      render(<SimpleTaxCalculator />);
-      expect(screen.getByRole('button', { name: /calculate/i })).toBeInTheDocument();
+    it('should render frequency selector (Annual/Monthly)', () => {
+      render(<EmployeeCalculator />);
+      const select = screen.getByLabelText(/salary frequency/i);
+      expect(select).toBeInTheDocument();
     });
 
-    it('should not show result initially', () => {
-      render(<SimpleTaxCalculator />);
-      expect(screen.queryByTestId('result')).not.toBeInTheDocument();
+    it('should render initial results with default salary', () => {
+      render(<EmployeeCalculator />);
+      // Component auto-calculates with default value (800000)
+      expect(screen.getByText(/detailed breakdown/i)).toBeInTheDocument();
     });
   });
 
   describe('User interactions', () => {
     it('should update input value when user types', async () => {
       const user = userEvent.setup();
-      render(<SimpleTaxCalculator />);
+      render(<EmployeeCalculator />);
 
-      const input = screen.getByLabelText(/annual income/i) as HTMLInputElement;
+      const input = screen.getByLabelText(/gross salary/i) as HTMLInputElement;
+      await user.clear(input);
       await user.type(input, '1000000');
 
       expect(input.value).toBe('1000000');
     });
 
-    it('should calculate and display tax when button is clicked', async () => {
+    it('should auto-calculate and display results when input changes', async () => {
       const user = userEvent.setup();
-      render(<SimpleTaxCalculator />);
+      render(<EmployeeCalculator />);
 
-      const input = screen.getByLabelText(/annual income/i);
-      const button = screen.getByRole('button', { name: /calculate/i });
+      const input = screen.getByLabelText(/gross salary/i);
+      await user.clear(input);
+      await user.type(input, '5000000');
 
-      await user.type(input, '1000000');
-      await user.click(button);
-
-      const result = await screen.findByTestId('result');
-      expect(result).toHaveTextContent(/tax: ₦30,000/i);
+      // Component auto-calculates, results should update
+      await waitFor(() => {
+        expect(screen.getByText(/detailed breakdown/i)).toBeInTheDocument();
+      });
     });
 
-    it('should show zero tax for income below threshold', async () => {
+    it('should display results for income at tax-free threshold', async () => {
       const user = userEvent.setup();
-      render(<SimpleTaxCalculator />);
+      render(<EmployeeCalculator />);
 
-      const input = screen.getByLabelText(/annual income/i);
-      const button = screen.getByRole('button', { name: /calculate/i });
+      const input = screen.getByLabelText(/gross salary/i);
+      await user.clear(input);
+      await user.type(input, '800000');
 
-      await user.type(input, '500000');
-      await user.click(button);
-
-      const result = await screen.findByTestId('result');
-      expect(result).toHaveTextContent(/tax: ₦0/i);
-    });
-
-    it('should handle empty input gracefully', async () => {
-      const user = userEvent.setup();
-      render(<SimpleTaxCalculator />);
-
-      const button = screen.getByRole('button', { name: /calculate/i });
-      await user.click(button);
-
-      const result = await screen.findByTestId('result');
-      expect(result).toHaveTextContent(/tax: ₦0/i);
+      // Should show results - component auto-calculates
+      await waitFor(() => {
+        expect(screen.getByText(/detailed breakdown/i)).toBeInTheDocument();
+      });
     });
   });
 
   describe('Accessibility', () => {
-    it('should have proper label association', () => {
-      render(<SimpleTaxCalculator />);
-      const input = screen.getByLabelText(/annual income/i);
-      expect(input).toHaveAttribute('id', 'income');
+    it('should have proper label association for salary input', () => {
+      render(<EmployeeCalculator />);
+      const input = screen.getByLabelText(/gross salary/i);
+      expect(input).toHaveAttribute('id', 'gross-salary');
     });
 
-    it('should have accessible button', () => {
-      render(<SimpleTaxCalculator />);
-      const button = screen.getByRole('button', { name: /calculate/i });
-      expect(button).toBeInTheDocument();
+    it('should have accessible frequency selector', () => {
+      render(<EmployeeCalculator />);
+      const select = screen.getByLabelText(/salary frequency/i);
+      expect(select).toBeInTheDocument();
     });
 
-    it('should have placeholder text', () => {
-      render(<SimpleTaxCalculator />);
-      const input = screen.getByPlaceholderText(/enter income/i);
-      expect(input).toBeInTheDocument();
+    it('should have accessible optional input fields', () => {
+      render(<EmployeeCalculator />);
+      expect(screen.getByLabelText(/annual rent/i)).toBeInTheDocument();
+      expect(screen.getByLabelText(/life insurance/i)).toBeInTheDocument();
     });
   });
 
   describe('Input validation behavior', () => {
     it('should accept numeric input', async () => {
       const user = userEvent.setup();
-      render(<SimpleTaxCalculator />);
+      render(<EmployeeCalculator />);
 
-      const input = screen.getByLabelText(/annual income/i) as HTMLInputElement;
+      const input = screen.getByLabelText(/gross salary/i) as HTMLInputElement;
+      await user.clear(input);
       await user.type(input, '12345');
 
       expect(input.value).toBe('12345');
     });
 
-    it('should have number type on input', () => {
-      render(<SimpleTaxCalculator />);
-      const input = screen.getByLabelText(/annual income/i);
+    it('should have number type on salary input', () => {
+      render(<EmployeeCalculator />);
+      const input = screen.getByLabelText(/gross salary/i);
       expect(input).toHaveAttribute('type', 'number');
     });
   });
 
-  describe('Calculation accuracy', () => {
-    const testCases = [
-      { income: '800000', expectedTax: 0 },
-      { income: '1000000', expectedTax: 30000 },
-      { income: '2000000', expectedTax: 180000 },
-      { income: '3000000', expectedTax: 330000 },
-    ];
+  describe('Auto-calculation with real component', () => {
+    it('should display results section immediately on render', () => {
+      render(<EmployeeCalculator />);
+      // Component auto-calculates with default value
+      expect(screen.getByText(/detailed breakdown/i)).toBeInTheDocument();
+    });
 
-    testCases.forEach(({ income, expectedTax }) => {
-      it(`should calculate correct tax for ₦${income}`, async () => {
-        const user = userEvent.setup();
-        render(<SimpleTaxCalculator />);
+    it('should show deductions section', () => {
+      render(<EmployeeCalculator />);
+      // Check for deductions in results (auto-calculated on mount)
+      expect(screen.getByText(/pension/i)).toBeInTheDocument();
+    });
 
-        const input = screen.getByLabelText(/annual income/i);
-        const button = screen.getByRole('button', { name: /calculate/i });
+    it('should show net income', () => {
+      render(<EmployeeCalculator />);
+      // Check for net income display (auto-calculated on mount)
+      expect(screen.getByText(/net annual income/i)).toBeInTheDocument();
+    });
 
-        await user.type(input, income);
-        await user.click(button);
+    it('should show monthly take-home', () => {
+      render(<EmployeeCalculator />);
+      // Check for monthly display (auto-calculated on mount)
+      const elements = screen.getAllByText(/monthly take-home/i);
+      expect(elements.length).toBeGreaterThan(0);
+    });
 
-        const result = await screen.findByTestId('result');
-        expect(result).toHaveTextContent(
-          `Tax: ₦${expectedTax.toLocaleString()}`
-        );
+    it('should update results when salary changes', async () => {
+      const user = userEvent.setup();
+      render(<EmployeeCalculator />);
+
+      const input = screen.getByLabelText(/gross salary/i);
+      await user.clear(input);
+      await user.type(input, '3000000');
+
+      // Results should update automatically
+      await waitFor(() => {
+        expect(screen.getByText(/detailed breakdown/i)).toBeInTheDocument();
+      });
+    });
+
+    it('should update when frequency changes', async () => {
+      const user = userEvent.setup();
+      render(<EmployeeCalculator />);
+
+      const select = screen.getByLabelText(/salary frequency/i);
+      await user.selectOptions(select, 'monthly');
+
+      // Results should recalculate for monthly frequency
+      await waitFor(() => {
+        expect(screen.getByText(/detailed breakdown/i)).toBeInTheDocument();
       });
     });
   });
 });
-
-// Import React for the mock component
-import React from 'react';

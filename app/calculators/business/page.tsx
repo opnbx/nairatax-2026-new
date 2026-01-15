@@ -1,14 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { BusinessCalculator } from '@/components/calculators/BusinessCalculator';
 import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 
+export const metadata: Metadata = {
+  title: 'Business Tax Calculator - NairaTax',
+  description: 'Calculate Company Income Tax (CIT) for your business under Nigeria Tax Act 2025. CIT 30% + Education Tax 2%.',
+};
+
 export default function BusinessCalculatorPage() {
-  useEffect(() => {
-    document.title = 'Business Tax Calculator - NairaTax';
-  }, []);
 
   return (
     <main className="min-h-screen bg-white">

@@ -1,14 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { CreatorCalculator } from '@/components/calculators/CreatorCalculator';
 import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 
+export const metadata: Metadata = {
+  title: 'Content Creator Tax Calculator - NairaTax',
+  description: 'Calculate tax for YouTube, TikTok, Instagram creators and influencers under Nigeria Tax Act 2025. Includes platform fees and production expenses.',
+};
+
 export default function CreatorCalculatorPage() {
-  useEffect(() => {
-    document.title = 'Content Creator Tax Calculator - NairaTax';
-  }, []);
 
   return (
     <main className="min-h-screen bg-white">

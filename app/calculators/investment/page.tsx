@@ -1,14 +1,14 @@
-'use client';
-
+import { Metadata } from 'next';
 import Link from 'next/link';
-import { useEffect } from 'react';
 import { InvestmentCalculator } from '@/components/calculators/InvestmentCalculator';
 import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
 
+export const metadata: Metadata = {
+  title: 'Investment Income Tax Calculator - NairaTax',
+  description: 'Calculate tax on dividends, capital gains, and interest income under Nigeria Tax Act 2025. WHT 10% on all investment income.',
+};
+
 export default function InvestmentCalculatorPage() {
-  useEffect(() => {
-    document.title = 'Investment Income Tax Calculator - NairaTax';
-  }, []);
 
   return (
     <main className="min-h-screen bg-white">
