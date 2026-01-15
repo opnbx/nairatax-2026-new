@@ -520,7 +520,7 @@ export default function HomePage() {
                     href="https://www.firs.gov.ng"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-gray-400 hover:text-white underline"
+                    className="text-white hover:text-gray-300 underline"
                   >
                     FIRS
                   </a>
