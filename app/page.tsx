@@ -22,15 +22,15 @@ export default function HomePage() {
       {/* Skip to main content for accessibility */}
       <a 
         href="#main-content" 
-        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-blue-600 focus:text-white focus:rounded-lg"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-gray-900 focus:text-white focus:rounded-lg"
       >
         Skip to main content
       </a>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white pt-6 pb-0 px-4" aria-labelledby="hero-heading">
+      <section className="bg-gradient-to-b from-gray-50 to-white pt-6 pb-0 px-4" aria-labelledby="hero-heading">
         <div className="max-w-6xl mx-auto text-center">
-          <div className="text-sm font-semibold text-blue-600 mb-1">Nairatax.ng</div>
+          <div className="text-sm font-semibold text-gray-700 mb-1">Nairatax.ng</div>
           <h1 id="hero-heading" className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1">
             Nigerian Tax Calculator 2025
           </h1>
@@ -38,9 +38,9 @@ export default function HomePage() {
             Calculate your tax under the new Nigeria Tax Act 2025
           </p>
           <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-600 pb-4" role="list">
-            <span className="bg-white px-2 py-1 rounded shadow-sm" role="listitem">✓ ₦800K Tax-Free</span>
-            <span className="bg-white px-2 py-1 rounded shadow-sm" role="listitem">✓ Rates 0-25%</span>
-            <span className="bg-white px-2 py-1 rounded shadow-sm" role="listitem">✓ Jan 2026</span>
+            <span className="bg-white px-2 py-1 rounded border border-gray-200" role="listitem">₦800K Tax-Free</span>
+            <span className="bg-white px-2 py-1 rounded border border-gray-200" role="listitem">Rates 0-25%</span>
+            <span className="bg-white px-2 py-1 rounded border border-gray-200" role="listitem">Jan 2026</span>
           </div>
         </div>
       </section>
@@ -50,15 +50,15 @@ export default function HomePage() {
         {/* Featured: Calculator Section with Tabs */}
         <section className="max-w-6xl mx-auto px-4 py-16" aria-labelledby="calculator-heading">
           {/* Calculator Tabs */}
-          <div className="bg-white border-2 border-blue-200 rounded-lg p-6 md:p-8 shadow-lg mb-8">
+          <div className="bg-white border border-gray-200 rounded-lg p-6 md:p-8 shadow-sm mb-8">
             {/* Tab Navigation */}
             <div className="flex flex-wrap gap-2 mb-6 border-b border-gray-200 pb-4">
               <button
                 onClick={() => setActiveTab('employee')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
                   activeTab === 'employee'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
                 <span>💼</span>
@@ -66,10 +66,10 @@ export default function HomePage() {
               </button>
               <button
                 onClick={() => setActiveTab('usd')}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-semibold transition ${
+                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition ${
                   activeTab === 'usd'
-                    ? 'bg-blue-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
+                    ? 'bg-gray-900 text-white'
+                    : 'bg-gray-50 text-gray-700 hover:bg-gray-100 border border-gray-200'
                 }`}
               >
                 <span>💵</span>
@@ -104,32 +104,32 @@ export default function HomePage() {
           </div>
 
           {/* Key Benefits for Employees */}
-          <div className="bg-blue-50 rounded-lg p-6 mb-8" role="region" aria-label="Employee tax benefits">
+          <div className="bg-gray-50 rounded-lg p-6 mb-8 border border-gray-200" role="region" aria-label="Employee tax benefits">
             <h3 className="text-xl font-semibold text-gray-900 mb-4">What's New for Employees in 2025?</h3>
             <ul className="grid md:grid-cols-2 gap-4" role="list">
               <li className="flex items-start gap-2">
-                <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✓</span>
+                <span className="text-gray-700 text-xl flex-shrink-0" aria-hidden="true">✓</span>
                 <div>
                   <strong className="text-gray-900">₦800,000 Tax-Free</strong>
                   <p className="text-gray-700 text-sm">First ₦800,000 of annual income completely tax-free (up from ₦200,000)</p>
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✓</span>
+                <span className="text-gray-700 text-xl flex-shrink-0" aria-hidden="true">✓</span>
                 <div>
                   <strong className="text-gray-900">Lower Tax Rates</strong>
                   <p className="text-gray-700 text-sm">Progressive rates 0%-25%, most employees pay less tax</p>
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✓</span>
+                <span className="text-gray-700 text-xl flex-shrink-0" aria-hidden="true">✓</span>
                 <div>
                   <strong className="text-gray-900">All Deductions Included</strong>
                   <p className="text-gray-700 text-sm">Pension (8%), NHF (2.5%), NHIS (5%), rent relief (up to ₦500K)</p>
                 </div>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✓</span>
+                <span className="text-gray-700 text-xl flex-shrink-0" aria-hidden="true">✓</span>
                 <div>
                   <strong className="text-gray-900">See Your Savings</strong>
                   <p className="text-gray-700 text-sm">Compare old vs. new tax rates side-by-side</p>
@@ -139,7 +139,7 @@ export default function HomePage() {
           </div>
 
           {/* Disclaimer */}
-          <div className="bg-yellow-50 border-l-4 border-yellow-400 rounded-lg p-6 my-8">
+          <div className="bg-gray-50 border-l-4 border-gray-400 rounded-lg p-6 my-8">
             <div className="flex items-start">
               <span className="text-2xl mr-3 flex-shrink-0" aria-hidden="true">⚠️</span>
               <div>
@@ -213,19 +213,19 @@ export default function HomePage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">For Individuals</h3>
                 <ul className="space-y-3 text-gray-700" role="list">
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>₦800,000 tax-free threshold</strong> - First ₦800,000 of annual income is completely tax-free</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Progressive rates 0%-25%</strong> - Pay tax only on income above threshold</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Rent relief</strong> - Up to ₦500,000 annual rent relief (20% of rent paid)</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Pensioner benefit</strong> - Additional ₦200,000 tax-free for pension income</span>
                   </li>
                 </ul>
@@ -234,19 +234,19 @@ export default function HomePage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-4">For Businesses</h3>
                 <ul className="space-y-3 text-gray-700" role="list">
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Small company exemption</strong> - Companies ≤₦50M revenue pay 0% tax (non-professional services)</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Standard rate</strong> - 30% CIT + 2% Education Tax for larger companies</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Capital allowances</strong> - Deductions for business assets and equipment</span>
                   </li>
                   <li className="flex items-start">
-                    <span className="text-blue-600 mr-2 flex-shrink-0" aria-hidden="true">•</span>
+                    <span className="text-gray-700 mr-2 flex-shrink-0" aria-hidden="true">•</span>
                     <span><strong>Simplified compliance</strong> - Reduced filing requirements for small businesses</span>
                   </li>
                 </ul>
@@ -274,9 +274,9 @@ export default function HomePage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-200">
-                <tr className="bg-green-50">
+                <tr className="bg-gray-50">
                   <td className="px-4 md:px-6 py-4 whitespace-nowrap">First ₦800,000</td>
-                  <td className="px-4 md:px-6 py-4 font-semibold text-green-600">0%</td>
+                  <td className="px-4 md:px-6 py-4 font-semibold text-gray-900">0%</td>
                   <td className="px-4 md:px-6 py-4">₦0</td>
                 </tr>
                 <tr>
@@ -310,25 +310,25 @@ export default function HomePage() {
         </section>
 
         {/* CTA Section */}
-        <section className="bg-blue-600 text-white py-16 px-4" aria-labelledby="cta-heading">
+        <section className="bg-gray-900 text-white py-16 px-4" aria-labelledby="cta-heading">
           <div className="max-w-4xl mx-auto text-center">
             <h2 id="cta-heading" className="text-2xl md:text-3xl font-bold mb-4">
               Ready to Calculate Your Nigerian Taxes?
             </h2>
-            <p className="text-lg md:text-xl mb-8 text-blue-100">
+            <p className="text-lg md:text-xl mb-8 text-gray-300">
               Use our employee calculator above or choose a specialized calculator for your situation.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
               <button
                 onClick={scrollToTop}
-                className="inline-flex items-center justify-center min-h-[44px] bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-blue-50 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 transition"
+                className="inline-flex items-center justify-center min-h-[44px] bg-white text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 transition"
                 aria-label="Scroll to top to calculate employee tax"
               >
                 Calculate Employee Tax
               </button>
               <Link
-                href="/calculators/freelancer" 
-                className="inline-flex items-center justify-center min-h-[44px] border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-blue-600 transition"
+                href="/calculators/freelancer"
+                className="inline-flex items-center justify-center min-h-[44px] border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-900 transition"
                 aria-label="View other tax calculators"
               >
                 View Other Calculators
@@ -350,7 +350,7 @@ export default function HomePage() {
 
           <div className="space-y-6">
             {/* FAQ 1 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 What is the tax-free threshold under the new law?
               </h3>
@@ -361,7 +361,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 2 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 What are the new tax rates?
               </h3>
@@ -372,7 +372,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 3 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 What is the small company exemption?
               </h3>
@@ -383,7 +383,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 4 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 How does rent relief work?
               </h3>
@@ -394,7 +394,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 5 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 What can employees deduct?
               </h3>
@@ -405,7 +405,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 6 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 How does freelancer WHT work?
               </h3>
@@ -416,7 +416,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 7 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 What benefits do pensioners get?
               </h3>
@@ -427,7 +427,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 8 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 What's the tax on investments?
               </h3>
@@ -437,7 +437,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 9 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 How do I get a TIN?
               </h3>
@@ -448,7 +448,7 @@ export default function HomePage() {
             </div>
 
             {/* FAQ 10 */}
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-blue-300 transition">
+            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 hover:border-gray-300 transition">
               <h3 className="text-lg font-semibold text-gray-900 mb-3">
                 When does this take effect?
               </h3>
@@ -520,7 +520,7 @@ export default function HomePage() {
                     href="https://www.firs.gov.ng"
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-blue-400 hover:text-blue-300 underline"
+                    className="text-gray-400 hover:text-white underline"
                   >
                     FIRS
                   </a>
