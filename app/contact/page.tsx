@@ -97,7 +97,7 @@ export default function ContactPage() {
                 <div>
                   <p className="text-sm text-gray-700">
                     <strong>Please Note:</strong> NairaTax.ng provides tax estimates for educational purposes only.
-                    For professional tax advice, please consult a qualified tax advisor or contact FIRS directly.
+                    For professional tax advice, please consult a qualified tax advisor or contact NRS directly.
                   </p>
                 </div>
               </div>

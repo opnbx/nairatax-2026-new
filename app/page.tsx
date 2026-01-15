@@ -148,7 +148,7 @@ export default function HomePage() {
                   This calculator provides estimates based on the Nigeria Tax Act 2025. Actual tax liability
                   may vary based on individual circumstances, additional income sources, and specific deductions.
                   For personalized tax advice, please consult a qualified tax professional or contact the
-                  Federal Inland Revenue Service (FIRS). NairaTax is not responsible for any decisions made
+                  Nigeria Revenue Service (NRS). NairaTax is not responsible for any decisions made
                   based on these calculations.
                 </p>
               </div>
@@ -517,12 +517,12 @@ export default function HomePage() {
                 <p className="text-gray-500 text-xs leading-relaxed mt-4">
                   For official tax guidance, visit{' '}
                   <a
-                    href="https://www.firs.gov.ng"
+                    href="https://www.nrs.gov.ng"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="text-white hover:text-gray-300 underline"
                   >
-                    FIRS
+                    NRS
                   </a>
                 </p>
               </div>
