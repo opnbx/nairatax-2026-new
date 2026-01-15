@@ -28,18 +28,19 @@ export default function HomePage() {
       </a>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-blue-50 to-white py-12 px-4" aria-labelledby="hero-heading">
+      <section className="bg-gradient-to-b from-blue-50 to-white pt-6 pb-0 px-4" aria-labelledby="hero-heading">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 id="hero-heading" className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <div className="text-sm font-semibold text-blue-600 mb-1">Nairatax.ng</div>
+          <h1 id="hero-heading" className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-1">
             Nigerian Tax Calculator 2025
           </h1>
-          <p className="text-lg md:text-xl text-gray-700 mb-6 max-w-3xl mx-auto">
-            Calculate your tax under the new Nigeria Tax Act 2025. Free, accurate, and compliant.
+          <p className="text-xs md:text-sm text-gray-600 mb-2">
+            Calculate your tax under the new Nigeria Tax Act 2025
           </p>
-          <div className="flex flex-wrap justify-center gap-3 text-sm md:text-base text-gray-600" role="list">
-            <span className="bg-white px-4 py-2 rounded-lg shadow" role="listitem">✓ ₦800,000 Tax-Free</span>
-            <span className="bg-white px-4 py-2 rounded-lg shadow" role="listitem">✓ Rates 0-25%</span>
-            <span className="bg-white px-4 py-2 rounded-lg shadow" role="listitem">✓ Effective Jan 2026</span>
+          <div className="flex flex-wrap justify-center gap-2 text-xs text-gray-600 pb-4" role="list">
+            <span className="bg-white px-2 py-1 rounded shadow-sm" role="listitem">✓ ₦800K Tax-Free</span>
+            <span className="bg-white px-2 py-1 rounded shadow-sm" role="listitem">✓ Rates 0-25%</span>
+            <span className="bg-white px-2 py-1 rounded shadow-sm" role="listitem">✓ Jan 2026</span>
           </div>
         </div>
       </section>
