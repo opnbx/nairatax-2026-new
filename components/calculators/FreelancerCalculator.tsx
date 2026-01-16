@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { calculateProgressiveTax, formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
 
 interface CalculationResult {
   grossIncome: number;
@@ -17,40 +18,15 @@ interface CalculationResult {
   effectiveRate: number;
 }
 
-const TAX_BRACKETS = [
-  { limit: 800000, rate: 0.00, base: 0 },
-  { limit: 3000000, rate: 0.15, base: 800000 },
-  { limit: 12000000, rate: 0.18, base: 3000000 },
-  { limit: 25000000, rate: 0.21, base: 12000000 },
-  { limit: 50000000, rate: 0.23, base: 25000000 },
-  { limit: Infinity, rate: 0.25, base: 50000000 },
-];
-
 export function FreelancerCalculator() {
   const [grossIncome, setGrossIncome] = useState('5000000');
   const [businessExpenses, setBusinessExpenses] = useState('');
   const [annualRent, setAnnualRent] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const calculateProgressiveTax = (taxableIncome: number): number => {
-    if (taxableIncome <= 0) return 0;
-    let totalTax = 0;
-    for (let i = 0; i < TAX_BRACKETS.length; i++) {
-      const bracket = TAX_BRACKETS[i];
-      if (taxableIncome > bracket.base) {
-        const taxableInBracket = Math.min(
-          taxableIncome - bracket.base,
-          bracket.limit - bracket.base
-        );
-        totalTax += taxableInBracket * bracket.rate;
-      }
-    }
-    return Math.round(totalTax);
-  };
-
   const calculate = () => {
-    const gross = parseFloat(grossIncome) || 0;
-    const expenses = parseFloat(businessExpenses) || 0;
+    const gross = sanitizeNumberInput(grossIncome);
+    const expenses = sanitizeNumberInput(businessExpenses);
 
     if (gross <= 0) {
       setResult(null);
@@ -65,7 +41,7 @@ export function FreelancerCalculator() {
     const nhf = Math.round(netBusinessIncome * 0.025);
     const nhis = Math.min(Math.round(netBusinessIncome * 0.05), 25000);
 
-    const rent = parseFloat(annualRent) || 0;
+    const rent = sanitizeNumberInput(annualRent);
     const rentRelief = Math.min(Math.round(rent * 0.2), 500000);
 
     const totalDeductions = pension + nhf + nhis + rentRelief;
@@ -94,15 +70,6 @@ export function FreelancerCalculator() {
   useEffect(() => {
     calculate();
   }, [grossIncome, businessExpenses, annualRent]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   return (
     <div className="space-y-6">
