@@ -41,10 +41,7 @@ export const calculateProgressiveTax = (taxableIncome: number): number => {
   return Math.round(totalTax);
 };
 
-/**
- * Format currency in Nigerian Naira
- */
-export const formatCurrency = (amount: number): string => {
+export const formatCurrency = (amount: number) => {
   return new Intl.NumberFormat('en-NG', {
     style: 'currency',
     currency: 'NGN',
@@ -53,12 +50,8 @@ export const formatCurrency = (amount: number): string => {
   }).format(amount);
 };
 
-/**
- * Sanitize number input from string
- */
 export const sanitizeNumberInput = (value: string): number => {
-  if (!value || value.trim() === '') return 0;
   const num = parseFloat(value.replace(/[^
 \d.-]/g, ''));
-  return isNaN(num) || num < 0 ? 0 : Math.min(num, 1e12); // Max 1 trillion
+  return isNaN(num) || num < 0 ? 0 : Math.min(num, 1e12); // Cap at reasonable maximum
 };
