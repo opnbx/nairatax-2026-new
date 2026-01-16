@@ -1,142 +1,32 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-
-interface TaxBracket {
-  limit: number;
-  rate: number;
-  base: number;
-}
-
-// Nigeria Tax Act 2025 - Progressive Tax Brackets (Effective Jan 1, 2026)
-// Source: https://taxclearancecertificate.com/new-paye-computation-under-the-nigeria-tax-act-nta-2025-everything-you-need-to-know/
-const TAX_BRACKETS: TaxBracket[] = [
-  { limit: 800000, rate: 0.00, base: 0 },           // 0% on first ₦800K
-  { limit: 3000000, rate: 0.15, base: 800000 },     // 15% on ₦800K - ₦3M
-  { limit: 12000000, rate: 0.18, base: 3000000 },   // 18% on ₦3M - ₦12M
-  { limit: 25000000, rate: 0.21, base: 12000000 },  // 21% on ₦12M - ₦25M
-  { limit: 50000000, rate: 0.23, base: 25000000 },  // 23% on ₦25M - ₦50M
-  { limit: Infinity, rate: 0.25, base: 50000000 },  // 25% above ₦50M
-];
-
-interface CalculationResult {
-  grossAnnual: number;
-  grossMonthly: number;
-  pension: number;
-  nhf: number;
-  nhis: number;
-  lifeInsurance: number;
-  rentRelief: number;
-  totalDeductions: number;
-  taxableIncome: number;
-  totalTax: number;
-  netAnnual: number;
-  netMonthly: number;
-  effectiveRate: number;
-}
+import { useState } from 'react';
+import { formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
+import { useEmployeeTax, type EmployeeCalculationResult } from '@/hooks/useEmployeeTax';
 
 export function EmployeeCalculator() {
   const [grossSalary, setGrossSalary] = useState('800000');
   const [frequency, setFrequency] = useState<'monthly' | 'annual'>('annual');
   const [annualRent, setAnnualRent] = useState('');
   const [lifeInsurance, setLifeInsurance] = useState('');
-  const [result, setResult] = useState<CalculationResult | null>(null);
 
-  /**
-   * Calculate progressive tax using marginal rates
-   * CRITICAL: This uses marginal/progressive taxation, NOT flat rate
-   */
-  const calculateProgressiveTax = (taxableIncome: number): number => {
-    if (taxableIncome <= 0) return 0;
+  const result = useEmployeeTax({
+    grossSalary,
+    frequency,
+    annualRent,
+    lifeInsurance,
+  });
 
-    let totalTax = 0;
-
-    for (let i = 0; i < TAX_BRACKETS.length; i++) {
-      const bracket = TAX_BRACKETS[i];
-
-      // If income exceeds this bracket's base, calculate tax for this bracket
-      if (taxableIncome > bracket.base) {
-        const taxableInBracket = Math.min(
-          taxableIncome - bracket.base,
-          bracket.limit - bracket.base
-        );
-        const taxForBracket = taxableInBracket * bracket.rate;
-        totalTax += taxForBracket;
-      }
-    }
-
-    return Math.round(totalTax);
+  const handleGrossSalaryChange = (value: string) => {
+    setGrossSalary(value);
   };
 
-  const calculate = () => {
-    const gross = parseFloat(grossSalary) || 0;
-    if (gross <= 0) {
-      setResult(null);
-      return;
-    }
-
-    // Convert to annual
-    const grossAnnual = frequency === 'monthly' ? gross * 12 : gross;
-    const grossMonthly = frequency === 'monthly' ? gross : gross / 12;
-
-    // Calculate mandatory deductions
-    const pension = Math.round(grossAnnual * 0.08); // 8% pension
-    const nhf = Math.round(grossAnnual * 0.025); // 2.5% NHF
-    const nhis = Math.min(Math.round(grossAnnual * 0.05), 25000); // 5% NHIS, capped at ₦25K
-
-    // Calculate optional deductions
-    const rent = parseFloat(annualRent) || 0;
-    const rentRelief = Math.min(Math.round(rent * 0.2), 500000); // 20% rent relief, max ₦500K
-
-    const lifeInsuranceInput = parseFloat(lifeInsurance) || 0;
-    const lifeInsuranceCap = Math.round(grossAnnual * 0.2); // Max 20% of gross income
-    const lifeInsuranceAmount = Math.min(lifeInsuranceInput, lifeInsuranceCap);
-
-    // Total deductions (used to reduce taxable income)
-    const totalDeductions = pension + nhf + nhis + rentRelief + lifeInsuranceAmount;
-
-    // Taxable income = gross - all deductions
-    const taxableIncome = Math.max(0, grossAnnual - totalDeductions);
-
-    // Calculate progressive tax on taxable income
-    const totalTax = calculateProgressiveTax(taxableIncome);
-
-    // Net income = gross - mandatory deductions - tax
-    // Note: Rent relief and life insurance reduce taxable income but aren't "taken out" of paycheck
-    const netAnnual = grossAnnual - pension - nhf - nhis - totalTax;
-    const netMonthly = Math.round(netAnnual / 12);
-
-    // Effective tax rate
-    const effectiveRate = grossAnnual > 0 ? (totalTax / grossAnnual) * 100 : 0;
-
-    setResult({
-      grossAnnual,
-      grossMonthly: Math.round(grossMonthly),
-      pension,
-      nhf,
-      nhis,
-      lifeInsurance: lifeInsuranceAmount,
-      rentRelief,
-      totalDeductions,
-      taxableIncome,
-      totalTax,
-      netAnnual,
-      netMonthly,
-      effectiveRate,
-    });
+  const handleAnnualRentChange = (value: string) => {
+    setAnnualRent(value);
   };
 
-  useEffect(() => {
-    calculate();
-  }, [grossSalary, frequency, annualRent, lifeInsurance]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
+  const handleLifeInsuranceChange = (value: string) => {
+    setLifeInsurance(value);
   };
 
   return (
@@ -157,7 +47,7 @@ export function EmployeeCalculator() {
                 id="gross-salary"
                 type="number"
                 value={grossSalary}
-                onChange={(e) => setGrossSalary(e.target.value)}
+                onChange={(e) => handleGrossSalaryChange(e.target.value)}
                 placeholder="0"
                 className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min="0"
@@ -188,7 +78,7 @@ export function EmployeeCalculator() {
                 id="annual-rent"
                 type="number"
                 value={annualRent}
-                onChange={(e) => setAnnualRent(e.target.value)}
+                onChange={(e) => handleAnnualRentChange(e.target.value)}
                 placeholder="0"
                 className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min="0"
@@ -196,10 +86,10 @@ export function EmployeeCalculator() {
               />
             </div>
             <p className="text-xs text-gray-500 mt-1">
-              {annualRent && parseFloat(annualRent) > 0 ? (
-                <>
-                  20% relief = {formatCurrency(Math.min(parseFloat(annualRent) * 0.2, 500000))}
-                  {parseFloat(annualRent) * 0.2 > 500000 && ' (capped at ₦500K)'}
+              {annualRent && sanitizeNumberInput(annualRent) > 0 ? (
+                <>  
+                  20% relief = {formatCurrency(Math.min(sanitizeNumberInput(annualRent) * 0.2, 500000))}
+                  {sanitizeNumberInput(annualRent) * 0.2 > 500000 && ' (capped at ₦500K)'}
                 </>
               ) : (
                 '20% relief, max ₦500K'
@@ -217,7 +107,7 @@ export function EmployeeCalculator() {
                 id="life-insurance"
                 type="number"
                 value={lifeInsurance}
-                onChange={(e) => setLifeInsurance(e.target.value)}
+                onChange={(e) => handleLifeInsuranceChange(e.target.value)}
                 placeholder="0"
                 className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min="0"
