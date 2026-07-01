@@ -1,40 +1,43 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { BusinessCalculator } from '@/components/calculators/BusinessCalculator';
-import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
+import type { Metadata } from 'next';
+import { PageShell } from '@/components/site/PageShell';
+import { CalcHero, SupportSection } from '@/components/calc/subpage';
+import { MoreCalculators } from '@/components/calc/ui';
+import { BusinessCalc } from '@/components/calc/BusinessCalc';
 
 export const metadata: Metadata = {
-  title: 'Business Tax Calculator - NairaTax',
-  description: 'Calculate Company Income Tax (CIT) for your business under Nigeria Tax Act 2025. CIT 30% + Education Tax 2%.',
+  title: 'Company Income Tax Calculator — NairaTax',
+  description:
+    'Estimate Company Income Tax (CIT) and Education Tax under the Nigeria Tax Act 2025. Small companies with turnover ≤ ₦50M pay 0%; everyone else pays 30% + 2%.',
+  alternates: { canonical: '/calculators/business/' },
 };
 
-export default function BusinessCalculatorPage() {
-
+export default function BusinessPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          🏢 Business Tax Calculator
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Calculate Company Income Tax (CIT) for your business under Nigeria Tax Act 2025
-        </p>
+    <PageShell variant="sub" page="Business">
+      <CalcHero
+        eyebrow="Companies · corporate income tax"
+        title="Company tax, settled clearly."
+        sub="Small companies under ₦50M pay nothing. Everyone else: 30% Company Income Tax plus a 2% Education Tax on profit."
+        stats={[
+          { fig: '≤₦50M · 0%', label: 'Small-company relief' },
+          { fig: '30% CIT', label: 'Standard rate' },
+          { fig: '+2%', label: 'Education Tax' },
+        ]}
+      >
+        <BusinessCalc />
+      </CalcHero>
 
-        <div className="bg-white border-2 border-green-200 rounded-lg p-6 md:p-8 shadow-lg">
-          <CalculatorErrorBoundary calculatorName="Business Tax Calculator">
-            <BusinessCalculator />
-          </CalculatorErrorBoundary>
-        </div>
+      <SupportSection
+        eyebrow="What applies"
+        title="The corporate rules, in brief"
+        steps={[
+          { idx: '01', title: 'Small-company exemption', body: "Companies with turnover of ₦50 million or less pay 0% — provided they aren't professional-services firms." },
+          { idx: '02', title: '30% + 2% for the rest', body: 'Larger companies pay 30% Company Income Tax plus a 2% Education Tax, both assessed on taxable profit.' },
+          { idx: '03', title: "Deduct before you're taxed", body: 'Allowable business expenses and capital allowances reduce the profit your tax is calculated on.' },
+        ]}
+      />
 
-        <div className="mt-8 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-green-600 hover:text-green-700 font-medium"
-          >
-            ← Back to Homepage
-          </Link>
-        </div>
-      </div>
-    </main>
+      <MoreCalculators current="Business" />
+    </PageShell>
   );
 }

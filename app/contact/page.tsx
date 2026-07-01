@@ -1,234 +1,122 @@
 'use client';
 
-import Link from 'next/link';
 import { useState } from 'react';
+import { PageShell } from '@/components/site/PageShell';
+import { Eyebrow, Callout } from '@/components/calc/ui';
+
+const INPUT_CLASS =
+  'w-full rounded-input border border-inputborder bg-white px-3.5 py-3 text-[15px] text-ink-heading outline-none focus:border-navy-800 placeholder:text-placeholder';
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    subject: '',
-    message: '',
-  });
+  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
   const [status, setStatus] = useState<'idle' | 'success'>('idle');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // For now, just show success message
-    // In production, you'd send this to your backend
     setStatus('success');
     setFormData({ name: '', email: '', subject: '', message: '' });
-
-    // Reset success message after 5 seconds
     setTimeout(() => setStatus('idle'), 5000);
   };
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-6xl mx-auto px-4 py-16">
-        {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-            📬 Contact Us
+    <PageShell variant="sub" page="Contact">
+      <section className="tx-security">
+        <div className="mx-auto max-w-[1280px] px-6 pb-28 pt-14 lg:px-14">
+          <Eyebrow tone="navy">Get in touch</Eyebrow>
+          <h1 className="mt-4 max-w-2xl font-serif text-[36px] font-bold leading-[1.05] tracking-[-0.02em] text-white sm:text-[46px]">
+            Questions or feedback?
           </h1>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            Have questions, feedback, or found a bug? We'd love to hear from you.
+          <p className="mt-4 max-w-xl text-[15.5px] leading-relaxed text-onnavy-1">
+            Found a bug, have a question about a calculation, or want to suggest an estimator? We&apos;d
+            love to hear from you.
           </p>
         </div>
+      </section>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Contact Information */}
-          <div>
-            <h2 className="text-2xl font-semibold text-gray-900 mb-6">Get in Touch</h2>
-            <p className="text-gray-700 mb-8">
-              Have questions about Nigerian taxes or our calculators? We're here to help!
-            </p>
-
-            <div className="space-y-6">
-              {/* Email */}
-              <div className="flex items-start gap-4">
-                <span className="text-3xl flex-shrink-0" aria-hidden="true">📧</span>
-                <div>
-                  <h3 className="font-semibold text-gray-900 mb-1">Email</h3>
-                  <a
-                    href="mailto:webchief@nairatax.ng"
-                    className="text-blue-600 hover:text-blue-700 hover:underline"
-                  >
-                    webchief@nairatax.ng
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            {/* What we can help with */}
-            <div className="mt-12 bg-blue-50 rounded-lg p-6 border-2 border-blue-100">
-              <h3 className="font-semibold text-gray-900 mb-4">We can help with:</h3>
-              <ul className="space-y-3">
-                <li className="flex items-start gap-2">
-                  <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✅</span>
-                  <span className="text-gray-700">Questions about tax calculations</span>
+      <div className="relative z-10 mx-auto -mt-20 max-w-[1280px] px-6 pb-16 lg:px-14">
+        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
+          {/* Info */}
+          <div className="rounded-calc bg-white p-7 shadow-calc ring-1 ring-hairline">
+            <h2 className="text-[18px] font-bold text-ink-heading">Reach us directly</h2>
+            <a
+              href="mailto:webchief@nairatax.ng"
+              className="mt-3 inline-block font-mono text-[15px] text-gold-light hover:underline"
+            >
+              webchief@nairatax.ng
+            </a>
+            <h3 className="eyebrow mt-8 text-[11px] tracking-[0.16em] text-gold-eyebrow">We can help with</h3>
+            <ul className="mt-4 space-y-3">
+              {[
+                'Questions about tax calculations',
+                'Feedback on the calculators',
+                'Bug reports',
+                'Partnership inquiries',
+              ].map((item) => (
+                <li key={item} className="flex items-start gap-2.5 text-[14.5px] text-ink-body">
+                  <span className="mt-0.5 flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-[5px] bg-navy-800 text-[11px] text-gold-fill" aria-hidden="true">✓</span>
+                  {item}
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✅</span>
-                  <span className="text-gray-700">Feedback on the calculator</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✅</span>
-                  <span className="text-gray-700">Bug reports</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-green-600 text-xl flex-shrink-0" aria-hidden="true">✅</span>
-                  <span className="text-gray-700">Partnership inquiries</span>
-                </li>
-              </ul>
-            </div>
-
-            {/* Disclaimer */}
-            <div className="mt-8 bg-yellow-50 border-l-4 border-yellow-400 rounded p-4">
-              <div className="flex items-start gap-2">
-                <span className="text-xl flex-shrink-0" aria-hidden="true">ℹ️</span>
-                <div>
-                  <p className="text-sm text-gray-700">
-                    <strong>Please Note:</strong> NairaTax.ng provides tax estimates for educational purposes only.
-                    For professional tax advice, please consult a qualified tax advisor or contact NRS directly.
-                  </p>
-                </div>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <div className="rounded-input bg-fieldsoft px-3.5 py-3 text-[12.5px] leading-relaxed text-muted">
+                <strong className="text-ink-body">Please note:</strong> NairaTax provides estimates for
+                educational purposes only. For professional advice, consult a qualified tax advisor or
+                the Nigeria Revenue Service.
               </div>
             </div>
           </div>
 
-          {/* Contact Form */}
-          <div>
-            <div className="bg-white border-2 border-gray-200 rounded-lg p-6 md:p-8">
-              <h2 className="text-2xl font-semibold text-gray-900 mb-6">Send us a Message</h2>
+          {/* Form */}
+          <div className="rounded-calc bg-white p-7 shadow-calc ring-1 ring-hairline">
+            <h2 className="text-[18px] font-bold text-ink-heading">Send us a message</h2>
 
-              {status === 'success' && (
-                <div className="mb-6 bg-green-50 border-2 border-green-200 rounded-lg p-4">
-                  <div className="flex items-start gap-2">
-                    <span className="text-green-600 text-xl">✓</span>
-                    <p className="text-green-800">
-                      Thank you for your message! We'll get back to you soon at <strong>{formData.email}</strong>.
-                    </p>
-                  </div>
-                </div>
-              )}
+            {status === 'success' && (
+              <div className="mt-5">
+                <Callout tone="green">
+                  <span className="mr-1 font-bold">✓</span>
+                  Thanks for your message — we&apos;ll get back to you soon.
+                </Callout>
+              </div>
+            )}
 
-              <form onSubmit={handleSubmit} className="space-y-6">
-                {/* Name */}
-                <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
-                    Your Name *
-                  </label>
-                  <input
-                    type="text"
-                    id="name"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="John Doe"
-                  />
-                </div>
-
-                {/* Email */}
-                <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address *
-                  </label>
-                  <input
-                    type="email"
-                    id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    placeholder="john@example.com"
-                  />
-                </div>
-
-                {/* Subject */}
-                <div>
-                  <label htmlFor="subject" className="block text-sm font-medium text-gray-700 mb-2">
-                    Subject *
-                  </label>
-                  <select
-                    id="subject"
-                    name="subject"
-                    value={formData.subject}
-                    onChange={handleChange}
-                    required
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white"
-                  >
-                    <option value="">Select a subject</option>
-                    <option value="question">Question about tax calculations</option>
-                    <option value="feedback">Feedback on the calculator</option>
-                    <option value="bug">Bug report</option>
-                    <option value="partnership">Partnership inquiry</option>
-                    <option value="other">Other</option>
-                  </select>
-                </div>
-
-                {/* Message */}
-                <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-2">
-                    Message *
-                  </label>
-                  <textarea
-                    id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleChange}
-                    required
-                    rows={6}
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none"
-                    placeholder="Tell us how we can help you..."
-                  />
-                </div>
-
-                {/* Submit Button */}
-                <button
-                  type="submit"
-                  className="w-full bg-blue-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:ring-offset-2 transition"
-                >
-                  Send Message
-                </button>
-              </form>
-            </div>
-
-            {/* Alternative Contact */}
-            <div className="mt-6 text-center text-sm text-gray-600">
-              <p>
-                Or email us directly at{' '}
-                <a
-                  href="mailto:webchief@nairatax.ng"
-                  className="text-blue-600 hover:text-blue-700 hover:underline font-medium"
-                >
-                  webchief@nairatax.ng
-                </a>
-              </p>
-            </div>
+            <form onSubmit={handleSubmit} className="mt-5 space-y-5">
+              <div>
+                <label htmlFor="name" className="block text-[13px] font-semibold text-ink-body">Your name *</label>
+                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe" className={`mt-2 ${INPUT_CLASS}`} />
+              </div>
+              <div>
+                <label htmlFor="email" className="block text-[13px] font-semibold text-ink-body">Email address *</label>
+                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com" className={`mt-2 ${INPUT_CLASS}`} />
+              </div>
+              <div>
+                <label htmlFor="subject" className="block text-[13px] font-semibold text-ink-body">Subject *</label>
+                <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required className={`mt-2 ${INPUT_CLASS}`}>
+                  <option value="">Select a subject</option>
+                  <option value="question">Question about tax calculations</option>
+                  <option value="feedback">Feedback on the calculator</option>
+                  <option value="bug">Bug report</option>
+                  <option value="partnership">Partnership inquiry</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div>
+                <label htmlFor="message" className="block text-[13px] font-semibold text-ink-body">Message *</label>
+                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6} placeholder="Tell us how we can help you..." className={`mt-2 resize-none ${INPUT_CLASS}`} />
+              </div>
+              <button type="submit" className="w-full rounded-btn bg-navy-800 px-6 py-3 text-[14px] font-semibold text-white transition-opacity hover:opacity-90">
+                Send message
+              </button>
+            </form>
           </div>
-        </div>
-
-        {/* Back to Homepage */}
-        <div className="mt-12 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium"
-          >
-            ← Back to Homepage
-          </Link>
         </div>
       </div>
-    </main>
+    </PageShell>
   );
 }

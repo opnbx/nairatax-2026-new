@@ -1,40 +1,56 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
-import { CreatorCalculator } from '@/components/calculators/CreatorCalculator';
-import { CalculatorErrorBoundary } from '@/components/CalculatorErrorBoundary';
+import type { Metadata } from 'next';
+import { PageShell } from '@/components/site/PageShell';
+import { CalcHero, SupportSection } from '@/components/calc/subpage';
+import { MoreCalculators } from '@/components/calc/ui';
+import { IncomeCalculator, type IncomeLabels } from '@/components/calc/IncomeCalculator';
 
 export const metadata: Metadata = {
-  title: 'Content Creator Tax Calculator - NairaTax',
-  description: 'Calculate tax for YouTube, TikTok, Instagram creators and influencers under Nigeria Tax Act 2025. Includes platform fees and production expenses.',
+  title: 'Content Creator Tax Calculator — NairaTax',
+  description:
+    'Estimate tax on YouTube, Instagram and TikTok income under the Nigeria Tax Act 2025. Deduct production and equipment costs and credit any tax already withheld.',
+  alternates: { canonical: '/calculators/creator/' },
 };
 
-export default function CreatorCalculatorPage() {
+const labels: IncomeLabels = {
+  cardTitle: 'Content creator calculator',
+  cardSub: 'Creator income · 2026 rates',
+  incomeLabel: 'Platform income',
+  expensesLabel: 'Production & equipment (annual)',
+  expensesHelper: 'Cameras, lighting, editing, data, studio, props',
+  whtLabel: 'Tax already withheld (optional)',
+  whtHelper: 'Withheld by agencies or platforms',
+  costsWord: 'costs',
+  whtMiddle: 'already withheld',
+  empty: 'Enter your payouts to see your net earnings after gear and tax.',
+};
 
+export default function CreatorPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          📱 Content Creator Tax Calculator
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Calculate your tax as a content creator, influencer, or digital entrepreneur under Nigeria Tax Act 2025
-        </p>
+    <PageShell variant="sub" page="Creator">
+      <CalcHero
+        eyebrow="Creator economy · YouTube, IG, TikTok"
+        title="Creator payouts, properly counted."
+        sub="Ad revenue, brand deals and tips are taxable income — but your gear, editing and production costs come off first."
+        stats={[
+          { fig: 'Gear', label: 'Fully deductible' },
+          { fig: '0%–25%', label: 'Progressive rates' },
+          { fig: '₦800K', label: 'Tax-free first' },
+        ]}
+      >
+        <IncomeCalculator labels={labels} />
+      </CalcHero>
 
-        <div className="bg-white border-2 border-pink-200 rounded-lg p-6 md:p-8 shadow-lg">
-          <CalculatorErrorBoundary calculatorName="Content Creator Tax Calculator">
-            <CreatorCalculator />
-          </CalculatorErrorBoundary>
-        </div>
+      <SupportSection
+        eyebrow="What counts"
+        title="Treating your channel like a business"
+        steps={[
+          { idx: '01', title: 'All payouts are income', body: 'AdSense, brand partnerships, tips, subscriptions and affiliate income all count toward your taxable total.' },
+          { idx: '02', title: 'Gear reduces the bill', body: 'Cameras, lighting, editing software, data, studio rent and props are deductible production costs.' },
+          { idx: '03', title: 'Keep clean records', body: 'Save invoices and receipts. Tax withheld by agencies or platforms credits against what you finally owe.' },
+        ]}
+      />
 
-        <div className="mt-8 text-center">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-pink-600 hover:text-pink-700 font-medium"
-          >
-            ← Back to Homepage
-          </Link>
-        </div>
-      </div>
-    </main>
+      <MoreCalculators current="Content creator" />
+    </PageShell>
   );
 }
