@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { calculateProgressiveTax, formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
 
 interface CalculationResult {
   grossIncome: number;
@@ -19,15 +20,6 @@ interface CalculationResult {
   effectiveRate: number;
 }
 
-const TAX_BRACKETS = [
-  { limit: 800000, rate: 0.00, base: 0 },
-  { limit: 3000000, rate: 0.15, base: 800000 },
-  { limit: 12000000, rate: 0.18, base: 3000000 },
-  { limit: 25000000, rate: 0.21, base: 12000000 },
-  { limit: 50000000, rate: 0.23, base: 25000000 },
-  { limit: Infinity, rate: 0.25, base: 50000000 },
-];
-
 export function CreatorCalculator() {
   const [grossIncome, setGrossIncome] = useState('3000000');
   const [platformFees, setPlatformFees] = useState('');
@@ -35,27 +27,11 @@ export function CreatorCalculator() {
   const [otherExpenses, setOtherExpenses] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const calculateProgressiveTax = (taxableIncome: number): number => {
-    if (taxableIncome <= 0) return 0;
-    let totalTax = 0;
-    for (let i = 0; i < TAX_BRACKETS.length; i++) {
-      const bracket = TAX_BRACKETS[i];
-      if (taxableIncome > bracket.base) {
-        const taxableInBracket = Math.min(
-          taxableIncome - bracket.base,
-          bracket.limit - bracket.base
-        );
-        totalTax += taxableInBracket * bracket.rate;
-      }
-    }
-    return Math.round(totalTax);
-  };
-
   const calculate = () => {
-    const gross = parseFloat(grossIncome) || 0;
-    const fees = parseFloat(platformFees) || 0;
-    const equipment = parseFloat(equipmentCosts) || 0;
-    const other = parseFloat(otherExpenses) || 0;
+    const gross = sanitizeNumberInput(grossIncome);
+    const fees = sanitizeNumberInput(platformFees);
+    const equipment = sanitizeNumberInput(equipmentCosts);
+    const other = sanitizeNumberInput(otherExpenses);
 
     if (gross <= 0) {
       setResult(null);
@@ -97,15 +73,6 @@ export function CreatorCalculator() {
   useEffect(() => {
     calculate();
   }, [grossIncome, platformFees, equipmentCosts, otherExpenses]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   return (
     <div className="space-y-6">

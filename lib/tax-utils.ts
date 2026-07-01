@@ -41,17 +41,19 @@ export const calculateProgressiveTax = (taxableIncome: number): number => {
   return Math.round(totalTax);
 };
 
-export const formatCurrency = (amount: number) => {
-  return new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-};
+// Reuse a single formatter instance instead of constructing one per call.
+const NGN_FORMATTER = new Intl.NumberFormat('en-NG', {
+  style: 'currency',
+  currency: 'NGN',
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 0,
+});
+
+export const formatCurrency = (amount: number): string => NGN_FORMATTER.format(amount);
 
 export const sanitizeNumberInput = (value: string): number => {
-  const num = parseFloat(value.replace(/[^
-\d.-]/g, ''));
+  // Strip currency symbols, thousands separators, and whitespace only, then let
+  // parseFloat handle the numeric grammar (including scientific notation like "1e6").
+  const num = parseFloat(value.replace(/[₦,\s]/g, ''));
   return isNaN(num) || num < 0 ? 0 : Math.min(num, 1e12); // Cap at reasonable maximum
 };

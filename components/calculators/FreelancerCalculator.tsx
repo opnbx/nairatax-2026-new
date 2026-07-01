@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import { calculateProgressiveTax, formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
 
 interface CalculationResult {
@@ -22,15 +22,13 @@ export function FreelancerCalculator() {
   const [grossIncome, setGrossIncome] = useState('5000000');
   const [businessExpenses, setBusinessExpenses] = useState('');
   const [annualRent, setAnnualRent] = useState('');
-  const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const calculate = () => {
+  const result = useMemo<CalculationResult | null>(() => {
     const gross = sanitizeNumberInput(grossIncome);
     const expenses = sanitizeNumberInput(businessExpenses);
 
     if (gross <= 0) {
-      setResult(null);
-      return;
+      return null;
     }
 
     // Net business income after expenses
@@ -51,7 +49,7 @@ export function FreelancerCalculator() {
     const netIncome = netBusinessIncome - pension - nhf - nhis - totalTax;
     const effectiveRate = gross > 0 ? (totalTax / gross) * 100 : 0;
 
-    setResult({
+    return {
       grossIncome: gross,
       businessExpenses: expenses,
       netBusinessIncome,
@@ -64,11 +62,7 @@ export function FreelancerCalculator() {
       totalTax,
       netIncome,
       effectiveRate,
-    });
-  };
-
-  useEffect(() => {
-    calculate();
+    };
   }, [grossIncome, businessExpenses, annualRent]);
 
   return (

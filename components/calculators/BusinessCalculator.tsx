@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
 
 interface CalculationResult {
   grossRevenue: number;
@@ -22,8 +23,8 @@ export function BusinessCalculator() {
   const [result, setResult] = useState<CalculationResult | null>(null);
 
   const calculate = () => {
-    const grossRevenue = parseFloat(revenue) || 0;
-    const allowableExpenses = parseFloat(expenses) || 0;
+    const grossRevenue = sanitizeNumberInput(revenue);
+    const allowableExpenses = sanitizeNumberInput(expenses);
 
     if (grossRevenue <= 0) {
       setResult(null);
@@ -70,15 +71,6 @@ export function BusinessCalculator() {
   useEffect(() => {
     calculate();
   }, [revenue, expenses, isProfessionalService]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   return (
     <div className="space-y-6">
