@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { calculateProgressiveTax, formatCurrency as formatNGN, sanitizeNumberInput } from '@/lib/tax-utils';
 
 interface CalculationResult {
   monthlyUSD: number;
@@ -19,16 +20,6 @@ interface CalculationResult {
   effectiveRate: number;
 }
 
-// Nigeria Tax Act 2025 - Progressive Tax Brackets
-const TAX_BRACKETS = [
-  { limit: 800000, rate: 0.00, base: 0 },
-  { limit: 3000000, rate: 0.15, base: 800000 },
-  { limit: 12000000, rate: 0.18, base: 3000000 },
-  { limit: 25000000, rate: 0.21, base: 12000000 },
-  { limit: 50000000, rate: 0.23, base: 25000000 },
-  { limit: Infinity, rate: 0.25, base: 50000000 },
-];
-
 export function USDIncomeCalculator() {
   const [usdIncome, setUsdIncome] = useState('2000');
   const [frequency, setFrequency] = useState<'monthly' | 'annual'>('monthly');
@@ -36,26 +27,9 @@ export function USDIncomeCalculator() {
   const [annualRent, setAnnualRent] = useState('');
   const [result, setResult] = useState<CalculationResult | null>(null);
 
-  const calculateProgressiveTax = (taxableIncome: number): number => {
-    if (taxableIncome <= 0) return 0;
-    let totalTax = 0;
-
-    for (let i = 0; i < TAX_BRACKETS.length; i++) {
-      const bracket = TAX_BRACKETS[i];
-      if (taxableIncome > bracket.base) {
-        const taxableInBracket = Math.min(
-          taxableIncome - bracket.base,
-          bracket.limit - bracket.base
-        );
-        totalTax += taxableInBracket * bracket.rate;
-      }
-    }
-    return Math.round(totalTax);
-  };
-
   const calculate = () => {
-    const usd = parseFloat(usdIncome) || 0;
-    const rate = parseFloat(exchangeRate) || 0;
+    const usd = sanitizeNumberInput(usdIncome);
+    const rate = sanitizeNumberInput(exchangeRate);
 
     if (usd <= 0 || rate <= 0) {
       setResult(null);
@@ -74,7 +48,7 @@ export function USDIncomeCalculator() {
     const nhis = Math.min(Math.round(annualNGN * 0.05), 25000);
 
     // Calculate rent relief
-    const rent = parseFloat(annualRent) || 0;
+    const rent = sanitizeNumberInput(annualRent);
     const rentRelief = Math.min(Math.round(rent * 0.2), 500000);
 
     const totalDeductions = pension + nhf + nhis + rentRelief;
@@ -116,12 +90,7 @@ export function USDIncomeCalculator() {
         maximumFractionDigits: 0,
       }).format(amount);
     }
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
+    return formatNGN(amount);
   };
 
   return (
@@ -217,9 +186,9 @@ export function USDIncomeCalculator() {
             />
           </div>
           <p className="text-xs text-gray-500 mt-1">
-            {annualRent && parseFloat(annualRent) > 0
-              ? `20% relief = ${formatCurrency(Math.min(parseFloat(annualRent) * 0.2, 500000))}${
-                  parseFloat(annualRent) * 0.2 > 500000 ? ' (capped at ₦500K)' : ''
+            {annualRent && sanitizeNumberInput(annualRent) > 0
+              ? `20% relief = ${formatCurrency(Math.min(sanitizeNumberInput(annualRent) * 0.2, 500000))}${
+                  sanitizeNumberInput(annualRent) * 0.2 > 500000 ? ' (capped at ₦500K)' : ''
                 }`
               : '20% relief, max ₦500K'}
           </p>

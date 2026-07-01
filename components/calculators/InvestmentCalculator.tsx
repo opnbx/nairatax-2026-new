@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
 
 interface CalculationResult {
   dividendIncome: number;
@@ -21,9 +22,9 @@ export function InvestmentCalculator() {
   const [result, setResult] = useState<CalculationResult | null>(null);
 
   const calculate = () => {
-    const dividend = parseFloat(dividendIncome) || 0;
-    const interest = parseFloat(interestIncome) || 0;
-    const gains = parseFloat(capitalGains) || 0;
+    const dividend = sanitizeNumberInput(dividendIncome);
+    const interest = sanitizeNumberInput(interestIncome);
+    const gains = sanitizeNumberInput(capitalGains);
 
     if (dividend <= 0 && interest <= 0 && gains <= 0) {
       setResult(null);
@@ -57,15 +58,6 @@ export function InvestmentCalculator() {
   useEffect(() => {
     calculate();
   }, [dividendIncome, interestIncome, capitalGains]);
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat('en-NG', {
-      style: 'currency',
-      currency: 'NGN',
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
 
   return (
     <div className="space-y-6">

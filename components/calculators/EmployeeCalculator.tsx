@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { formatCurrency, sanitizeNumberInput } from '@/lib/tax-utils';
-import { useEmployeeTax, type EmployeeCalculationResult } from '@/hooks/useEmployeeTax';
+import { useEmployeeTax } from '@/hooks/useEmployeeTax';
 
 export function EmployeeCalculator() {
   const [grossSalary, setGrossSalary] = useState('800000');
@@ -16,18 +16,6 @@ export function EmployeeCalculator() {
     annualRent,
     lifeInsurance,
   });
-
-  const handleGrossSalaryChange = (value: string) => {
-    setGrossSalary(value);
-  };
-
-  const handleAnnualRentChange = (value: string) => {
-    setAnnualRent(value);
-  };
-
-  const handleLifeInsuranceChange = (value: string) => {
-    setLifeInsurance(value);
-  };
 
   return (
     <div className="space-y-6">
@@ -47,7 +35,7 @@ export function EmployeeCalculator() {
                 id="gross-salary"
                 type="number"
                 value={grossSalary}
-                onChange={(e) => handleGrossSalaryChange(e.target.value)}
+                onChange={(e) => setGrossSalary(e.target.value)}
                 placeholder="0"
                 className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min="0"
@@ -78,7 +66,7 @@ export function EmployeeCalculator() {
                 id="annual-rent"
                 type="number"
                 value={annualRent}
-                onChange={(e) => handleAnnualRentChange(e.target.value)}
+                onChange={(e) => setAnnualRent(e.target.value)}
                 placeholder="0"
                 className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min="0"
@@ -87,7 +75,7 @@ export function EmployeeCalculator() {
             </div>
             <p className="text-xs text-gray-500 mt-1">
               {annualRent && sanitizeNumberInput(annualRent) > 0 ? (
-                <>  
+                <>
                   20% relief = {formatCurrency(Math.min(sanitizeNumberInput(annualRent) * 0.2, 500000))}
                   {sanitizeNumberInput(annualRent) * 0.2 > 500000 && ' (capped at ₦500K)'}
                 </>
@@ -107,7 +95,7 @@ export function EmployeeCalculator() {
                 id="life-insurance"
                 type="number"
                 value={lifeInsurance}
-                onChange={(e) => handleLifeInsuranceChange(e.target.value)}
+                onChange={(e) => setLifeInsurance(e.target.value)}
                 placeholder="0"
                 className="w-full pl-8 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 min="0"
