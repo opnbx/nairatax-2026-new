@@ -1,68 +1,29 @@
-import { Metadata } from 'next';
-import Link from 'next/link';
+import type { Metadata } from 'next';
+import { PageShell } from '@/components/site/PageShell';
+import { MoreCalculators } from '@/components/calc/ui';
+import { ComingSoon } from '@/components/site/ComingSoon';
 
 export const metadata: Metadata = {
-  title: 'Pensioner Tax Calculator - NairaTax',
-  description: 'Calculate your tax on pension income and retirement benefits under Nigeria Tax Act 2025.',
+  title: 'Pensioner Tax Calculator — NairaTax',
+  description:
+    'Tax on pension income and retirement benefits under the Nigeria Tax Act 2025, including the extra ₦200,000 allowance for pensioners. Coming soon.',
+  alternates: { canonical: '/calculators/pensioner/' },
 };
 
-export default function PensionerCalculatorPage() {
+export default function PensionerPage() {
   return (
-    <main className="min-h-screen bg-white">
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">
-          Pensioner Tax Calculator
-        </h1>
-        <p className="text-lg text-gray-600 mb-8">
-          Calculate tax on your pension income and retirement benefits under Nigeria Tax Act 2025
-        </p>
-
-        <div className="bg-amber-50 border-2 border-amber-200 rounded-lg p-8 md:p-12 text-center">
-          <div className="text-6xl md:text-7xl mb-6" aria-hidden="true">🚧</div>
-          <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 mb-4">Coming Soon</h2>
-          <p className="text-gray-700 mb-6 max-w-2xl mx-auto">
-            This calculator is currently under development. We're working hard to bring you accurate
-            tax calculations for pensioners and retirees, including gratuity, pension income, and
-            special reliefs for senior citizens.
-          </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link
-              href="/"
-              className="inline-block bg-amber-600 text-white px-8 py-3 rounded-lg font-semibold hover:bg-amber-700 transition"
-            >
-              ← Back to Homepage
-            </Link>
-            <Link
-              href="/#calculators"
-              className="inline-block bg-white border-2 border-amber-600 text-amber-600 px-8 py-3 rounded-lg font-semibold hover:bg-amber-50 transition"
-            >
-              View Other Calculators
-            </Link>
-          </div>
-        </div>
-
-        <div className="mt-12 bg-gray-50 rounded-lg p-6">
-          <h3 className="text-xl font-semibold text-gray-900 mb-4">What to Expect</h3>
-          <ul className="space-y-3 text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-amber-600 text-xl flex-shrink-0">✓</span>
-              <span>Pension income tax calculation</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-amber-600 text-xl flex-shrink-0">✓</span>
-              <span>Gratuity and lump sum payment tax</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-amber-600 text-xl flex-shrink-0">✓</span>
-              <span>Senior citizen tax reliefs and exemptions</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-amber-600 text-xl flex-shrink-0">✓</span>
-              <span>Combined pension and other income sources</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </main>
+    <PageShell variant="sub" page="Pensioner">
+      <ComingSoon
+        eyebrow="Retirees · pension & gratuity"
+        title="Pension income, gently taxed."
+        intro="A dedicated estimator for pensioners — accounting for the extra tax-free allowance retirees receive under the 2026 law."
+        bullets={[
+          'Pension income taxed with the extra ₦200,000 pensioner allowance (₦1,000,000 tax-free)',
+          'Gratuity and lump-sum retirement benefits',
+          'Senior-citizen reliefs and exemptions',
+        ]}
+      />
+      <MoreCalculators current="" />
+    </PageShell>
   );
 }

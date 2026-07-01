@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Contact Us - NairaTax',
-  description: 'Get in touch with NairaTax for questions about tax calculations, feedback, bug reports, or partnership inquiries.',
+  title: 'Contact NairaTax — Questions & Feedback',
+  description:
+    'Contact NairaTax with questions about a tax calculation, feedback on the estimators, bug reports, or partnership inquiries.',
+  alternates: { canonical: '/contact/' },
 };
 
 export default function ContactLayout({

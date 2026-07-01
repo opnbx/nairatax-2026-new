@@ -1,6 +1,28 @@
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import { Source_Serif_4, Libre_Franklin, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
+
+const serif = Source_Serif_4({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'],
+  variable: '--font-serif',
+  display: 'swap',
+});
+
+const sans = Libre_Franklin({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700', '800'],
+  variable: '--font-sans',
+  display: 'swap',
+});
+
+const mono = IBM_Plex_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-mono',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
   title: 'NairaTax - Free Nigerian Tax Calculator 2025 | Employee PAYE, Business, Freelancer',
@@ -37,7 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
   return (
-    <html lang="en">
+    <html lang="en" className={`${serif.variable} ${sans.variable} ${mono.variable}`}>
       <head>
         {/* JSON-LD Structured Data for SEO */}
         <script
@@ -91,7 +113,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </>
         )}
       </head>
-      <body className="antialiased">
+      <body className="antialiased font-sans bg-white text-ink-body">
         {children}
       </body>
     </html>

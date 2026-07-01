@@ -4,6 +4,8 @@ const nextConfig = {
   swcMinify: true,
   output: 'standalone',
   poweredByHeader: false,
+  // Uniform URL rule: every route is canonicalised with a trailing slash.
+  trailingSlash: true,
   images: {
     formats: ['image/avif', 'image/webp'],
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],

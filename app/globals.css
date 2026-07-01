@@ -2,7 +2,79 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Accessibility: Screen reader only class */
+/* ------------------------------------------------------------------ */
+/* Base                                                                */
+/* ------------------------------------------------------------------ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background: #ffffff;
+    color: #33425c;
+    font-family: var(--font-sans), 'Libre Franklin', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: #c7a24c;
+    color: #0b1b34;
+  }
+
+  input::placeholder {
+    color: #aeb6c2;
+  }
+
+  /* Focus indicators */
+  *:focus-visible,
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    outline: 2px solid #c7a24c;
+    outline-offset: 2px;
+  }
+
+  /* Strip number-input spinners so the mono figures stay clean */
+  input[type='number']::-webkit-outer-spin-button,
+  input[type='number']::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  input[type='number'] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Signature textures (pure CSS, no images)                            */
+/* ------------------------------------------------------------------ */
+@layer components {
+  /* Navy "security paper": diagonal hairlines + radial highlight over navy */
+  .tx-security {
+    background-color: #0b1b34;
+    background-image:
+      radial-gradient(1150px 480px at 84% -12%, #1c3c68 0%, rgba(28, 60, 104, 0) 60%),
+      repeating-linear-gradient(127deg, rgba(255, 255, 255, 0.028) 0 1px, transparent 1px 24px);
+  }
+
+  /* Tighter weave used inside result panels */
+  .tx-weave {
+    background-color: #0b1b34;
+    background-image: repeating-linear-gradient(
+      127deg,
+      rgba(255, 255, 255, 0.03) 0 1px,
+      transparent 1px 22px
+    );
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Utilities                                                           */
+/* ------------------------------------------------------------------ */
 @layer utilities {
   .sr-only {
     position: absolute;
@@ -26,36 +98,17 @@
     clip: auto;
     white-space: normal;
   }
-}
 
-/* Accessibility: Focus indicators */
-@layer base {
-  *:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-  }
-
-  button:focus-visible,
-  a:focus-visible,
-  input:focus-visible,
-  textarea:focus-visible,
-  select:focus-visible {
-    outline: 2px solid #2563eb;
-    outline-offset: 2px;
-  }
-}
-
-/* Smooth scrolling */
-@layer base {
-  html {
-    scroll-behavior: smooth;
-  }
-}
-
-/* Better touch targets on mobile */
-@layer utilities {
   .min-touch-target {
     min-height: 44px;
     min-width: 44px;
+  }
+
+  /* Uppercase, tracked mono eyebrow */
+  .eyebrow {
+    font-family: var(--font-mono), 'IBM Plex Mono', monospace;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
   }
 }
