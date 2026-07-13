@@ -18,7 +18,7 @@ import {
 
 /** Company Income Tax calculator (CIT + Education Tax, small-company exemption). */
 export function BusinessCalc() {
-  const [turnover, setTurnover] = useState('');
+  const [turnover, setTurnover] = useState('1000000');
   const [expenses, setExpenses] = useState('');
   const [type, setType] = useState<CompanyType>('general');
 
@@ -29,21 +29,21 @@ export function BusinessCalc() {
       <div className="grid lg:grid-cols-[0.82fr_1fr]">
         <div className="space-y-4 border-hairline-2 p-6 lg:border-r">
           <div>
-            <FieldLabel>Annual turnover</FieldLabel>
+            <FieldLabel htmlFor="turnover">Annual turnover</FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="turnover" value={turnover} onChange={setTurnover} ariaLabel="Annual turnover" helper="Total revenue for the year" />
+              <MoneyInput id="turnover" value={turnover} onChange={setTurnover} helper="Total revenue for the year" />
             </div>
           </div>
 
           <div>
-            <FieldLabel>Allowable expenses <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
+            <FieldLabel htmlFor="expenses">Allowable expenses <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="expenses" value={expenses} onChange={setExpenses} ariaLabel="Allowable expenses" helper="Turnover minus expenses = taxable profit" />
+              <MoneyInput id="expenses" value={expenses} onChange={setExpenses} helper="Turnover minus expenses = taxable profit" />
             </div>
           </div>
 
           <div>
-            <FieldLabel>Company type</FieldLabel>
+            <span className="block text-[13px] font-semibold text-ink-body">Company type</span>
             <div className="mt-2">
               <SegmentedToggle
                 value={type}

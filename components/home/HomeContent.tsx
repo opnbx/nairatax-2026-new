@@ -34,10 +34,10 @@ const FEATURES = [
 ];
 
 const CALCS = [
-  { idx: '01', title: 'Freelancer', href: '/calculators/freelancer', desc: 'Self-employed income tax with full business-expense deductions for consultants and contractors.', tags: ['Business expenses', 'Progressive rates', 'Self-assessment'] },
-  { idx: '02', title: 'Business', href: '/calculators/business', desc: 'Company Income Tax at 30% plus 2% Education Tax. Companies earning ≤₦50M pay 0%.', tags: ['CIT 30%', 'Education 2%', 'Small-co 0%'] },
-  { idx: '03', title: 'Content creator', href: '/calculators/creator', desc: 'For YouTube, Instagram and TikTok earnings, with platform-specific deductions built in.', tags: ['Platform income', 'Equipment', 'Production'] },
-  { idx: '04', title: 'Investment', href: '/calculators/investment', desc: 'Dividends, interest and capital gains with withholding tax handled automatically.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'CGT 10%'] },
+  { idx: '01', title: 'Freelancer', href: '/calculators/freelancer/', desc: 'Self-employed income tax with full business-expense deductions for consultants and contractors.', tags: ['Business expenses', 'Progressive rates', 'Self-assessment'] },
+  { idx: '02', title: 'Business', href: '/calculators/business/', desc: 'Company Income Tax at 30% plus 2% Education Tax. Companies earning ≤₦50M pay 0%.', tags: ['CIT 30%', 'Education 2%', 'Small-co 0%'] },
+  { idx: '03', title: 'Content creator', href: '/calculators/creator/', desc: 'For YouTube, Instagram and TikTok earnings, with platform-specific deductions built in.', tags: ['Platform income', 'Equipment', 'Production'] },
+  { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends, interest and capital gains with withholding tax handled automatically.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'CGT 10%'] },
 ];
 
 const FAQS = [
@@ -50,7 +50,7 @@ const FAQS = [
 ];
 
 export function HomeContent() {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('1000000');
   const [period, setPeriod] = useState<Period>('annual');
   const [rent, setRent] = useState('');
   const [ins, setIns] = useState('');
@@ -94,7 +94,7 @@ export function HomeContent() {
                 <div className="space-y-4 border-hairline-2 p-6 lg:border-r">
                   <div>
                     <div className="flex items-center justify-between gap-2">
-                      <FieldLabel>Gross salary</FieldLabel>
+                      <FieldLabel htmlFor="gross-salary">Gross salary</FieldLabel>
                       <SegmentedToggle
                         value={period}
                         onChange={setPeriod}
@@ -106,21 +106,21 @@ export function HomeContent() {
                       />
                     </div>
                     <div className="mt-2">
-                      <MoneyInput id="gross-salary" value={amount} onChange={setAmount} ariaLabel="Gross salary" />
+                      <MoneyInput id="gross-salary" value={amount} onChange={setAmount} />
                     </div>
                   </div>
 
                   <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
                     <div>
-                      <FieldLabel>Annual rent <span className="font-normal text-muted-3">(optional)</span></FieldLabel>
+                      <FieldLabel htmlFor="annual-rent">Annual rent <span className="font-normal text-muted-3">(optional)</span></FieldLabel>
                       <div className="mt-2">
-                        <MoneyInput id="annual-rent" value={rent} onChange={setRent} ariaLabel="Annual rent" helper="20% relief · capped at ₦500,000" />
+                        <MoneyInput id="annual-rent" value={rent} onChange={setRent} helper="20% relief · capped at ₦500,000" />
                       </div>
                     </div>
                     <div>
-                      <FieldLabel>Life insurance <span className="font-normal text-muted-3">(optional)</span></FieldLabel>
+                      <FieldLabel htmlFor="life-insurance">Life insurance <span className="font-normal text-muted-3">(optional)</span></FieldLabel>
                       <div className="mt-2">
-                        <MoneyInput id="life-insurance" value={ins} onChange={setIns} ariaLabel="Life insurance premium" helper="Annual premium · max 20% of gross" />
+                        <MoneyInput id="life-insurance" value={ins} onChange={setIns} helper="Annual premium · max 20% of gross" />
                       </div>
                     </div>
                   </div>
@@ -212,11 +212,11 @@ export function HomeContent() {
           </div>
           <p className="mt-6 text-[13.5px] text-muted">
             Also available:{' '}
-            <Link href="/calculators/usd" className="font-medium text-gold-light hover:underline">USD income</Link>
+            <Link href="/calculators/usd/" className="font-medium text-gold-light hover:underline">USD income</Link>
             {' · '}
-            <Link href="/calculators/pensioner" className="font-medium text-gold-light hover:underline">Pensioner</Link>
+            <Link href="/calculators/pensioner/" className="font-medium text-gold-light hover:underline">Pensioner</Link>
             {' · '}
-            <Link href="/calculators/partnership" className="font-medium text-gold-light hover:underline">Partnership</Link>
+            <Link href="/calculators/partnership/" className="font-medium text-gold-light hover:underline">Partnership</Link>
           </p>
         </div>
       </section>
@@ -294,7 +294,7 @@ export function HomeContent() {
             <a href="#calculator" className="rounded-btn bg-gold-fill px-6 py-3 text-[14px] font-bold text-navy-800 transition-opacity hover:opacity-90">
               Calculate employee tax
             </a>
-            <Link href="/calculators/freelancer" className="rounded-btn border border-white/25 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-white/5">
+            <Link href="/calculators/freelancer/" className="rounded-btn border border-white/25 px-6 py-3 text-[14px] font-semibold text-white transition-colors hover:bg-white/5">
               View other calculators
             </Link>
           </div>

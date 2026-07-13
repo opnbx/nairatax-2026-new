@@ -33,7 +33,7 @@ export interface IncomeLabels {
 
 /** Shared engine for the Freelancer and Content-creator calculators. */
 export function IncomeCalculator({ labels }: { labels: IncomeLabels }) {
-  const [amount, setAmount] = useState('');
+  const [amount, setAmount] = useState('1000000');
   const [period, setPeriod] = useState<Period>('annual');
   const [expenses, setExpenses] = useState('');
   const [wht, setWht] = useState('');
@@ -46,7 +46,7 @@ export function IncomeCalculator({ labels }: { labels: IncomeLabels }) {
         <div className="space-y-4 border-hairline-2 p-6 lg:border-r">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <FieldLabel>{labels.incomeLabel}</FieldLabel>
+              <FieldLabel htmlFor="income">{labels.incomeLabel}</FieldLabel>
               <SegmentedToggle
                 value={period}
                 onChange={setPeriod}
@@ -58,21 +58,21 @@ export function IncomeCalculator({ labels }: { labels: IncomeLabels }) {
               />
             </div>
             <div className="mt-2">
-              <MoneyInput id="income" value={amount} onChange={setAmount} ariaLabel={labels.incomeLabel} />
+              <MoneyInput id="income" value={amount} onChange={setAmount} />
             </div>
           </div>
 
           <div>
-            <FieldLabel>{labels.expensesLabel}</FieldLabel>
+            <FieldLabel htmlFor="expenses">{labels.expensesLabel}</FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="expenses" value={expenses} onChange={setExpenses} ariaLabel={labels.expensesLabel} helper={labels.expensesHelper} />
+              <MoneyInput id="expenses" value={expenses} onChange={setExpenses} helper={labels.expensesHelper} />
             </div>
           </div>
 
           <div>
-            <FieldLabel>{labels.whtLabel}</FieldLabel>
+            <FieldLabel htmlFor="wht">{labels.whtLabel}</FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="wht" value={wht} onChange={setWht} ariaLabel={labels.whtLabel} helper={labels.whtHelper} />
+              <MoneyInput id="wht" value={wht} onChange={setWht} helper={labels.whtHelper} />
             </div>
           </div>
         </div>

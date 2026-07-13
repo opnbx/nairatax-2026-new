@@ -1,17 +1,12 @@
 import { describe, it, expect } from 'vitest';
+import { naira } from '@/lib/tax-engine';
 
 /**
- * Test suite for currency formatting utilities
+ * Test suite for the shipping currency formatter (naira, lib/tax-engine.ts).
+ * naira formats the rounded magnitude of the value: '₦' + comma-grouped, no
+ * decimals.
  */
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat('en-NG', {
-    style: 'currency',
-    currency: 'NGN',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(amount);
-}
+const formatCurrency = naira;
 
 describe('Currency Formatting', () => {
   describe('Basic formatting', () => {
@@ -45,9 +40,11 @@ describe('Currency Formatting', () => {
       expect(result2).toBe('₦1,001');
     });
 
-    it('should handle negative numbers', () => {
-      expect(formatCurrency(-5000)).toBe('-₦5,000');
-      expect(formatCurrency(-1000000)).toBe('-₦1,000,000');
+    it('should format the magnitude of negative numbers', () => {
+      // naira renders magnitude; the sign is conveyed by the label (e.g.
+      // "Refund due"), not the number.
+      expect(formatCurrency(-5000)).toBe('₦5,000');
+      expect(formatCurrency(-1000000)).toBe('₦1,000,000');
     });
   });
 
