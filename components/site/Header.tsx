@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Logo } from './Logo';
+import { MobileNav } from './MobileNav';
 
 function TaxActPill() {
   return (
@@ -36,7 +37,10 @@ export function Header({
             <Link href="/#faq" className="hidden text-[15px] text-ink-body2 hover:text-navy-800 sm:inline">
               FAQ
             </Link>
-            <TaxActPill />
+            <span className="hidden sm:inline">
+              <TaxActPill />
+            </span>
+            <MobileNav />
           </nav>
         ) : (
           <div className="flex items-center gap-4 sm:gap-6">

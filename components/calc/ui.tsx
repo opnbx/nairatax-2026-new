@@ -97,8 +97,18 @@ export function CalcCard({
 /* Inputs                                                            */
 /* ---------------------------------------------------------------- */
 
-export function FieldLabel({ children }: { children: React.ReactNode }) {
-  return <label className="block text-[13px] font-semibold text-ink-body">{children}</label>;
+export function FieldLabel({
+  htmlFor,
+  children,
+}: {
+  htmlFor: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <label htmlFor={htmlFor} className="block text-[13px] font-semibold text-ink-body">
+      {children}
+    </label>
+  );
 }
 
 export function SegmentedToggle<T extends string>({
@@ -145,15 +155,14 @@ export function MoneyInput({
   onChange,
   placeholder = '0',
   helper,
-  ariaLabel,
 }: {
   id: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   helper?: React.ReactNode;
-  ariaLabel?: string;
 }) {
+  // The accessible name comes from the associated <FieldLabel htmlFor={id}>.
   return (
     <div>
       <div className="flex items-center rounded-input border border-inputborder bg-white focus-within:border-navy-800">
@@ -167,7 +176,6 @@ export function MoneyInput({
           value={value}
           onChange={(e) => onChange(e.target.value)}
           placeholder={placeholder}
-          aria-label={ariaLabel}
           className="w-full bg-transparent py-3 pr-3.5 font-mono text-[17px] text-ink-heading outline-none placeholder:text-placeholder"
         />
       </div>
@@ -305,10 +313,10 @@ export function Callout({
 /* ---------------------------------------------------------------- */
 
 const ALL_CALCS = [
-  { label: 'Freelancer', href: '/calculators/freelancer' },
-  { label: 'Business', href: '/calculators/business' },
-  { label: 'Content creator', href: '/calculators/creator' },
-  { label: 'Investment', href: '/calculators/investment' },
+  { label: 'Freelancer', href: '/calculators/freelancer/' },
+  { label: 'Business', href: '/calculators/business/' },
+  { label: 'Content creator', href: '/calculators/creator/' },
+  { label: 'Investment', href: '/calculators/investment/' },
 ];
 
 export function MoreCalculators({ current }: { current: string }) {

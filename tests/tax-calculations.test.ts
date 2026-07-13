@@ -1,7 +1,9 @@
 import { describe, it, expect } from 'vitest';
+import { progressive, NEW_BANDS } from '@/lib/tax-engine';
 
 /**
- * Test suite for Nigerian Tax Act 2025 progressive tax calculations
+ * Test suite for Nigerian Tax Act 2025 progressive tax calculations, exercising
+ * the shipping engine (lib/tax-engine.ts) directly.
  * Tax Brackets:
  * - ₦0 - ₦800,000: 0%
  * - ₦800,001 - ₦3,000,000: 15%
@@ -11,31 +13,9 @@ import { describe, it, expect } from 'vitest';
  * - Above ₦50,000,000: 25%
  */
 
-const TAX_BRACKETS = [
-  { limit: 800000, rate: 0.00, base: 0 },
-  { limit: 3000000, rate: 0.15, base: 800000 },
-  { limit: 12000000, rate: 0.18, base: 3000000 },
-  { limit: 25000000, rate: 0.21, base: 12000000 },
-  { limit: 50000000, rate: 0.23, base: 25000000 },
-  { limit: Infinity, rate: 0.25, base: 50000000 },
-];
-
-function calculateProgressiveTax(taxableIncome: number): number {
-  if (taxableIncome <= 0) return 0;
-
-  let totalTax = 0;
-  for (let i = 0; i < TAX_BRACKETS.length; i++) {
-    const bracket = TAX_BRACKETS[i];
-    if (taxableIncome > bracket.base) {
-      const taxableInBracket = Math.min(
-        taxableIncome - bracket.base,
-        bracket.limit - bracket.base
-      );
-      totalTax += taxableInBracket * bracket.rate;
-    }
-  }
-  return Math.round(totalTax);
-}
+// The engine returns unrounded tax; the UI rounds at the formatting boundary.
+const calculateProgressiveTax = (taxableIncome: number): number =>
+  Math.round(progressive(taxableIncome, NEW_BANDS));
 
 describe('Progressive Tax Calculation', () => {
   describe('Tax-free threshold (₦0 - ₦800,000)', () => {

@@ -37,16 +37,16 @@ export function Footer({ variant = 'home' }: { variant?: 'home' | 'sub' }) {
               { label: 'Home', href: '/' },
               { label: 'All calculators', href: '/#calculators' },
               { label: 'FAQ', href: '/#faq' },
-              { label: 'Contact', href: '/contact' },
+              { label: 'Contact', href: '/contact/' },
             ]}
           />
           <FooterColumn
             title="Calculators"
             links={[
               { label: 'Employee PAYE', href: '/' },
-              { label: 'Freelancer', href: '/calculators/freelancer' },
-              { label: 'Business', href: '/calculators/business' },
-              { label: 'Investment', href: '/calculators/investment' },
+              { label: 'Freelancer', href: '/calculators/freelancer/' },
+              { label: 'Business', href: '/calculators/business/' },
+              { label: 'Investment', href: '/calculators/investment/' },
             ]}
           />
 

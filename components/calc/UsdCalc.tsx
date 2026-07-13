@@ -18,7 +18,7 @@ import {
 
 /** USD-denominated income converted to NGN, then taxed under the employee PAYE rules. */
 export function UsdCalc() {
-  const [usd, setUsd] = useState('');
+  const [usd, setUsd] = useState('2000');
   const [period, setPeriod] = useState<Period>('monthly');
   const [rate, setRate] = useState('1550');
   const [rent, setRent] = useState('');
@@ -35,7 +35,7 @@ export function UsdCalc() {
         <div className="space-y-4 border-hairline-2 p-6 lg:border-r">
           <div>
             <div className="flex items-center justify-between gap-2">
-              <FieldLabel>USD income</FieldLabel>
+              <FieldLabel htmlFor="usd">USD income</FieldLabel>
               <SegmentedToggle
                 value={period}
                 onChange={setPeriod}
@@ -47,19 +47,19 @@ export function UsdCalc() {
               />
             </div>
             <div className="mt-2">
-              <MoneyInput id="usd" value={usd} onChange={setUsd} ariaLabel="USD income" helper="Paid in US dollars" />
+              <MoneyInput id="usd" value={usd} onChange={setUsd} helper="Paid in US dollars" />
             </div>
           </div>
           <div>
-            <FieldLabel>Exchange rate <span className="font-normal text-muted-3">(₦ per $1)</span></FieldLabel>
+            <FieldLabel htmlFor="rate">Exchange rate <span className="font-normal text-muted-3">(₦ per $1)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="rate" value={rate} onChange={setRate} ariaLabel="Exchange rate" helper="Naira received per US dollar" />
+              <MoneyInput id="rate" value={rate} onChange={setRate} helper="Naira received per US dollar" />
             </div>
           </div>
           <div>
-            <FieldLabel>Annual rent <span className="font-normal text-muted-3">(optional)</span></FieldLabel>
+            <FieldLabel htmlFor="rent">Annual rent <span className="font-normal text-muted-3">(optional)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="rent" value={rent} onChange={setRent} ariaLabel="Annual rent" helper="20% relief · capped at ₦500,000" />
+              <MoneyInput id="rent" value={rent} onChange={setRent} helper="20% relief · capped at ₦500,000" />
             </div>
           </div>
         </div>

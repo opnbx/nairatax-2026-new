@@ -15,7 +15,7 @@ import {
 
 /** Investment-income calculator: dividends, interest, capital gains at a flat 10%. */
 export function InvestmentCalc() {
-  const [div, setDiv] = useState('');
+  const [div, setDiv] = useState('1000000');
   const [interest, setInterest] = useState('');
   const [gains, setGains] = useState('');
 
@@ -26,21 +26,21 @@ export function InvestmentCalc() {
       <div className="grid lg:grid-cols-[0.82fr_1fr]">
         <div className="space-y-4 border-hairline-2 p-6 lg:border-r">
           <div>
-            <FieldLabel>Dividends received <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
+            <FieldLabel htmlFor="dividends">Dividends received <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="dividends" value={div} onChange={setDiv} ariaLabel="Dividends received" helper="Taxed at 10% withholding" />
+              <MoneyInput id="dividends" value={div} onChange={setDiv} helper="Taxed at 10% withholding" />
             </div>
           </div>
           <div>
-            <FieldLabel>Interest income <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
+            <FieldLabel htmlFor="interest">Interest income <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="interest" value={interest} onChange={setInterest} ariaLabel="Interest income" helper="Savings & bonds — taxed at 10%" />
+              <MoneyInput id="interest" value={interest} onChange={setInterest} helper="Savings & bonds — taxed at 10%" />
             </div>
           </div>
           <div>
-            <FieldLabel>Capital gains <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
+            <FieldLabel htmlFor="gains">Capital gains <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="gains" value={gains} onChange={setGains} ariaLabel="Capital gains" helper="Profit on asset sales — CGT 10%" />
+              <MoneyInput id="gains" value={gains} onChange={setGains} helper="Profit on asset sales — CGT 10%" />
             </div>
           </div>
         </div>
