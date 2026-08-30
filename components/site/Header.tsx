@@ -53,7 +53,10 @@ export function Header({
             >
               ← All calculators
             </Link>
-            <TaxActPill />
+            <span className="hidden sm:inline">
+              <TaxActPill />
+            </span>
+            <MobileNav />
           </div>
         )}
       </div>

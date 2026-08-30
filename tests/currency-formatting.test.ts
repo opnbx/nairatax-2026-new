@@ -32,12 +32,10 @@ describe('Currency Formatting', () => {
   });
 
   describe('Rounding behavior', () => {
-    it('should round down decimals (no decimal places shown)', () => {
-      const result1 = formatCurrency(1000.4);
-      const result2 = formatCurrency(1000.9);
-      // Both should display as ₦1,000 (formatting removes decimals)
-      expect(result1).toBe('₦1,000');
-      expect(result2).toBe('₦1,001');
+    it('should round to the nearest whole naira (no decimals shown)', () => {
+      // naira() uses Math.round, so .4 rounds down and .9 rounds up.
+      expect(formatCurrency(1000.4)).toBe('₦1,000');
+      expect(formatCurrency(1000.9)).toBe('₦1,001');
     });
 
     it('should format the magnitude of negative numbers', () => {
