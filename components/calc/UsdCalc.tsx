@@ -47,7 +47,7 @@ export function UsdCalc() {
               />
             </div>
             <div className="mt-2">
-              <MoneyInput id="usd" value={usd} onChange={setUsd} helper="Paid in US dollars" />
+              <MoneyInput id="usd" value={usd} onChange={setUsd} prefix="$" helper="Paid in US dollars" />
             </div>
           </div>
           <div>
