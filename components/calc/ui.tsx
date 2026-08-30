@@ -155,19 +155,21 @@ export function MoneyInput({
   onChange,
   placeholder = '0',
   helper,
+  prefix = '₦',
 }: {
   id: string;
   value: string;
   onChange: (v: string) => void;
   placeholder?: string;
   helper?: React.ReactNode;
+  prefix?: string;
 }) {
   // The accessible name comes from the associated <FieldLabel htmlFor={id}>.
   return (
     <div>
       <div className="flex items-center rounded-input border border-inputborder bg-white focus-within:border-navy-800">
         <span className="pl-3.5 pr-1 font-mono text-[15px] text-muted-2" aria-hidden="true">
-          ₦
+          {prefix}
         </span>
         <input
           id={id}
