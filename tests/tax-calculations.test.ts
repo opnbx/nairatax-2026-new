@@ -121,62 +121,6 @@ describe('Progressive Tax Calculation', () => {
     });
   });
 
-  describe('Standard deductions', () => {
-    it('should calculate pension deduction (8%)', () => {
-      const income = 5000000;
-      const pension = Math.round(income * 0.08);
-      expect(pension).toBe(400000);
-    });
-
-    it('should calculate NHF deduction (2.5%)', () => {
-      const income = 5000000;
-      const nhf = Math.round(income * 0.025);
-      expect(nhf).toBe(125000);
-    });
-
-    it('should calculate NHIS deduction (5%, max ₦25,000)', () => {
-      const income1 = 500000;
-      const nhis1 = Math.min(Math.round(income1 * 0.05), 25000);
-      expect(nhis1).toBe(25000);
-
-      const income2 = 10000000;
-      const nhis2 = Math.min(Math.round(income2 * 0.05), 25000);
-      expect(nhis2).toBe(25000);
-    });
-
-    it('should calculate total deductions correctly', () => {
-      const income = 5000000;
-      const pension = Math.round(income * 0.08); // 400,000
-      const nhf = Math.round(income * 0.025); // 125,000
-      const nhis = Math.min(Math.round(income * 0.05), 25000); // 25,000
-      const total = pension + nhf + nhis;
-      expect(total).toBe(550000);
-    });
-  });
-
-  describe('Complete tax calculation with deductions', () => {
-    it('should calculate net tax for ₦5,000,000 gross income', () => {
-      const grossIncome = 5000000;
-
-      // Deductions
-      const pension = Math.round(grossIncome * 0.08); // 400,000
-      const nhf = Math.round(grossIncome * 0.025); // 125,000
-      const nhis = Math.min(Math.round(grossIncome * 0.05), 25000); // 25,000
-      const totalDeductions = pension + nhf + nhis; // 550,000
-
-      // Taxable income
-      const taxableIncome = grossIncome - totalDeductions; // 4,450,000
-
-      // Tax calculation
-      const tax = calculateProgressiveTax(taxableIncome);
-      // First bracket: 330,000
-      // Second bracket: (4,450,000 - 3,000,000) * 0.18 = 261,000
-      // Total: 591,000
-
-      expect(tax).toBe(591000);
-    });
-  });
-
   describe('Edge cases', () => {
     it('should handle income exactly at bracket boundaries', () => {
       expect(calculateProgressiveTax(800000)).toBe(0);

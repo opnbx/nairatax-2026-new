@@ -13,13 +13,14 @@ import {
   StatGrid,
 } from './ui';
 
-/** Investment-income calculator: dividends, interest, capital gains at a flat 10%. */
+/** Investment-income calculator: 10% WHT on dividends and interest, gains at the income-tax bands. */
 export function InvestmentCalc() {
   const [div, setDiv] = useState('1000000');
   const [interest, setInterest] = useState('');
   const [gains, setGains] = useState('');
+  const [other, setOther] = useState('');
 
-  const res = computeInvestment({ div, interest, gains });
+  const res = computeInvestment({ div, interest, gains, other });
 
   return (
     <CalcCard title="Investment income calculator" sub="WHT & capital gains · 2026">
@@ -40,7 +41,13 @@ export function InvestmentCalc() {
           <div>
             <FieldLabel htmlFor="gains">Capital gains <span className="font-normal text-muted-3">(annual)</span></FieldLabel>
             <div className="mt-2">
-              <MoneyInput id="gains" value={gains} onChange={setGains} helper="Profit on asset sales — CGT 10%" />
+              <MoneyInput id="gains" value={gains} onChange={setGains} helper="Profit on asset sales — taxed at your income-tax band" />
+            </div>
+          </div>
+          <div>
+            <FieldLabel htmlFor="other-income">Other taxable income <span className="font-normal text-muted-3">(annual, optional)</span></FieldLabel>
+            <div className="mt-2">
+              <MoneyInput id="other-income" value={other} onChange={setOther} helper="Salary or business profit — sets the band your gains fall in" />
             </div>
           </div>
         </div>
@@ -72,10 +79,17 @@ export function InvestmentCalc() {
                   </div>
                 ))}
               </div>
-              <Callout tone="green">
-                <span className="mr-1 font-bold">✓</span>
-                Dividend &amp; interest WHT is usually your final tax — nothing further to pay.
-              </Callout>
+              {res.whtTax > 0 && (
+                <Callout tone="green">
+                  <span className="mr-1 font-bold">✓</span>
+                  Dividend &amp; interest WHT is usually your final tax — nothing further to pay on those.
+                </Callout>
+              )}
+              {res.gainsTax > 0 && (
+                <Callout tone="gold">
+                  Tax on gains isn&apos;t withheld — declare them in your annual return. Small share sales may be exempt.
+                </Callout>
+              )}
             </div>
           )}
         </ResultPanel>

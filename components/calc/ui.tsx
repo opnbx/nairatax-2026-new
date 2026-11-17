@@ -285,7 +285,7 @@ export function SplitBar({
   );
 }
 
-/** Bar segment colors (shared with the data-bar tokens). */
+/** Bar segment colors. */
 export const BAR = {
   net: '#5C7CB0',
   tax: '#C7A24C',

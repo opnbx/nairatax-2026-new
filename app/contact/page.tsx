@@ -1,29 +1,24 @@
-'use client';
-
-import { useState } from 'react';
+import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
-import { Eyebrow, Callout } from '@/components/calc/ui';
+import { Eyebrow } from '@/components/calc/ui';
 
-const INPUT_CLASS =
-  'w-full rounded-input border border-inputborder bg-white px-3.5 py-3 text-[15px] text-ink-heading outline-none focus:border-navy-800 placeholder:text-placeholder';
+export const metadata: Metadata = {
+  title: 'Contact NairaTax — Questions & Feedback',
+  description:
+    'Contact NairaTax with questions about a tax calculation, feedback on the estimators, bug reports, or partnership inquiries.',
+  alternates: { canonical: '/contact/' },
+};
+
+const EMAIL = 'webchief@nairatax.ng';
+
+const TOPICS = [
+  { label: 'Ask about a tax calculation', subject: 'Question about a tax calculation' },
+  { label: 'Give feedback on the calculators', subject: 'Feedback on the calculators' },
+  { label: 'Report a bug', subject: 'Bug report' },
+  { label: 'Partnership inquiry', subject: 'Partnership inquiry' },
+];
 
 export default function ContactPage() {
-  const [formData, setFormData] = useState({ name: '', email: '', subject: '', message: '' });
-  const [status, setStatus] = useState<'idle' | 'success'>('idle');
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setStatus('success');
-    setFormData({ name: '', email: '', subject: '', message: '' });
-    setTimeout(() => setStatus('idle'), 5000);
-  };
-
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
-  ) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
-
   return (
     <PageShell variant="sub" page="Contact">
       <section className="tx-security">
@@ -39,81 +34,35 @@ export default function ContactPage() {
         </div>
       </section>
 
-      <div className="relative z-10 mx-auto -mt-20 max-w-[1280px] px-6 pb-16 lg:px-14">
-        <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr]">
-          {/* Info */}
-          <div className="rounded-calc bg-white p-7 shadow-calc ring-1 ring-hairline">
-            <h2 className="text-[18px] font-bold text-ink-heading">Reach us directly</h2>
-            <a
-              href="mailto:webchief@nairatax.ng"
-              className="mt-3 inline-block font-mono text-[15px] text-gold-light hover:underline"
-            >
-              webchief@nairatax.ng
-            </a>
-            <h3 className="eyebrow mt-8 text-[11px] tracking-[0.16em] text-gold-eyebrow">We can help with</h3>
-            <ul className="mt-4 space-y-3">
-              {[
-                'Questions about tax calculations',
-                'Feedback on the calculators',
-                'Bug reports',
-                'Partnership inquiries',
-              ].map((item) => (
-                <li key={item} className="flex items-start gap-2.5 text-[14.5px] text-ink-body">
-                  <span className="mt-0.5 flex h-[20px] w-[20px] shrink-0 items-center justify-center rounded-[5px] bg-navy-800 text-[11px] text-gold-fill" aria-hidden="true">✓</span>
-                  {item}
-                </li>
-              ))}
-            </ul>
-            <div className="mt-8">
-              <div className="rounded-input bg-fieldsoft px-3.5 py-3 text-[12.5px] leading-relaxed text-muted">
-                <strong className="text-ink-body">Please note:</strong> NairaTax provides estimates for
-                educational purposes only. For professional advice, consult a qualified tax advisor or
-                the Nigeria Revenue Service.
-              </div>
-            </div>
-          </div>
+      <div className="relative z-10 mx-auto -mt-20 max-w-[820px] px-6 pb-16 lg:px-14">
+        <div className="rounded-calc bg-white p-7 shadow-calc ring-1 ring-hairline sm:p-10">
+          <h2 className="text-[18px] font-bold text-ink-heading">Email us</h2>
+          <a
+            href={`mailto:${EMAIL}`}
+            className="mt-3 inline-block font-mono text-[17px] text-gold-light hover:underline"
+          >
+            {EMAIL}
+          </a>
 
-          {/* Form */}
-          <div className="rounded-calc bg-white p-7 shadow-calc ring-1 ring-hairline">
-            <h2 className="text-[18px] font-bold text-ink-heading">Send us a message</h2>
+          <h3 className="eyebrow mt-8 text-[11px] tracking-[0.16em] text-gold-eyebrow">Start an email about</h3>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-2">
+            {TOPICS.map((t) => (
+              <li key={t.subject}>
+                <a
+                  href={`mailto:${EMAIL}?subject=${encodeURIComponent(t.subject)}`}
+                  className="flex items-center justify-between gap-3 rounded-input border border-inputborder px-4 py-3 text-[14.5px] font-medium text-ink-body2 transition-colors hover:border-navy-800 hover:text-navy-800"
+                >
+                  {t.label}
+                  <span aria-hidden="true">→</span>
+                </a>
+              </li>
+            ))}
+          </ul>
 
-            {status === 'success' && (
-              <div className="mt-5">
-                <Callout tone="green">
-                  <span className="mr-1 font-bold">✓</span>
-                  Thanks for your message — we&apos;ll get back to you soon.
-                </Callout>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="mt-5 space-y-5">
-              <div>
-                <label htmlFor="name" className="block text-[13px] font-semibold text-ink-body">Your name *</label>
-                <input type="text" id="name" name="name" value={formData.name} onChange={handleChange} required placeholder="John Doe" className={`mt-2 ${INPUT_CLASS}`} />
-              </div>
-              <div>
-                <label htmlFor="email" className="block text-[13px] font-semibold text-ink-body">Email address *</label>
-                <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required placeholder="john@example.com" className={`mt-2 ${INPUT_CLASS}`} />
-              </div>
-              <div>
-                <label htmlFor="subject" className="block text-[13px] font-semibold text-ink-body">Subject *</label>
-                <select id="subject" name="subject" value={formData.subject} onChange={handleChange} required className={`mt-2 ${INPUT_CLASS}`}>
-                  <option value="">Select a subject</option>
-                  <option value="question">Question about tax calculations</option>
-                  <option value="feedback">Feedback on the calculator</option>
-                  <option value="bug">Bug report</option>
-                  <option value="partnership">Partnership inquiry</option>
-                  <option value="other">Other</option>
-                </select>
-              </div>
-              <div>
-                <label htmlFor="message" className="block text-[13px] font-semibold text-ink-body">Message *</label>
-                <textarea id="message" name="message" value={formData.message} onChange={handleChange} required rows={6} placeholder="Tell us how we can help you..." className={`mt-2 resize-none ${INPUT_CLASS}`} />
-              </div>
-              <button type="submit" className="w-full rounded-btn bg-navy-800 px-6 py-3 text-[14px] font-semibold text-white transition-opacity hover:opacity-90">
-                Send message
-              </button>
-            </form>
+          <div className="mt-8 rounded-input bg-fieldsoft px-3.5 py-3 text-[12.5px] leading-relaxed text-muted">
+            <strong className="text-ink-body">Please note:</strong> NairaTax provides estimates for
+            educational purposes only. For professional advice, consult a qualified tax advisor or
+            the Nigeria Revenue Service.
           </div>
         </div>
       </div>

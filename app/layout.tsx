@@ -25,12 +25,12 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'NairaTax - Free Nigerian Tax Calculator 2025 | Employee PAYE, Business, Freelancer',
+  title: 'NairaTax - Free Nigerian Tax Calculator 2026 | Employee PAYE, Business, Freelancer',
   description: 'Calculate your Nigerian employee tax (PAYE), freelancer tax, business tax, and more. Free calculators for all taxpayers under Nigeria Tax Act 2025. New ₦800,000 tax-free threshold.',
   metadataBase: new URL('https://www.nairatax.ng'),
-  keywords: 'Nigerian tax calculator, PAYE calculator Nigeria, employee tax Nigeria, Nigeria tax 2025, freelancer tax, business tax calculator, Nigeria Tax Act 2025',
+  keywords: 'Nigerian tax calculator, PAYE calculator Nigeria, employee tax Nigeria, Nigeria tax 2026, freelancer tax, business tax calculator, Nigeria Tax Act 2025',
   openGraph: {
-    title: 'NairaTax - Free Nigerian Tax Calculator 2025',
+    title: 'NairaTax - Free Nigerian Tax Calculator 2026',
     description: 'Calculate your Nigerian taxes accurately. Free PAYE calculator and more under Nigeria Tax Act 2025.',
     url: 'https://www.nairatax.ng',
     siteName: 'NairaTax',
@@ -39,7 +39,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NairaTax - Free Nigerian Tax Calculator 2025',
+    title: 'NairaTax - Free Nigerian Tax Calculator 2026',
     description: 'Calculate your Nigerian taxes accurately. Free PAYE calculator and more under Nigeria Tax Act 2025.',
   },
   robots: {

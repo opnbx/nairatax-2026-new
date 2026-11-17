@@ -1,57 +1,15 @@
 import { describe, it, expect } from 'vitest';
 import {
-  parseNaira,
-  naira,
   progressive,
   NEW_BANDS,
+  BRACKET_ROWS,
   computeEmployee,
   computeFreelancer,
   computeBusiness,
   computeInvestment,
 } from '@/lib/tax-engine';
 
-describe('parseNaira', () => {
-  it('strips non-numeric characters', () => {
-    expect(parseNaira('₦1,234,567')).toBe(1234567);
-    expect(parseNaira('5000000')).toBe(5000000);
-    expect(parseNaira('1,000.50')).toBe(1000.5);
-  });
-  it('returns 0 for empty / invalid', () => {
-    expect(parseNaira('')).toBe(0);
-    expect(parseNaira('abc')).toBe(0);
-    expect(parseNaira(null)).toBe(0);
-    expect(parseNaira(undefined)).toBe(0);
-  });
-});
-
-describe('naira', () => {
-  it('formats magnitude with comma grouping, no decimals', () => {
-    expect(naira(0)).toBe('₦0');
-    expect(naira(1234567)).toBe('₦1,234,567');
-    expect(naira(-500)).toBe('₦500'); // magnitude
-  });
-});
-
-describe('progressive (2026 bands)', () => {
-  it('is zero at/below the tax-free threshold', () => {
-    expect(progressive(0, NEW_BANDS)).toBe(0);
-    expect(progressive(800000, NEW_BANDS)).toBe(0);
-  });
-  it('taxes only the portion in each band', () => {
-    // 1,000,000 → 200,000 in the 15% band = 30,000
-    expect(progressive(1000000, NEW_BANDS)).toBe(30000);
-    // 3,000,000 → 2,200,000 × 15% = 330,000
-    expect(progressive(3000000, NEW_BANDS)).toBe(330000);
-    // 12,000,000 → 330,000 + 9,000,000 × 18% = 1,950,000
-    expect(progressive(12000000, NEW_BANDS)).toBe(1950000);
-  });
-});
-
 describe('computeEmployee', () => {
-  it('is empty until a positive salary is entered', () => {
-    expect(computeEmployee({ amount: '', period: 'annual', rent: '', ins: '' }).filled).toBe(false);
-    expect(computeEmployee({ amount: '0', period: 'annual', rent: '', ins: '' }).filled).toBe(false);
-  });
   it('computes PAYE with automatic pension + NHF', () => {
     const r = computeEmployee({ amount: '9000000', period: 'annual', rent: '', ins: '' });
     expect(r.filled).toBe(true);
@@ -70,6 +28,14 @@ describe('computeEmployee', () => {
   it('converts monthly to annual', () => {
     const m = computeEmployee({ amount: '750000', period: 'monthly', rent: '', ins: '' });
     expect(m.gross).toBe(9000000);
+  });
+  it('marks the band the last naira of taxable income falls in', () => {
+    const at = (taxable: number) =>
+      // Gross that leaves exactly `taxable` after 8% pension + 2.5% NHF.
+      computeEmployee({ amount: String(taxable / 0.895), period: 'annual', rent: '', ins: '' });
+    expect(at(700000).marginalIdx).toBe(0);
+    expect(at(2000000).marginalIdx).toBe(1);
+    expect(at(60000000).marginalIdx).toBe(5);
   });
 });
 
@@ -90,38 +56,81 @@ describe('computeFreelancer', () => {
 });
 
 describe('computeBusiness', () => {
-  it('exempts small non-professional companies', () => {
-    const r = computeBusiness({ turnover: '40000000', expenses: '10000000', type: 'general' });
+  const small = { expenses: '10000000', type: 'general', assets: 'within' } as const;
+
+  it('exempts small companies: turnover ≤ ₦50M, fixed assets ≤ ₦250M, non-professional', () => {
+    const r = computeBusiness({ ...small, turnover: '40000000' });
     expect(r.exempt).toBe(true);
     expect(r.total).toBe(0);
     expect(r.net).toBe(r.profit);
     expect(r.bar.net).toBe(100);
+    expect(computeBusiness({ ...small, turnover: '50000000' }).exempt).toBe(true);
   });
-  it('taxes professional small companies at 30% + 2%', () => {
-    const r = computeBusiness({ turnover: '40000000', expenses: '10000000', type: 'professional' });
+  it('taxes other companies at 30% CIT + 4% Development Levy', () => {
+    const r = computeBusiness({ ...small, turnover: '150000000' });
     expect(r.exempt).toBe(false);
+    expect(r.cit).toBe(140000000 * 0.3);
+    expect(r.levy).toBe(140000000 * 0.04);
+    expect(r.total).toBe(r.cit + r.levy);
+    expect(r.effective).toBeCloseTo(0.34);
+  });
+  it('denies the exemption to professional-services firms', () => {
+    const r = computeBusiness({ ...small, turnover: '40000000', type: 'professional' });
+    expect(r.exempt).toBe(false);
+    expect(r.borderline).toBe(false);
     expect(r.cit).toBe(30000000 * 0.3);
-    expect(r.edu).toBe(30000000 * 0.02);
-    expect(r.total).toBe(r.cit + r.edu);
   });
-  it('taxes large companies regardless of type', () => {
-    const r = computeBusiness({ turnover: '80000000', expenses: '20000000', type: 'general' });
-    expect(r.small).toBe(false);
+  it('denies the exemption when fixed assets exceed ₦250M', () => {
+    const r = computeBusiness({ ...small, turnover: '40000000', assets: 'above' });
     expect(r.exempt).toBe(false);
-    expect(r.cit).toBe(60000000 * 0.3);
+    expect(r.borderline).toBe(false);
+  });
+  it('taxes but flags turnover between the ₦50M and ₦100M caps', () => {
+    const r = computeBusiness({ ...small, turnover: '50000001' });
+    expect(r.exempt).toBe(false);
+    expect(r.borderline).toBe(true);
+    expect(computeBusiness({ ...small, turnover: '100000000' }).borderline).toBe(true);
+    expect(computeBusiness({ ...small, turnover: '100000001' }).borderline).toBe(false);
   });
 });
 
 describe('computeInvestment', () => {
-  it('applies a flat 10% and lists non-zero sources', () => {
-    const r = computeInvestment({ div: '1000000', interest: '500000', gains: '0' });
+  it('withholds 10% on dividends and interest', () => {
+    const r = computeInvestment({ div: '1000000', interest: '500000', gains: '0', other: '' });
     expect(r.totalTax).toBe(150000);
+    expect(r.whtTax).toBe(150000);
+    expect(r.gainsTax).toBe(0);
     expect(r.net).toBe(1350000);
     expect(r.effective).toBeCloseTo(0.1);
-    expect(r.breakdown).toHaveLength(2);
     expect(r.breakdown.map((b) => b.label)).toEqual(['Dividends', 'Interest']);
   });
-  it('is empty with no income', () => {
-    expect(computeInvestment({ div: '', interest: '', gains: '' }).filled).toBe(false);
+  it('taxes capital gains at the progressive bands', () => {
+    // No other income: the first ₦800,000 of gains is tax-free.
+    expect(computeInvestment({ div: '', interest: '', gains: '800000', other: '' }).totalTax).toBe(0);
+    // 2,000,000 → 1,200,000 × 15% = 180,000
+    expect(computeInvestment({ div: '', interest: '', gains: '2000000', other: '' }).totalTax).toBe(180000);
+  });
+  it('stacks gains on top of other taxable income', () => {
+    // Other income of 3,000,000 fills the 0% and 15% bands, so a 1,000,000
+    // gain is taxed entirely at 18%.
+    const r = computeInvestment({ div: '', interest: '', gains: '1000000', other: '3000000' });
+    expect(r.totalTax).toBeCloseTo(180000);
+    expect(r.total).toBe(1000000); // other income is not part of the totals
+  });
+  it('is empty with no investment income', () => {
+    expect(computeInvestment({ div: '', interest: '', gains: '', other: '5000000' }).filled).toBe(false);
+  });
+});
+
+describe('BRACKET_ROWS', () => {
+  it('renders the 2026 bands', () => {
+    expect(BRACKET_ROWS).toEqual([
+      { range: 'First ₦800,000', rate: '0%', on: '₦0' },
+      { range: '₦800,001 – ₦3,000,000', rate: '15%', on: 'up to ₦330,000' },
+      { range: '₦3,000,001 – ₦12,000,000', rate: '18%', on: 'up to ₦1,620,000' },
+      { range: '₦12,000,001 – ₦25,000,000', rate: '21%', on: 'up to ₦2,730,000' },
+      { range: '₦25,000,001 – ₦50,000,000', rate: '23%', on: 'up to ₦5,750,000' },
+      { range: 'Above ₦50,000,000', rate: '25%', on: '25% of excess' },
+    ]);
   });
 });

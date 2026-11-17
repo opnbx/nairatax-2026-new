@@ -27,26 +27,26 @@ import {
 } from '@/components/calc/ui';
 
 const FEATURES = [
-  { title: '₦800,000 tax-free', body: 'The first ₦800,000 of annual income is completely exempt — up from just ₦200,000 before.' },
-  { title: 'Lower headline rates', body: 'Progressive bands from 0% to 25% mean most salaried employees owe less than they did in 2025.' },
+  { title: '₦800,000 tax-free', body: 'The first ₦800,000 of taxable income is taxed at 0%, replacing the old consolidated relief allowance.' },
+  { title: 'Wider tax bands', body: 'Six progressive bands from 0% to 25%. Most low and middle earners owe less than in 2025; the top rate rises from 24% to 25%.' },
   { title: 'New rent relief', body: 'Deduct 20% of your annual rent, capped at ₦500,000 — a brand-new relief introduced for 2026.' },
   { title: 'Every relief counted', body: 'Pension, NHF, NHIS and life-insurance premiums are all deducted before your tax is assessed.' },
 ];
 
 const CALCS = [
   { idx: '01', title: 'Freelancer', href: '/calculators/freelancer/', desc: 'Self-employed income tax with full business-expense deductions for consultants and contractors.', tags: ['Business expenses', 'Progressive rates', 'Self-assessment'] },
-  { idx: '02', title: 'Business', href: '/calculators/business/', desc: 'Company Income Tax at 30% plus 2% Education Tax. Companies earning ≤₦50M pay 0%.', tags: ['CIT 30%', 'Education 2%', 'Small-co 0%'] },
+  { idx: '02', title: 'Business', href: '/calculators/business/', desc: 'Company Income Tax at 30% plus a 4% Development Levy. Small companies pay 0%.', tags: ['CIT 30%', 'Dev. levy 4%', 'Small-co 0%'] },
   { idx: '03', title: 'Content creator', href: '/calculators/creator/', desc: 'For YouTube, Instagram and TikTok earnings, with platform-specific deductions built in.', tags: ['Platform income', 'Equipment', 'Production'] },
-  { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends, interest and capital gains with withholding tax handled automatically.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'CGT 10%'] },
+  { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends and interest at 10% withholding tax; capital gains at your income-tax band.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'Gains 0%–25%'] },
 ];
 
 const FAQS = [
-  { q: 'What is the tax-free threshold?', a: 'The first ₦800,000 of annual income is completely tax-free. If you earn ₦800,000 or less, you pay zero income tax. This takes effect on 1 January 2026.' },
+  { q: 'What is the tax-free threshold?', a: 'The first ₦800,000 of annual income is completely tax-free. If you earn ₦800,000 or less, you pay zero income tax. This has applied since 1 January 2026.' },
   { q: 'What are the 2026 tax rates?', a: 'Progressive rates apply: 0% on the first ₦800,000, then 15%, 18%, 21%, 23% and finally 25% on income above ₦50 million.' },
   { q: 'How does rent relief work?', a: 'You can deduct 20% of the annual rent you pay, up to a maximum of ₦500,000. This is a new benefit introduced under the 2026 law.' },
   { q: 'What can employees deduct?', a: 'Pension (8%), NHF (2.5%), NHIS, life-insurance premiums and rent relief (20%, up to ₦500,000) are all deducted before tax is calculated.' },
-  { q: 'What extra benefit do pensioners get?', a: 'Pensioners receive an additional ₦200,000 tax-free allowance on top of the standard threshold — effectively ₦1,000,000 tax-free.' },
-  { q: 'When does this take effect?', a: 'The Nigeria Tax Act 2025 has been signed into law, and the new rates apply from 1 January 2026 when the Nigeria Revenue Service takes over collection.' },
+  { q: 'Is pension income taxed?', a: 'No. Pensions, gratuities and other retirement benefits paid under the Pension Reform Act are exempt from income tax. Other income you earn in retirement is taxed at the standard bands.' },
+  { q: 'When did this take effect?', a: 'The Nigeria Tax Act 2025 took effect on 1 January 2026. It is administered by the Nigeria Revenue Service (NRS), which replaced the FIRS.' },
 ];
 
 export function HomeContent() {
@@ -224,7 +224,7 @@ export function HomeContent() {
       {/* ---------------- Tax brackets ---------------- */}
       <section id="brackets" className="scroll-mt-20 bg-tint">
         <div className="mx-auto max-w-[1280px] px-6 py-[60px] lg:px-14">
-          <SectionHeading eyebrow="2025 tax brackets" title="How the bands stack up" intro="Rates apply to taxable income after pension, NHF and reliefs — effective 1 January 2026." />
+          <SectionHeading eyebrow="2026 tax brackets" title="How the bands stack up" intro="Rates apply to taxable income after pension, NHF and reliefs — effective 1 January 2026." />
           <div className="mt-8 overflow-hidden rounded-card border border-hairline-3 bg-white">
             <div className="grid grid-cols-[2.3fr_0.8fr_1.5fr] bg-navy-800 px-5 py-3">
               <span className="eyebrow text-[10.5px] tracking-[0.12em] text-onnavy-3">Annual income band</span>
