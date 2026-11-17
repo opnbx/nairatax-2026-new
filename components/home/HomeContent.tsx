@@ -25,6 +25,7 @@ import {
   StatGrid,
   BAR,
 } from '@/components/calc/ui';
+import { FAQS } from './faqs';
 
 const FEATURES = [
   { title: '₦800,000 tax-free', body: 'The first ₦800,000 of taxable income is taxed at 0%, replacing the old consolidated relief allowance.' },
@@ -40,21 +41,11 @@ const CALCS = [
   { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends and interest at 10% withholding tax; capital gains at your income-tax band.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'Gains 0%–25%'] },
 ];
 
-const FAQS = [
-  { q: 'What is the tax-free threshold?', a: 'The first ₦800,000 of annual income is completely tax-free. If you earn ₦800,000 or less, you pay zero income tax. This has applied since 1 January 2026.' },
-  { q: 'What are the 2026 tax rates?', a: 'Progressive rates apply: 0% on the first ₦800,000, then 15%, 18%, 21%, 23% and finally 25% on income above ₦50 million.' },
-  { q: 'How does rent relief work?', a: 'You can deduct 20% of the annual rent you pay, up to a maximum of ₦500,000. This is a new benefit introduced under the 2026 law.' },
-  { q: 'What can employees deduct?', a: 'Pension (8%), NHF (2.5%), NHIS, life-insurance premiums and rent relief (20%, up to ₦500,000) are all deducted before tax is calculated.' },
-  { q: 'Is pension income taxed?', a: 'No. Pensions, gratuities and other retirement benefits paid under the Pension Reform Act are exempt from income tax. Other income you earn in retirement is taxed at the standard bands.' },
-  { q: 'When did this take effect?', a: 'The Nigeria Tax Act 2025 took effect on 1 January 2026. It is administered by the Nigeria Revenue Service (NRS), which replaced the FIRS.' },
-];
-
 export function HomeContent() {
   const [amount, setAmount] = useState('1000000');
   const [period, setPeriod] = useState<Period>('annual');
   const [rent, setRent] = useState('');
   const [ins, setIns] = useState('');
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const res = computeEmployee({ amount, period, rent, ins });
 
@@ -259,26 +250,23 @@ export function HomeContent() {
       <section id="faq" className="scroll-mt-20">
         <div className="mx-auto max-w-[820px] px-6 py-[60px] lg:px-14">
           <SectionHeading eyebrow="Frequently asked" title="Questions, answered" />
+          {/* Native <details> keeps every answer in the HTML for search engines. */}
           <div className="mt-8 border-t border-hairline">
-            {FAQS.map((f, i) => {
-              const open = openFaq === i;
-              return (
-                <div key={f.q} className="border-b border-hairline">
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(open ? null : i)}
-                    aria-expanded={open}
-                    className="flex w-full items-center justify-between gap-4 py-5 text-left"
+            {FAQS.map((f, i) => (
+              <details key={f.q} name="faq" open={i === 0} className="group border-b border-hairline">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden">
+                  <h3 className="text-[16px] font-semibold text-ink-heading">{f.q}</h3>
+                  <span
+                    className="flex h-[27px] w-[27px] shrink-0 items-center justify-center rounded-[6px] border border-hairline text-[18px] text-ink-body2"
+                    aria-hidden="true"
                   >
-                    <span className="text-[16px] font-semibold text-ink-heading">{f.q}</span>
-                    <span className="flex h-[27px] w-[27px] shrink-0 items-center justify-center rounded-[6px] border border-hairline text-[18px] text-ink-body2">
-                      {open ? '–' : '+'}
-                    </span>
-                  </button>
-                  {open && <p className="pb-5 pr-10 text-[14.5px] leading-relaxed text-muted">{f.a}</p>}
-                </div>
-              );
-            })}
+                    <span className="group-open:hidden">+</span>
+                    <span className="hidden group-open:inline">–</span>
+                  </span>
+                </summary>
+                <p className="pb-5 pr-10 text-[14.5px] leading-relaxed text-muted">{f.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

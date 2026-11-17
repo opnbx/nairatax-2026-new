@@ -1,14 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata } from '@/lib/seo';
 import { MoreCalculators } from '@/components/calc/ui';
 import { ComingSoon } from '@/components/site/ComingSoon';
 
-export const metadata: Metadata = {
-  title: 'Partnership Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: 'Partnership Tax Calculator Nigeria',
   description:
     'Tax for partnerships and co-owned businesses under the Nigeria Tax Act 2025, including profit allocation and partner distributions. Coming soon.',
-  alternates: { canonical: '/calculators/partnership/' },
-};
+  path: '/calculators/partnership/',
+  index: false,
+});
 
 export default function PartnershipPage() {
   return (

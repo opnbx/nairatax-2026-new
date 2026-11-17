@@ -1,14 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata } from '@/lib/seo';
 import { MoreCalculators } from '@/components/calc/ui';
 import { ComingSoon } from '@/components/site/ComingSoon';
 
-export const metadata: Metadata = {
-  title: 'Pensioner Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: 'Pensioner Tax Calculator Nigeria',
   description:
     'Tax in retirement under the Nigeria Tax Act 2025: pensions paid under the Pension Reform Act are exempt, other income is taxed at the standard bands. Coming soon.',
-  alternates: { canonical: '/calculators/pensioner/' },
-};
+  path: '/calculators/pensioner/',
+  index: false,
+});
 
 export default function PensionerPage() {
   return (

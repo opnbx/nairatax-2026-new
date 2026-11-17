@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Source_Serif_4, Libre_Franklin, IBM_Plex_Mono } from 'next/font/google';
 import './globals.css';
+import { OG_IMAGE, SITE_NAME, SITE_URL, TAX_YEAR } from '@/lib/seo';
 
 const serif = Source_Serif_4({
   subsets: ['latin'],
@@ -25,22 +26,27 @@ const mono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'NairaTax - Free Nigerian Tax Calculator 2026 | Employee PAYE, Business, Freelancer',
+  title: {
+    default: `Free Nigerian Tax Calculator ${TAX_YEAR} — PAYE, Business, Freelancer | ${SITE_NAME}`,
+    template: `%s | ${SITE_NAME}`,
+  },
   description: 'Calculate your Nigerian employee tax (PAYE), freelancer tax, business tax, and more. Free calculators for all taxpayers under Nigeria Tax Act 2025. New ₦800,000 tax-free threshold.',
-  metadataBase: new URL('https://www.nairatax.ng'),
+  metadataBase: new URL(SITE_URL),
   keywords: 'Nigerian tax calculator, PAYE calculator Nigeria, employee tax Nigeria, Nigeria tax 2026, freelancer tax, business tax calculator, Nigeria Tax Act 2025',
   openGraph: {
-    title: 'NairaTax - Free Nigerian Tax Calculator 2026',
+    title: `Free Nigerian Tax Calculator ${TAX_YEAR}`,
     description: 'Calculate your Nigerian taxes accurately. Free PAYE calculator and more under Nigeria Tax Act 2025.',
-    url: 'https://www.nairatax.ng',
-    siteName: 'NairaTax',
+    url: '/',
+    siteName: SITE_NAME,
     type: 'website',
     locale: 'en_NG',
+    images: [OG_IMAGE],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'NairaTax - Free Nigerian Tax Calculator 2026',
+    title: `Free Nigerian Tax Calculator ${TAX_YEAR}`,
     description: 'Calculate your Nigerian taxes accurately. Free PAYE calculator and more under Nigeria Tax Act 2025.',
+    images: [OG_IMAGE],
   },
   robots: {
     index: true,
@@ -70,7 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               "@type": "WebApplication",
               "name": "NairaTax - Nigerian Tax Calculator",
               "description": "Free Nigerian tax calculators for employees (PAYE), freelancers, business owners, content creators, and investors",
-              "url": "https://www.nairatax.ng",
+              "url": SITE_URL,
               "applicationCategory": "FinanceApplication",
               "operatingSystem": "Any",
               "offers": {

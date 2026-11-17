@@ -1,13 +1,13 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata } from '@/lib/seo';
 import { Eyebrow } from '@/components/calc/ui';
 
-export const metadata: Metadata = {
-  title: 'Contact NairaTax — Questions & Feedback',
+export const metadata = pageMetadata({
+  title: 'Contact — Questions & Feedback',
   description:
     'Contact NairaTax with questions about a tax calculation, feedback on the estimators, bug reports, or partnership inquiries.',
-  alternates: { canonical: '/contact/' },
-};
+  path: '/contact/',
+});
 
 const EMAIL = 'webchief@nairatax.ng';
 

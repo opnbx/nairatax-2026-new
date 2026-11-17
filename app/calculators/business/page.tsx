@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata, TAX_YEAR } from '@/lib/seo';
 import { CalcHero, SupportSection } from '@/components/calc/subpage';
 import { MoreCalculators } from '@/components/calc/ui';
 import { BusinessCalc } from '@/components/calc/BusinessCalc';
 
-export const metadata: Metadata = {
-  title: 'Company Income Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: `Company Income Tax (CIT) Calculator Nigeria ${TAX_YEAR}`,
   description:
     'Estimate Company Income Tax (CIT) and the Development Levy under the Nigeria Tax Act 2025. Small companies pay 0%; everyone else pays 30% CIT plus a 4% levy.',
-  alternates: { canonical: '/calculators/business/' },
-};
+  path: '/calculators/business/',
+});
 
 export default function BusinessPage() {
   return (

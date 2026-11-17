@@ -31,7 +31,8 @@ npm run dev
 | `components/calc/` | Calculator cards and the shared UI kit (`ui.tsx`) |
 | `components/site/` | Header, footer, navigation and the page shell |
 | `components/home/` | Homepage sections, including the employee PAYE calculator |
-| `app/` | Routes, metadata and the sitemap |
+| `app/` | Routes, the sitemap and the site icons |
+| `lib/seo.ts` | Site URL, tax year used in titles, and the per-page metadata helper |
 | `tests/` | Tests for `lib/tax-engine.ts` |
 
 Change a rate or threshold in `lib/tax-engine.ts`, then update the page copy that quotes it.
@@ -43,5 +44,5 @@ Copy `.env.example` to `.env.local` for local use; in production it is set on th
 
 ## Deployment
 
-Vercel builds and deploys every push to `main`. `public/googleadc53b5c32d5d426.html` is the Google
+Vercel builds and deploys every push to `main`. `public/og.png` is the social share image. `public/googleadc53b5c32d5d426.html` is the Google
 Search Console ownership file; keep it.

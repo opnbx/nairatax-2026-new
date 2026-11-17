@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata, TAX_YEAR } from '@/lib/seo';
 import { CalcHero, SupportSection } from '@/components/calc/subpage';
 import { MoreCalculators } from '@/components/calc/ui';
 import { InvestmentCalc } from '@/components/calc/InvestmentCalc';
 
-export const metadata: Metadata = {
-  title: 'Investment Income Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: `Investment & Capital Gains Tax Calculator Nigeria ${TAX_YEAR}`,
   description:
     'Estimate tax on dividends, interest and capital gains under the Nigeria Tax Act 2025. Dividends and interest carry 10% withholding tax; capital gains are taxed at your income-tax band.',
-  alternates: { canonical: '/calculators/investment/' },
-};
+  path: '/calculators/investment/',
+});
 
 export default function InvestmentPage() {
   return (
