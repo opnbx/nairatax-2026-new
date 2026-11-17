@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata, TAX_YEAR } from '@/lib/seo';
 import { CalcHero, SupportSection } from '@/components/calc/subpage';
 import { MoreCalculators } from '@/components/calc/ui';
 import { UsdCalc } from '@/components/calc/UsdCalc';
 
-export const metadata: Metadata = {
-  title: 'USD Income Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: `USD Salary Tax Calculator Nigeria ${TAX_YEAR}`,
   description:
     'Paid in US dollars? Convert your foreign-currency income to naira and estimate your PAYE take-home under the Nigeria Tax Act 2025.',
-  alternates: { canonical: '/calculators/usd/' },
-};
+  path: '/calculators/usd/',
+});
 
 export default function UsdPage() {
   return (

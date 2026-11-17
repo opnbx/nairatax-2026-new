@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { computeBusiness, naira, pct, type CompanyType } from '@/lib/tax-engine';
+import { computeBusiness, naira, pct, type CompanyType, type FixedAssets } from '@/lib/tax-engine';
 import {
   BAR,
   CalcCard,
@@ -16,16 +16,17 @@ import {
   StatGrid,
 } from './ui';
 
-/** Company Income Tax calculator (CIT + Education Tax, small-company exemption). */
+/** Company Income Tax calculator (CIT + Development Levy, small-company exemption). */
 export function BusinessCalc() {
   const [turnover, setTurnover] = useState('1000000');
   const [expenses, setExpenses] = useState('');
   const [type, setType] = useState<CompanyType>('general');
+  const [assets, setAssets] = useState<FixedAssets>('within');
 
-  const res = computeBusiness({ turnover, expenses, type });
+  const res = computeBusiness({ turnover, expenses, type, assets });
 
   return (
-    <CalcCard title="Company income tax calculator" sub="CIT + Education Tax · 2026 rates">
+    <CalcCard title="Company income tax calculator" sub="CIT + Development Levy · 2026 rates">
       <div className="grid lg:grid-cols-[0.82fr_1fr]">
         <div className="space-y-4 border-hairline-2 p-6 lg:border-r">
           <div>
@@ -59,6 +60,21 @@ export function BusinessCalc() {
               Professional services (legal, medical, consulting) don&apos;t qualify for the small-company 0%.
             </p>
           </div>
+
+          <div>
+            <span className="block text-[13px] font-semibold text-ink-body">Total fixed assets</span>
+            <div className="mt-2">
+              <SegmentedToggle
+                value={assets}
+                onChange={setAssets}
+                ariaLabel="Total fixed assets"
+                options={[
+                  { value: 'within', label: 'Up to ₦250M' },
+                  { value: 'above', label: 'Above ₦250M' },
+                ]}
+              />
+            </div>
+          </div>
         </div>
 
         <ResultPanel>
@@ -74,7 +90,7 @@ export function BusinessCalc() {
               <StatGrid
                 cells={[
                   { label: 'CIT (30%)', value: naira(res.cit) },
-                  { label: 'Education 2%', value: naira(res.edu) },
+                  { label: 'Dev. levy (4%)', value: naira(res.levy) },
                   { label: 'Total tax', value: naira(res.total) },
                 ]}
               />
@@ -82,17 +98,19 @@ export function BusinessCalc() {
                 segments={[
                   { label: 'Net profit', pct: res.bar.net, color: BAR.net },
                   { label: 'CIT', pct: res.bar.cit, color: BAR.tax },
-                  { label: 'Education', pct: res.bar.edu, color: BAR.ded },
+                  { label: 'Development Levy', pct: res.bar.levy, color: BAR.ded },
                 ]}
               />
               {res.exempt ? (
                 <Callout tone="green">
                   <span className="mr-1 font-bold">✓</span>
-                  Exempt. Turnover under ₦50M (non-professional) pays 0% company tax.
+                  Exempt. Small companies — turnover up to ₦50M, fixed assets up to ₦250M, not professional services — pay 0% company tax.
                 </Callout>
               ) : (
                 <Callout tone="gold">
-                  Effective tax on profit is <span className="font-bold text-[#F4E6B8]">{pct(res.effective)}</span> — 30% CIT plus 2% Education Tax.
+                  Effective tax on profit is <span className="font-bold text-[#F4E6B8]">{pct(res.effective)}</span> — 30% CIT plus the 4% Development Levy.
+                  {res.borderline &&
+                    ' The Act sets the small-company cap at ₦50M turnover, but official guidance uses ₦100M — you may qualify for 0%. Confirm with the NRS.'}
                 </Callout>
               )}
             </div>

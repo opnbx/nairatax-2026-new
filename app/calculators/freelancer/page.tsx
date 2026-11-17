@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata, TAX_YEAR } from '@/lib/seo';
 import { CalcHero, SupportSection } from '@/components/calc/subpage';
 import { MoreCalculators } from '@/components/calc/ui';
 import { IncomeCalculator, type IncomeLabels } from '@/components/calc/IncomeCalculator';
 
-export const metadata: Metadata = {
-  title: 'Freelancer Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: `Freelancer Tax Calculator Nigeria ${TAX_YEAR}`,
   description:
     'Estimate your self-employed tax under the Nigeria Tax Act 2025. Deduct business expenses, credit the 5% WHT your clients withhold, and see your net income.',
-  alternates: { canonical: '/calculators/freelancer/' },
-};
+  path: '/calculators/freelancer/',
+});
 
 const labels: IncomeLabels = {
   cardTitle: 'Freelancer tax calculator',

@@ -1,15 +1,15 @@
-import type { Metadata } from 'next';
 import { PageShell } from '@/components/site/PageShell';
+import { pageMetadata, TAX_YEAR } from '@/lib/seo';
 import { CalcHero, SupportSection } from '@/components/calc/subpage';
 import { MoreCalculators } from '@/components/calc/ui';
 import { IncomeCalculator, type IncomeLabels } from '@/components/calc/IncomeCalculator';
 
-export const metadata: Metadata = {
-  title: 'Content Creator Tax Calculator — NairaTax',
+export const metadata = pageMetadata({
+  title: `Content Creator Tax Calculator Nigeria ${TAX_YEAR}`,
   description:
     'Estimate tax on YouTube, Instagram and TikTok income under the Nigeria Tax Act 2025. Deduct production and equipment costs and credit any tax already withheld.',
-  alternates: { canonical: '/calculators/creator/' },
-};
+  path: '/calculators/creator/',
+});
 
 const labels: IncomeLabels = {
   cardTitle: 'Content creator calculator',

@@ -285,7 +285,7 @@ export function SplitBar({
   );
 }
 
-/** Bar segment colors (shared with the data-bar tokens). */
+/** Bar segment colors. */
 export const BAR = {
   net: '#5C7CB0',
   tax: '#C7A24C',
@@ -319,6 +319,7 @@ const ALL_CALCS = [
   { label: 'Business', href: '/calculators/business/' },
   { label: 'Content creator', href: '/calculators/creator/' },
   { label: 'Investment', href: '/calculators/investment/' },
+  { label: 'USD income', href: '/calculators/usd/' },
 ];
 
 export function MoreCalculators({ current }: { current: string }) {

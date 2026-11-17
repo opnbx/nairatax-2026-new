@@ -1,8 +1,8 @@
 /**
  * NairaTax calculator engine — Nigeria Tax Act 2025 (effective 1 Jan 2026).
  *
- * Ported verbatim from the redesign handoff. All figures are client-side
- * estimates; see the "estimates only" disclaimer surfaced in the UI.
+ * All figures are client-side estimates; see the "estimates only" disclaimer
+ * surfaced in the UI.
  */
 
 // --- Parsing & formatting -------------------------------------------------
@@ -62,15 +62,9 @@ export function progressive(taxable: number, bands: Band[] = NEW_BANDS): number 
   return total;
 }
 
-/** Band caps used to locate the marginal band index for the brackets table. */
-const MARGINAL_CAPS = [800000, 3000000, 12000000, 25000000, 50000000];
-
+/** Index of the band the last naira of taxable income falls in. */
 function marginalIndex(taxable: number): number {
-  let idx = 0;
-  for (let i = 0; i < MARGINAL_CAPS.length; i++) {
-    if (taxable > MARGINAL_CAPS[i]) idx = i + 1;
-  }
-  return idx;
+  return NEW_BANDS.findIndex(([cap]) => taxable <= cap);
 }
 
 /** Clamp a value's share of a base to a 0–100 percentage. */
@@ -224,12 +218,27 @@ export function computeFreelancer(input: FreelancerInput): FreelancerResult {
 
 // --- Business (CIT) -------------------------------------------------------
 
+export const CIT_RATE = 0.3;
+/** Development Levy on assessable profit; replaced the Tertiary Education Tax. */
+export const DEV_LEVY_RATE = 0.04;
+/** Small-company turnover cap as enacted in the Nigeria Tax Act 2025 (s.202). */
+export const SMALL_COMPANY_TURNOVER = 50000000;
+/**
+ * The Tax Administration Act and official implementation guidance use ₦100M
+ * instead. Companies between the two caps are taxed here (the cautious reading)
+ * and flagged as `borderline` so the UI can say they may qualify for 0%.
+ */
+export const SMALL_COMPANY_TURNOVER_GUIDANCE = 100000000;
+
 export type CompanyType = 'general' | 'professional';
+/** Whether total fixed assets are within the ₦250M small-company limit. */
+export type FixedAssets = 'within' | 'above';
 
 export interface BusinessInput {
   turnover: string;
   expenses: string;
   type: CompanyType;
+  assets: FixedAssets;
 }
 
 export interface BusinessResult {
@@ -237,19 +246,19 @@ export interface BusinessResult {
   turnover: number;
   expenses: number;
   profit: number;
-  small: boolean;
   exempt: boolean;
+  borderline: boolean;
   cit: number;
-  edu: number;
+  levy: number;
   total: number;
   net: number;
   effective: number;
-  bar: { net: number; cit: number; edu: number };
+  bar: { net: number; cit: number; levy: number };
 }
 
 const EMPTY_BUSINESS: BusinessResult = {
-  filled: false, turnover: 0, expenses: 0, profit: 0, small: false, exempt: false,
-  cit: 0, edu: 0, total: 0, net: 0, effective: 0, bar: { net: 0, cit: 0, edu: 0 },
+  filled: false, turnover: 0, expenses: 0, profit: 0, exempt: false, borderline: false,
+  cit: 0, levy: 0, total: 0, net: 0, effective: 0, bar: { net: 0, cit: 0, levy: 0 },
 };
 
 export function computeBusiness(input: BusinessInput): BusinessResult {
@@ -258,11 +267,14 @@ export function computeBusiness(input: BusinessInput): BusinessResult {
 
   const expenses = Math.min(parseNaira(input.expenses), turnover);
   const profit = Math.max(0, turnover - expenses);
-  const small = turnover <= 50000000;
-  const exempt = small && input.type !== 'professional';
-  const cit = exempt ? 0 : profit * 0.3;
-  const edu = exempt ? 0 : profit * 0.02;
-  const total = cit + edu;
+  // Small-company status needs all three: turnover, fixed assets, and not a
+  // professional-services firm.
+  const eligible = input.type !== 'professional' && input.assets === 'within';
+  const exempt = eligible && turnover <= SMALL_COMPANY_TURNOVER;
+  const borderline = eligible && !exempt && turnover <= SMALL_COMPANY_TURNOVER_GUIDANCE;
+  const cit = exempt ? 0 : profit * CIT_RATE;
+  const levy = exempt ? 0 : profit * DEV_LEVY_RATE;
+  const total = cit + levy;
   const net = profit - total;
 
   return {
@@ -270,27 +282,31 @@ export function computeBusiness(input: BusinessInput): BusinessResult {
     turnover,
     expenses,
     profit,
-    small,
     exempt,
+    borderline,
     cit,
-    edu,
+    levy,
     total,
     net,
     effective: profit > 0 ? total / profit : 0,
     bar: {
       net: exempt ? 100 : share(net, profit),
       cit: share(cit, profit),
-      edu: share(edu, profit),
+      levy: share(levy, profit),
     },
   };
 }
 
 // --- Investment -----------------------------------------------------------
 
+export const INVESTMENT_WHT_RATE = 0.1;
+
 export interface InvestmentInput {
   div: string;
   interest: string;
   gains: string;
+  /** Other taxable income for the year; sets the band the gains fall in. */
+  other: string;
 }
 
 export interface InvestmentBreakdownRow {
@@ -302,6 +318,10 @@ export interface InvestmentBreakdownRow {
 export interface InvestmentResult {
   filled: boolean;
   total: number;
+  /** Tax withheld at source on dividends and interest. */
+  whtTax: number;
+  /** Income tax on capital gains, due on self-assessment. */
+  gainsTax: number;
   totalTax: number;
   net: number;
   effective: number;
@@ -309,7 +329,7 @@ export interface InvestmentResult {
 }
 
 const EMPTY_INVESTMENT: InvestmentResult = {
-  filled: false, total: 0, totalTax: 0, net: 0, effective: 0, breakdown: [],
+  filled: false, total: 0, whtTax: 0, gainsTax: 0, totalTax: 0, net: 0, effective: 0, breakdown: [],
 };
 
 export function computeInvestment(input: InvestmentInput): InvestmentResult {
@@ -319,19 +339,24 @@ export function computeInvestment(input: InvestmentInput): InvestmentResult {
   const total = d + i + g;
   if (!(total > 0)) return EMPTY_INVESTMENT;
 
-  const divTax = d * 0.1;
-  const intTax = i * 0.1;
-  const cgt = g * 0.1;
-  const totalTax = divTax + intTax + cgt;
+  const divTax = d * INVESTMENT_WHT_RATE;
+  const intTax = i * INVESTMENT_WHT_RATE;
+  // An individual's chargeable gains are taxed as income: stacked on top of
+  // their other taxable income and charged at the progressive bands.
+  const other = parseNaira(input.other);
+  const gainsTax = progressive(other + g, NEW_BANDS) - progressive(other, NEW_BANDS);
+  const totalTax = divTax + intTax + gainsTax;
 
   const breakdown: InvestmentBreakdownRow[] = [];
   if (d > 0) breakdown.push({ label: 'Dividends', note: '10% WHT', tax: divTax });
   if (i > 0) breakdown.push({ label: 'Interest', note: '10% WHT', tax: intTax });
-  if (g > 0) breakdown.push({ label: 'Capital gains', note: '10% CGT', tax: cgt });
+  if (g > 0) breakdown.push({ label: 'Capital gains', note: 'income-tax bands', tax: gainsTax });
 
   return {
     filled: true,
     total,
+    whtTax: divTax + intTax,
+    gainsTax,
     totalTax,
     net: total - totalTax,
     effective: totalTax / total,
@@ -347,11 +372,15 @@ export interface BracketRow {
   on: string;
 }
 
-export const BRACKET_ROWS: BracketRow[] = [
-  { range: 'First ₦800,000', rate: '0%', on: '₦0' },
-  { range: '₦800,001 – ₦3,000,000', rate: '15%', on: 'up to ₦330,000' },
-  { range: '₦3,000,001 – ₦12,000,000', rate: '18%', on: 'up to ₦1,620,000' },
-  { range: '₦12,000,001 – ₦25,000,000', rate: '21%', on: 'up to ₦2,730,000' },
-  { range: '₦25,000,001 – ₦50,000,000', rate: '23%', on: 'up to ₦5,750,000' },
-  { range: 'Above ₦50,000,000', rate: '25%', on: '25% of excess' },
-];
+/** Display rows for the brackets table, derived from NEW_BANDS. */
+export const BRACKET_ROWS: BracketRow[] = NEW_BANDS.map(([cap, rate], i) => {
+  const prev = i === 0 ? 0 : NEW_BANDS[i - 1][0];
+  const ratePct = `${Math.round(rate * 100)}%`;
+  if (i === 0) return { range: `First ${naira(cap)}`, rate: ratePct, on: naira(0) };
+  if (cap === Infinity) return { range: `Above ${naira(prev)}`, rate: ratePct, on: `${ratePct} of excess` };
+  return {
+    range: `${naira(prev + 1)} – ${naira(cap)}`,
+    rate: ratePct,
+    on: `up to ${naira((cap - prev) * rate)}`,
+  };
+});

@@ -1,18 +1,16 @@
 import { MetadataRoute } from 'next';
+import { SITE_URL } from '@/lib/seo';
+
+// Only pages with a working calculator. The "coming soon" placeholders
+// (pensioner, partnership) are noindexed and left out.
+const CALCULATORS = ['freelancer', 'business', 'creator', 'investment', 'usd'];
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = 'https://www.nairatax.ng';
-  const currentDate = new Date().toISOString();
-  const routes = ['freelancer', 'business', 'creator', 'investment', 'usd', 'pensioner', 'partnership'];
+  const lastModified = new Date();
 
   return [
-    { url: `${baseUrl}/`, lastModified: currentDate, changeFrequency: 'weekly', priority: 1.0 },
-    { url: `${baseUrl}/contact/`, lastModified: currentDate, changeFrequency: 'monthly', priority: 0.8 },
-    ...routes.map(route => ({
-      url: `${baseUrl}/calculators/${route}/`,
-      lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
-      priority: 0.9,
-    })),
+    { url: `${SITE_URL}/`, lastModified },
+    ...CALCULATORS.map((slug) => ({ url: `${SITE_URL}/calculators/${slug}/`, lastModified })),
+    { url: `${SITE_URL}/contact/`, lastModified },
   ];
 }

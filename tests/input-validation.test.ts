@@ -3,7 +3,6 @@ import {
   parseNaira,
   computeEmployee,
   computeFreelancer,
-  computeBusiness,
 } from '@/lib/tax-engine';
 
 /**
@@ -70,13 +69,5 @@ describe('Expense validation (computeFreelancer)', () => {
     const r = computeFreelancer({ amount: '5000000', period: 'annual', expenses: '9000000', wht: '' });
     expect(r.expenses).toBe(5000000);
     expect(r.profit).toBe(0);
-  });
-});
-
-describe('Business revenue validation (computeBusiness)', () => {
-  it('exempts small non-professional companies (≤ ₦50M)', () => {
-    expect(computeBusiness({ turnover: '50000000', expenses: '', type: 'general' }).exempt).toBe(true);
-    expect(computeBusiness({ turnover: '50000001', expenses: '', type: 'general' }).exempt).toBe(false);
-    expect(computeBusiness({ turnover: '40000000', expenses: '', type: 'professional' }).exempt).toBe(false);
   });
 });

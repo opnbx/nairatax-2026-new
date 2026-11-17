@@ -25,28 +25,20 @@ import {
   StatGrid,
   BAR,
 } from '@/components/calc/ui';
+import { FAQS } from './faqs';
 
 const FEATURES = [
-  { title: '₦800,000 tax-free', body: 'The first ₦800,000 of annual income is completely exempt — up from just ₦200,000 before.' },
-  { title: 'Lower headline rates', body: 'Progressive bands from 0% to 25% mean most salaried employees owe less than they did in 2025.' },
+  { title: '₦800,000 tax-free', body: 'The first ₦800,000 of taxable income is taxed at 0%, replacing the old consolidated relief allowance.' },
+  { title: 'Wider tax bands', body: 'Six progressive bands from 0% to 25%. Most low and middle earners owe less than in 2025; the top rate rises from 24% to 25%.' },
   { title: 'New rent relief', body: 'Deduct 20% of your annual rent, capped at ₦500,000 — a brand-new relief introduced for 2026.' },
   { title: 'Every relief counted', body: 'Pension, NHF, NHIS and life-insurance premiums are all deducted before your tax is assessed.' },
 ];
 
 const CALCS = [
   { idx: '01', title: 'Freelancer', href: '/calculators/freelancer/', desc: 'Self-employed income tax with full business-expense deductions for consultants and contractors.', tags: ['Business expenses', 'Progressive rates', 'Self-assessment'] },
-  { idx: '02', title: 'Business', href: '/calculators/business/', desc: 'Company Income Tax at 30% plus 2% Education Tax. Companies earning ≤₦50M pay 0%.', tags: ['CIT 30%', 'Education 2%', 'Small-co 0%'] },
+  { idx: '02', title: 'Business', href: '/calculators/business/', desc: 'Company Income Tax at 30% plus a 4% Development Levy. Small companies pay 0%.', tags: ['CIT 30%', 'Dev. levy 4%', 'Small-co 0%'] },
   { idx: '03', title: 'Content creator', href: '/calculators/creator/', desc: 'For YouTube, Instagram and TikTok earnings, with platform-specific deductions built in.', tags: ['Platform income', 'Equipment', 'Production'] },
-  { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends, interest and capital gains with withholding tax handled automatically.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'CGT 10%'] },
-];
-
-const FAQS = [
-  { q: 'What is the tax-free threshold?', a: 'The first ₦800,000 of annual income is completely tax-free. If you earn ₦800,000 or less, you pay zero income tax. This takes effect on 1 January 2026.' },
-  { q: 'What are the 2026 tax rates?', a: 'Progressive rates apply: 0% on the first ₦800,000, then 15%, 18%, 21%, 23% and finally 25% on income above ₦50 million.' },
-  { q: 'How does rent relief work?', a: 'You can deduct 20% of the annual rent you pay, up to a maximum of ₦500,000. This is a new benefit introduced under the 2026 law.' },
-  { q: 'What can employees deduct?', a: 'Pension (8%), NHF (2.5%), NHIS, life-insurance premiums and rent relief (20%, up to ₦500,000) are all deducted before tax is calculated.' },
-  { q: 'What extra benefit do pensioners get?', a: 'Pensioners receive an additional ₦200,000 tax-free allowance on top of the standard threshold — effectively ₦1,000,000 tax-free.' },
-  { q: 'When does this take effect?', a: 'The Nigeria Tax Act 2025 has been signed into law, and the new rates apply from 1 January 2026 when the Nigeria Revenue Service takes over collection.' },
+  { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends and interest at 10% withholding tax; capital gains at your income-tax band.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'Gains 0%–25%'] },
 ];
 
 export function HomeContent() {
@@ -54,7 +46,6 @@ export function HomeContent() {
   const [period, setPeriod] = useState<Period>('annual');
   const [rent, setRent] = useState('');
   const [ins, setIns] = useState('');
-  const [openFaq, setOpenFaq] = useState<number | null>(0);
 
   const res = computeEmployee({ amount, period, rent, ins });
 
@@ -224,7 +215,7 @@ export function HomeContent() {
       {/* ---------------- Tax brackets ---------------- */}
       <section id="brackets" className="scroll-mt-20 bg-tint">
         <div className="mx-auto max-w-[1280px] px-6 py-[60px] lg:px-14">
-          <SectionHeading eyebrow="2025 tax brackets" title="How the bands stack up" intro="Rates apply to taxable income after pension, NHF and reliefs — effective 1 January 2026." />
+          <SectionHeading eyebrow="2026 tax brackets" title="How the bands stack up" intro="Rates apply to taxable income after pension, NHF and reliefs — effective 1 January 2026." />
           <div className="mt-8 overflow-hidden rounded-card border border-hairline-3 bg-white">
             <div className="grid grid-cols-[2.3fr_0.8fr_1.5fr] bg-navy-800 px-5 py-3">
               <span className="eyebrow text-[10.5px] tracking-[0.12em] text-onnavy-3">Annual income band</span>
@@ -259,26 +250,23 @@ export function HomeContent() {
       <section id="faq" className="scroll-mt-20">
         <div className="mx-auto max-w-[820px] px-6 py-[60px] lg:px-14">
           <SectionHeading eyebrow="Frequently asked" title="Questions, answered" />
+          {/* Native <details> keeps every answer in the HTML for search engines. */}
           <div className="mt-8 border-t border-hairline">
-            {FAQS.map((f, i) => {
-              const open = openFaq === i;
-              return (
-                <div key={f.q} className="border-b border-hairline">
-                  <button
-                    type="button"
-                    onClick={() => setOpenFaq(open ? null : i)}
-                    aria-expanded={open}
-                    className="flex w-full items-center justify-between gap-4 py-5 text-left"
+            {FAQS.map((f, i) => (
+              <details key={f.q} name="faq" open={i === 0} className="group border-b border-hairline">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 py-5 [&::-webkit-details-marker]:hidden">
+                  <h3 className="text-[16px] font-semibold text-ink-heading">{f.q}</h3>
+                  <span
+                    className="flex h-[27px] w-[27px] shrink-0 items-center justify-center rounded-[6px] border border-hairline text-[18px] text-ink-body2"
+                    aria-hidden="true"
                   >
-                    <span className="text-[16px] font-semibold text-ink-heading">{f.q}</span>
-                    <span className="flex h-[27px] w-[27px] shrink-0 items-center justify-center rounded-[6px] border border-hairline text-[18px] text-ink-body2">
-                      {open ? '–' : '+'}
-                    </span>
-                  </button>
-                  {open && <p className="pb-5 pr-10 text-[14.5px] leading-relaxed text-muted">{f.a}</p>}
-                </div>
-              );
-            })}
+                    <span className="group-open:hidden">+</span>
+                    <span className="hidden group-open:inline">–</span>
+                  </span>
+                </summary>
+                <p className="pb-5 pr-10 text-[14.5px] leading-relaxed text-muted">{f.a}</p>
+              </details>
+            ))}
           </div>
         </div>
       </section>

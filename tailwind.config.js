@@ -11,7 +11,6 @@ module.exports = {
         navy: {
           900: '#081426',
           800: '#0B1B34',
-          glow: '#1C3C68',
         },
         ink: {
           heading: '#0B1B34',
@@ -25,7 +24,6 @@ module.exports = {
         },
         // Text on navy
         onnavy: {
-          strong: '#FFFFFF',
           1: '#A9B6CC',
           2: '#9FB0C9',
           3: '#8FA0BA',
@@ -44,8 +42,6 @@ module.exports = {
           onnavy: '#7DD3A8',
         },
         // Surfaces & lines
-        paper: '#FFFFFF',
-        canvas: '#DEE2EA',
         tint: '#F3F6FA',
         fieldsoft: '#F5F7FA',
         hairline: {
@@ -55,12 +51,6 @@ module.exports = {
         },
         inputborder: '#D7DEE8',
         placeholder: '#AEB6C2',
-        // Data-bar segments
-        bar: {
-          net: '#5C7CB0',
-          tax: '#C7A24C',
-          ded: '#AEB8C6',
-        },
       },
       fontFamily: {
         serif: ['var(--font-serif)', 'Source Serif 4', 'Georgia', 'serif'],
@@ -71,21 +61,12 @@ module.exports = {
         input: '10px',
         card: '14px',
         calc: '18px',
-        board: '16px',
-        chip: '6px',
         btn: '10px',
       },
       boxShadow: {
         board: '0 50px 130px -50px rgba(11,27,52,0.55), 0 6px 20px rgba(11,27,52,0.08)',
         calc: '0 2px 4px rgba(9,20,40,0.1), 0 40px 80px -34px rgba(4,12,28,0.75)',
         cardhover: '0 20px 42px -22px rgba(11,27,52,0.4)',
-      },
-      letterSpacing: {
-        eyebrow: '0.16em',
-        ribbon: '0.08em',
-      },
-      maxWidth: {
-        board: '1440px',
       },
     },
   },
