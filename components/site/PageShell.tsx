@@ -7,10 +7,13 @@ export function PageShell({
   children,
   variant = 'home',
   page,
+  section,
 }: {
   children: React.ReactNode;
   variant?: 'home' | 'sub';
   page?: string;
+  /** Breadcrumb parent for sub-pages; defaults to "Calculators". */
+  section?: string;
 }) {
   return (
     <div className="flex min-h-screen flex-col bg-white">
@@ -21,7 +24,7 @@ export function PageShell({
         Skip to main content
       </a>
       <Ribbon />
-      <Header variant={variant} page={page} />
+      <Header variant={variant} page={page} section={section} />
       <main id="main-content" className="flex-1">
         {children}
       </main>

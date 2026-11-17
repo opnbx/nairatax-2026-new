@@ -36,6 +36,8 @@ export function Footer({ variant = 'home' }: { variant?: 'home' | 'sub' }) {
             links={[
               { label: 'Home', href: '/' },
               { label: 'All calculators', href: '/#calculators' },
+              { label: 'Tax on salary', href: '/salary/' },
+              { label: '2026 tax bands', href: '/tax-bands/' },
               { label: 'FAQ', href: '/#faq' },
               { label: 'Contact', href: '/contact/' },
             ]}

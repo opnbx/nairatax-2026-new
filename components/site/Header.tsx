@@ -17,9 +17,11 @@ function TaxActPill() {
 export function Header({
   variant = 'home',
   page,
+  section = 'Calculators',
 }: {
   variant?: 'home' | 'sub';
   page?: string;
+  section?: string;
 }) {
   return (
     <header className="border-b border-hairline bg-white">
@@ -45,7 +47,7 @@ export function Header({
         ) : (
           <div className="flex items-center gap-4 sm:gap-6">
             <span className="eyebrow hidden text-[10.5px] tracking-[0.14em] text-muted-2 md:inline">
-              Calculators / {page}
+              {section} / {page}
             </span>
             <Link
               href="/"
