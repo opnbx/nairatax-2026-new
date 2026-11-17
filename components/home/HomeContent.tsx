@@ -26,6 +26,8 @@ import {
   BAR,
 } from '@/components/calc/ui';
 import { FAQS } from './faqs';
+import { DataTable } from '@/components/content/blocks';
+import { salaryFigures, salaryHref } from '@/lib/salary-pages';
 
 const FEATURES = [
   { title: '₦800,000 tax-free', body: 'The first ₦800,000 of taxable income is taxed at 0%, replacing the old consolidated relief allowance.' },
@@ -41,6 +43,9 @@ const CALCS = [
   { idx: '04', title: 'Investment', href: '/calculators/investment/', desc: 'Dividends and interest at 10% withholding tax; capital gains at your income-tax band.', tags: ['Dividend WHT 10%', 'Interest WHT 10%', 'Gains 0%–25%'] },
 ];
 
+/** Monthly salaries shown in the "tax on common salaries" table. */
+const SALARY_ROWS = [200000, 300000, 500000, 800000, 1000000, 2000000];
+
 export function HomeContent() {
   const [amount, setAmount] = useState('1000000');
   const [period, setPeriod] = useState<Period>('annual');
@@ -55,13 +60,13 @@ export function HomeContent() {
       <section className="tx-security">
         <div className="mx-auto grid max-w-[1280px] items-center gap-14 px-6 pb-[74px] pt-[66px] lg:grid-cols-[0.88fr_1.12fr] lg:px-14">
           <div>
-            <Eyebrow tone="navy">PAYE estimate · Nigeria Tax Act 2025</Eyebrow>
-            <h1 className="mt-4 font-serif text-[40px] font-bold leading-[1.04] tracking-[-0.02em] text-white sm:text-[54px]">
-              See exactly what you keep.
+            <Eyebrow tone="navy">Free · Nigeria Tax Act 2025</Eyebrow>
+            <h1 className="mt-4 font-serif text-[36px] font-bold leading-[1.06] tracking-[-0.02em] text-white sm:text-[46px]">
+              Nigeria PAYE tax calculator for 2026
             </h1>
             <p className="mt-5 max-w-md text-[16px] leading-relaxed text-onnavy-1">
-              A precise, up-to-date estimate of your take-home pay and PAYE under Nigeria&apos;s 2026
-              tax regime — reliefs, bands and thresholds accounted for.
+              See exactly what you keep. Enter your salary for a precise estimate of your take-home pay
+              and PAYE under Nigeria&apos;s 2026 tax regime — reliefs, bands and thresholds accounted for.
             </p>
             <div className="mt-8 grid grid-cols-3 gap-4 border-t border-white/[0.13] pt-6">
               {[
@@ -70,7 +75,7 @@ export function HomeContent() {
                 { fig: '1 Jan 2026', label: 'Effective date' },
               ].map((s) => (
                 <div key={s.label}>
-                  <p className="font-serif text-[23px] font-bold leading-none text-white">{s.fig}</p>
+                  <p className="font-serif text-[19px] font-bold leading-none text-white sm:text-[23px] lg:text-[19px] xl:text-[23px]">{s.fig}</p>
                   <p className="mt-1.5 text-[12px] text-onnavy-3">{s.label}</p>
                 </div>
               ))}
@@ -243,11 +248,47 @@ export function HomeContent() {
               );
             })}
           </div>
+          <p className="mt-5 text-[13.5px] text-muted">
+            <Link href="/tax-bands/" className="font-medium text-gold-light hover:underline">
+              Compare the 2026 bands with the old tax brackets →
+            </Link>
+          </p>
+        </div>
+      </section>
+
+      {/* ---------------- Tax on common salaries ---------------- */}
+      <section id="salaries" className="scroll-mt-20">
+        <div className="mx-auto max-w-[1280px] px-6 py-[60px] lg:px-14">
+          <SectionHeading
+            eyebrow="Salary examples"
+            title="How much tax is deducted from salary in Nigeria?"
+            intro="PAYE on common monthly salaries, with the standard 8% pension and 2.5% NHF deducted and no rent relief claimed. Select a salary for the band-by-band working."
+          />
+          <div className="mt-8">
+            <DataTable
+              caption="PAYE and take-home pay by gross monthly salary, 2026"
+              head={['Gross salary / month', 'PAYE / month', 'Take-home / month', 'Effective tax rate']}
+              rows={SALARY_ROWS.map((m) => {
+                const r = salaryFigures(m);
+                return [
+                  <Link key={m} href={salaryHref(m)}>{naira(m)}</Link>,
+                  naira(r.tax / 12),
+                  naira(r.takeHomeMonthly),
+                  pct(r.effective),
+                ];
+              })}
+            />
+          </div>
+          <p className="mt-5 text-[13.5px] text-muted">
+            <Link href="/salary/" className="font-medium text-gold-light hover:underline">
+              See more salaries and how PAYE is worked out →
+            </Link>
+          </p>
         </div>
       </section>
 
       {/* ---------------- FAQ ---------------- */}
-      <section id="faq" className="scroll-mt-20">
+      <section id="faq" className="scroll-mt-20 border-t border-hairline">
         <div className="mx-auto max-w-[820px] px-6 py-[60px] lg:px-14">
           <SectionHeading eyebrow="Frequently asked" title="Questions, answered" />
           {/* Native <details> keeps every answer in the HTML for search engines. */}

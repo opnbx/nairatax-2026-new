@@ -3,6 +3,12 @@ import { pageMetadata, TAX_YEAR } from '@/lib/seo';
 import { CalcHero, SupportSection } from '@/components/calc/subpage';
 import { MoreCalculators } from '@/components/calc/ui';
 import { IncomeCalculator, type IncomeLabels } from '@/components/calc/IncomeCalculator';
+import { CalcGuide } from '@/components/content/blocks';
+import { bandBreakdown, computeFreelancer, naira, pct } from '@/lib/tax-engine';
+
+// Worked example: ₦8m of payouts and brand deals, ₦2m of production costs.
+const ex = computeFreelancer({ amount: '8000000', period: 'annual', expenses: '2000000', wht: '' });
+const exBands = bandBreakdown(ex.profit).filter((b) => b.amount > 0);
 
 export const metadata = pageMetadata({
   title: `Content Creator Tax Calculator Nigeria ${TAX_YEAR}`,
@@ -49,6 +55,53 @@ export default function CreatorPage() {
           { idx: '03', title: 'Keep clean records', body: 'Save invoices and receipts. Tax withheld by agencies or platforms credits against what you finally owe.' },
         ]}
       />
+
+      <CalcGuide
+        name="creator-faq"
+        title="How content creator income is taxed in Nigeria"
+        intro="Creator income is business income: you are taxed on what is left after production costs, at the 2026 personal bands."
+        table={{
+          caption: 'Worked example of income tax for a content creator in Nigeria, 2026',
+          head: ['', 'Per year'],
+          rows: [
+            ['Platform payouts and brand deals', naira(ex.income)],
+            ['Production and equipment costs', `– ${naira(ex.expenses)}`],
+            ['Taxable profit', naira(ex.profit)],
+            ['Income tax', naira(ex.tax)],
+            ['Kept after costs and tax', naira(ex.net)],
+          ],
+          highlight: 4,
+        }}
+        faqTitle="Creator tax questions, answered"
+        faqs={[
+          {
+            q: 'Is YouTube, TikTok or Instagram income taxable in Nigeria?',
+            a: 'Yes. If you live in Nigeria, ad revenue, brand partnerships, tips, subscriptions and affiliate income are all taxable, including money paid to you from abroad.',
+          },
+          {
+            q: 'I am paid in dollars. How do I work out my tax?',
+            a: 'Convert each payout to naira at the rate you actually received, add them up for the year and enter the naira total as your platform income.',
+          },
+          {
+            q: 'What can a content creator deduct?',
+            a: 'Costs incurred wholly and exclusively to make your content: cameras, lighting, editing software, data, studio rent, props and paid collaborators. Keep receipts for everything you claim.',
+          },
+          {
+            q: 'Do small creators pay tax?',
+            a: 'Only on profit above ₦800,000 a year. If your payouts less your production costs come to ₦800,000 or less, the 0% band covers all of it.',
+          },
+        ]}
+      >
+        <p>
+          A creator who earns {naira(ex.income)} in a year from payouts and brand deals, and spends{' '}
+          {naira(ex.expenses)} on gear and production, is taxed on a profit of <strong>{naira(ex.profit)}</strong>.
+        </p>
+        <p>
+          Spread across the bands —{' '}
+          {exBands.map((b) => `${naira(b.amount)} at ${Math.round(b.rate * 100)}%`).join(', ')} — that is income tax
+          of {naira(ex.tax)}, or {pct(ex.effective)} of total earnings.
+        </p>
+      </CalcGuide>
 
       <MoreCalculators current="Content creator" />
     </PageShell>

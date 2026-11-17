@@ -62,6 +62,28 @@ export function progressive(taxable: number, bands: Band[] = NEW_BANDS): number 
   return total;
 }
 
+export interface BandSlice {
+  /** Lower edge of the band (exclusive). */
+  from: number;
+  /** Upper edge of the band (inclusive); Infinity for the top band. */
+  to: number;
+  rate: number;
+  /** Portion of the taxable income that falls in this band. */
+  amount: number;
+  tax: number;
+}
+
+/** Band-by-band split of a taxable income; slices sum to `progressive()`. */
+export function bandBreakdown(taxable: number, bands: Band[] = NEW_BANDS): BandSlice[] {
+  let prev = 0;
+  return bands.map(([cap, rate]) => {
+    const amount = Math.max(0, Math.min(taxable, cap) - prev);
+    const slice = { from: prev, to: cap, rate, amount, tax: amount * rate };
+    prev = cap;
+    return slice;
+  });
+}
+
 /** Index of the band the last naira of taxable income falls in. */
 function marginalIndex(taxable: number): number {
   return NEW_BANDS.findIndex(([cap]) => taxable <= cap);
@@ -98,6 +120,8 @@ export interface EmployeeResult {
   takeHome: number;
   takeHomeMonthly: number;
   effective: number;
+  /** Estimated tax on the same salary under the pre-2026 law. */
+  taxOld: number;
   savings: number;
   hasSavings: boolean;
   marginalIdx: number;
@@ -107,7 +131,7 @@ export interface EmployeeResult {
 const EMPTY_EMPLOYEE: EmployeeResult = {
   filled: false, gross: 0, grossMonthly: 0, pension: 0, nhf: 0, rentRelief: 0,
   insurance: 0, deductions: 0, taxable: 0, tax: 0, takeHome: 0, takeHomeMonthly: 0,
-  effective: 0, savings: 0, hasSavings: false, marginalIdx: 0,
+  effective: 0, taxOld: 0, savings: 0, hasSavings: false, marginalIdx: 0,
   bar: { takeHome: 0, tax: 0, deductions: 0 },
 };
 
@@ -147,6 +171,7 @@ export function computeEmployee(input: EmployeeInput): EmployeeResult {
     takeHome,
     takeHomeMonthly: takeHome / 12,
     effective,
+    taxOld,
     savings,
     hasSavings: savings > 1000,
     marginalIdx: marginalIndex(taxable),
